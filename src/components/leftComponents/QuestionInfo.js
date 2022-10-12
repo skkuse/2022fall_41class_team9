@@ -7,7 +7,7 @@ const QuestionInfoContainer = styled.div`
 `;
 
 const QuestionInfoNavBar = styled.div`
-  background-color: #414e5a;
+  background-color: #3b5939;
   height: 50px;
   display: flex;
   align-items: center;
@@ -29,22 +29,24 @@ const Condition = styled.div`
 `;
 
 const MiniNavBar = styled.div`
-  background-color: #767171;
+  background-color: #3b5939;
   height: 30px;
   display: flex;
   align-items: center;
   padding-left: 15px;
+  border-bottom: 1px solid;
+  color: #f7f7b8;
 `;
 
 const MainContent = styled.div`
-  background-color: whitesmoke;
+  background-color: #3b5939;
   flex: 1;
 `;
 
 function QuestionInfo() {
   return (
     <QuestionInfoContainer>
-      <QuestionInfoNavBar>문제 & 참조/제약사항</QuestionInfoNavBar>
+      {/* <QuestionInfoNavBar>문제 & 참조/제약사항</QuestionInfoNavBar> */}
       <Question>
         <MiniNavBar>문제</MiniNavBar>
         <MainContent></MainContent>

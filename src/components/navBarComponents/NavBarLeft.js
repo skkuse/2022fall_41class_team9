@@ -18,7 +18,7 @@ function NavBarLeft() {
   return (
     <NavBarLeftContainer>
       <HomeBtn>
-        <IoHomeSharp size="1.8rem" />
+        <IoHomeSharp size="1.8rem" color="#E5E535" />
       </HomeBtn>
     </NavBarLeftContainer>
   );

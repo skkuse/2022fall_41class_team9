@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SubmitResult from "./rightComponents/submitComponents/SubmitResult";
 
 const RightContainer = styled.div`
-  background-color: bisque;
+  background-color: #3b5939;
   flex: 1;
 `;
 

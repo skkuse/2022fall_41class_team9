@@ -70,7 +70,7 @@ function NavBarRight() {
     <NavBarRightContainer>
       <ShowDue>2022.10.24</ShowDue>
       <SettingBtn onClick={() => setIsSettingOpen(true)}>
-        <AiTwotoneSetting size="1.8rem" />
+        <AiTwotoneSetting size="1.8rem" color="#E5E535" />
       </SettingBtn>
       <SettingOverlay
         isSettingOpen={isSettingOpen}

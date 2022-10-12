@@ -1,10 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-// interface ResultContentType {
-//   openedContent: OpenedContentType;
-// }
-
 const ResultContentContainer = styled.div`
   display: ${(props) => (props.openedContent == "result" ? "flex" : "none")};
 
@@ -13,7 +9,7 @@ const ResultContentContainer = styled.div`
 `;
 
 const OverallScore = styled.div`
-  background-color: whitesmoke;
+  background-color: #3b5939;
   flex: 4;
 `;
 
@@ -29,12 +25,6 @@ const ScoreCheckNavbar = styled.div`
   background-color: grey;
   display: flex;
 `;
-
-// type ScoreCheckBackgroungType = "blue" | "green" | "yellow";
-
-// interface NavBarOptionType {
-//   backgroundColor: ScoreCheckBackgroungType;
-// }
 
 const NavBarOption = styled.div`
   flex: 1;
@@ -55,16 +45,16 @@ function SubmitResultChild({ openedContent }) {
       <ScoreCheck>
         <ScoreCheckNavbar>
           <NavBarOption
-            backgroundColor="blue"
-            onClick={() => setScoreCheckBackground("blue")}
+            backgroundColor="#f7f7b8"
+            onClick={() => setScoreCheckBackground("#f7f7b8")}
           ></NavBarOption>
           <NavBarOption
             backgroundColor="green"
             onClick={() => setScoreCheckBackground("green")}
           ></NavBarOption>
           <NavBarOption
-            backgroundColor="yellow"
-            onClick={() => setScoreCheckBackground("yellow")}
+            backgroundColor="#A9D600"
+            onClick={() => setScoreCheckBackground("#A9D600")}
           ></NavBarOption>
         </ScoreCheckNavbar>
         <ScoreCheckContent

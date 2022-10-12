@@ -6,16 +6,17 @@ import SubmitResultChild from "./SubmitResultChild";
 const SubmitResultContainer = styled.div`
   width: 100%;
   height: 100%;
-  background-color: whitesmoke;
+  background-color: #3b5939;
   display: flex;
   flex-direction: column;
   justify-content: end;
+  color: #f7f7b8;
 `;
 
 const SubmitResultNavBar = styled.div`
   height: 50px;
-  background-color: #414e5a;
-  border-bottom: solid;
+  background-color: #3b5939;
+  border-bottom: 1px solid;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,26 +25,21 @@ const SubmitResultNavBar = styled.div`
 `;
 
 const NavBarTitle = styled.div``;
+
 const PlagiarismRate = styled.div`
   color: red;
 `;
 
-// export type OpenedContentType = "result" | "explanation" | "related";
-
-// interface ContetType {
-//   openedContent: OpenedContentType;
-// }
-
 const ExplanationContent = styled.div`
   display: ${(props) =>
     props.openedContent == "explanation" ? "flex" : "none"};
-  background-color: bisque;
+  background-color: #3b5939;
   flex: 1;
 `;
 
 const RelatedContent = styled.div`
   display: ${(props) => (props.openedContent == "related" ? "flex" : "none")};
-  background-color: aqua;
+  background-color: #3b5939;
   flex: 1;
 `;
 

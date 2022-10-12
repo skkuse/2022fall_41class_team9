@@ -1,18 +1,19 @@
 import styled from "styled-components";
 
 const TestCaseContainer = styled.div`
-  background-color: aqua;
   flex: 4;
   display: flex;
   flex-direction: column;
+  color: #f7f7b8;
 `;
 
 const TestCaseNavBar = styled.div`
-  background-color: #414e5a;
+  background-color: #3b5939;
   height: 50px;
   display: flex;
   align-items: center;
   padding-left: 15px;
+  border-top: 1px solid;
 `;
 
 const TestCase = styled.div`
@@ -22,13 +23,15 @@ const TestCase = styled.div`
 `;
 
 const MiniNavBar = styled.div`
-  background-color: #c8c852;
+  background-color: #3b5939;
   height: 20px;
   display: flex;
   align-items: center;
   padding-left: 15px;
   justify-content: space-between;
   padding-right: 15px;
+  border-bottom: 1px solid;
+  border-top: 1px solid;
 `;
 
 const MiniNavBarTitle = styled.div``;
@@ -52,7 +55,7 @@ const ValidateButton = styled.button`
 `;
 
 const MainContent = styled.div`
-  background-color: whitesmoke;
+  background-color: #3b5939;
   flex: 1;
 `;
 

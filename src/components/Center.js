@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const CenterContainer = styled.div`
-  background-color: #1f961f;
+  background-color: #3b5939;
   flex: 1;
 `;
 
