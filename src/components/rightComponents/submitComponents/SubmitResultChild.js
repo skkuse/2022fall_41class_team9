@@ -37,7 +37,7 @@ const ScoreCheckContent = styled.div`
 `;
 
 function SubmitResultChild({ openedContent }) {
-  const [scoreCheckBackground, setScoreCheckBackground] = useState("blue");
+  const [scoreCheckBackground, setScoreCheckBackground] = useState("#f7f7b8");
 
   return (
     <ResultContentContainer openedContent={openedContent}>

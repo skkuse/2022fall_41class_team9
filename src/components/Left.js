@@ -7,6 +7,7 @@ const LeftContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-right: 1px solid #f7f7b8;
 `;
 
 function Left() {

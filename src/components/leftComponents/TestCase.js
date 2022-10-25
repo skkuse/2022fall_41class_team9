@@ -44,14 +44,13 @@ const ValidateContainer = styled.div`
 `;
 
 const ValidateResult = styled.div`
-  background-color: aliceblue;
   flex: 1;
 `;
 
 const ValidateButton = styled.button`
   height: 100%;
   border: none;
-  background-color: bisque;
+  background-color: aliceblue;
 `;
 
 const MainContent = styled.div`
