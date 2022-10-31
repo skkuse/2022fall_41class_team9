@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { actionState } from "../../../atoms";

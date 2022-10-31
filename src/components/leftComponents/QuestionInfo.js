@@ -6,14 +6,6 @@ const QuestionInfoContainer = styled.div`
   flex-direction: column;
 `;
 
-const QuestionInfoNavBar = styled.div`
-  background-color: #3b5939;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  padding-left: 15px;
-`;
-
 const Question = styled.div`
   background-color: aliceblue;
   flex: 6;
@@ -46,7 +38,6 @@ const MainContent = styled.div`
 function QuestionInfo() {
   return (
     <QuestionInfoContainer>
-      {/* <QuestionInfoNavBar>문제 & 참조/제약사항</QuestionInfoNavBar> */}
       <Question>
         <MiniNavBar>문제</MiniNavBar>
         <MainContent></MainContent>
