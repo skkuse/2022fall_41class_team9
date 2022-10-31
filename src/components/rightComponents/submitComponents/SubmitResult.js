@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { actionState } from "../../../atoms";
 
 import SubmitResultChild from "./SubmitResultChild";
 
@@ -7,7 +9,7 @@ const SubmitResultContainer = styled.div`
   width: 100%;
   height: 100%;
   background-color: #3b5939;
-  display: flex;
+  display: ${(props) => (props.action == "submit" ? "flex" : "none")};
   flex-direction: column;
   justify-content: end;
   color: #f7f7b8;
@@ -44,6 +46,8 @@ const RelatedContent = styled.div`
 `;
 
 function SubmitResult() {
+  const action = useRecoilValue(actionState);
+
   const [openedContent, setOpenedContent] = useState("result");
 
   const handleNavBarClick = (type) => {
@@ -51,7 +55,7 @@ function SubmitResult() {
   };
 
   return (
-    <SubmitResultContainer>
+    <SubmitResultContainer action={action}>
       <SubmitResultNavBar onClick={() => handleNavBarClick("result")}>
         <NavBarTitle>제출결과</NavBarTitle>
         <PlagiarismRate>표절률 20%</PlagiarismRate>

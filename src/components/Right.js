@@ -11,7 +11,7 @@ const RightContainer = styled.div`
 function Right() {
   return (
     <RightContainer>
-      {/* <SubmitResult /> */}
+      <SubmitResult />
       <ExecuteResult />
     </RightContainer>
   );
