@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ExecuteResult from "./rightComponents/executeComponents/ExecuteResult";
+import GradingResults from "./rightComponents/gradingComponents/GradingResults";
 import SubmitResult from "./rightComponents/submitComponents/SubmitResult";
 
 const RightContainer = styled.div`
@@ -12,6 +13,7 @@ function Right() {
   return (
     <RightContainer>
       <SubmitResult />
+      <GradingResults />
       <ExecuteResult />
     </RightContainer>
   );

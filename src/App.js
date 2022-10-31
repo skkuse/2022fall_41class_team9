@@ -1,11 +1,6 @@
 import { RecoilRoot } from "recoil";
 import MainPage from "./pages/MainPage";
-import {
-  BrowserRouter as router,
-  Routes,
-  Route,
-  BrowserRouter,
-} from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
 

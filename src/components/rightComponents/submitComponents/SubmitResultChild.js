@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const ResultContentContainer = styled.div`
-  display: ${(props) => (props.openedContent == "result" ? "flex" : "none")};
+  display: ${(props) => (props.openedContent === "result" ? "flex" : "none")};
 
   flex: 1;
   flex-direction: column;

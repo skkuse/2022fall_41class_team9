@@ -9,7 +9,7 @@ const SubmitResultContainer = styled.div`
   width: 100%;
   height: 100%;
   background-color: #3b5939;
-  display: ${(props) => (props.action == "submit" ? "flex" : "none")};
+  display: ${(props) => (props.action === "submit" ? "flex" : "none")};
   flex-direction: column;
   justify-content: end;
   color: #f7f7b8;
@@ -34,13 +34,13 @@ const PlagiarismRate = styled.div`
 
 const ExplanationContent = styled.div`
   display: ${(props) =>
-    props.openedContent == "explanation" ? "flex" : "none"};
+    props.openedContent === "explanation" ? "flex" : "none"};
   background-color: #3b5939;
   flex: 1;
 `;
 
 const RelatedContent = styled.div`
-  display: ${(props) => (props.openedContent == "related" ? "flex" : "none")};
+  display: ${(props) => (props.openedContent === "related" ? "flex" : "none")};
   background-color: #3b5939;
   flex: 1;
 `;
