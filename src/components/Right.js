@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ExecuteResult from "./rightComponents/executeComponents/ExecuteResult";
 import SubmitResult from "./rightComponents/submitComponents/SubmitResult";
 
 const RightContainer = styled.div`
@@ -10,7 +11,8 @@ const RightContainer = styled.div`
 function Right() {
   return (
     <RightContainer>
-      <SubmitResult />
+      {/* <SubmitResult /> */}
+      <ExecuteResult />
     </RightContainer>
   );
 }
