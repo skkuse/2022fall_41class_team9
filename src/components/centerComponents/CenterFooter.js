@@ -1,4 +1,6 @@
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { actionState } from "../../atoms";
 
 const CenterFooterContainer = styled.div`
   height: 10%;
@@ -28,10 +30,20 @@ const Btn = styled.button`
   margin: 8px;
   cursor: pointer;
 `;
-function execute() {}
-function save() {}
-function submit() {}
+
 function CenterFooter() {
+  const setAction = useSetRecoilState(actionState);
+
+  function execute() {
+    setAction("execute");
+  }
+  function grading() {
+    setAction("grading");
+  }
+  function submit() {
+    setAction("submit");
+  }
+
   return (
     <CenterFooterContainer>
       <FooterItems>
@@ -42,7 +54,7 @@ function CenterFooter() {
       </FooterItems>
       <FooterBtns>
         <Btn onClick={execute}>실행</Btn>
-        <Btn onClick={save}>저장</Btn>
+        <Btn onClick={grading}>채점</Btn>
         <Btn onClick={submit}>제출</Btn>
       </FooterBtns>
     </CenterFooterContainer>

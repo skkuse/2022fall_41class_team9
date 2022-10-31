@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { actionState } from "../../../atoms";
 
 const ExecuteResultContainer = styled.div`
-  height: 80%;
+  height: 100%;
   background-color: white;
+  display: ${(props) => (props.action === "execute" ? "block" : "none")};
 `;
 
 const ExecuteNavbar = styled.div`
@@ -17,8 +20,9 @@ const ExecuteText = styled.div`
   background-color: white;
 `;
 function ExecuteResult() {
+  const action = useRecoilValue(actionState);
   return (
-    <ExecuteResultContainer>
+    <ExecuteResultContainer action={action}>
       <ExecuteNavbar>실행결과</ExecuteNavbar>
       <ExecuteText>Jser@Terminal ~ %</ExecuteText>
     </ExecuteResultContainer>
