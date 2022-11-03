@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { AiTwotoneSetting } from "react-icons/ai";
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { DUMMY_DATA } from "../../constants/DummyData";
 
 const NavBarRightContainer = styled.div`
   flex: 1;
@@ -68,7 +69,7 @@ function NavBarRight() {
 
   return (
     <NavBarRightContainer>
-      <ShowDue>2022.10.24</ShowDue>
+      <ShowDue>{DUMMY_DATA.due}</ShowDue>
       <SettingBtn onClick={() => setIsSettingOpen(true)}>
         <AiTwotoneSetting size="1.8rem" color="#E5E535" />
       </SettingBtn>

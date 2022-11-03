@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { DUMMY_DATA } from "../../constants/DummyData";
 
 const TestCaseContainer = styled.div`
   flex: 4;
@@ -56,6 +57,17 @@ const ValidateButton = styled.button`
 const MainContent = styled.div`
   background-color: #3b5939;
   flex: 1;
+  display: flex;
+  white-space: pre-line;
+`;
+
+const InputContent = styled.div`
+  flex: 1;
+  padding-left: 20px;
+`;
+const OutputContent = styled.div`
+  flex: 1;
+  padding-left: 20px;
 `;
 
 function TestCaseInfo() {
@@ -70,7 +82,12 @@ function TestCaseInfo() {
             <ValidateButton>검증</ValidateButton>
           </ValidateContainer>
         </MiniNavBar>
-        <MainContent></MainContent>
+        <MainContent>
+          <InputContent>{`input:
+          ${DUMMY_DATA.testCases[0].input}`}</InputContent>
+          <OutputContent>{`output:
+          ${DUMMY_DATA.testCases[0].output}`}</OutputContent>
+        </MainContent>
       </TestCase>
       <TestCase>
         <MiniNavBar>
@@ -80,7 +97,12 @@ function TestCaseInfo() {
             <ValidateButton>검증</ValidateButton>
           </ValidateContainer>
         </MiniNavBar>
-        <MainContent></MainContent>
+        <MainContent>
+          <InputContent>{`input:
+          ${DUMMY_DATA.testCases[1].input}`}</InputContent>
+          <OutputContent>{`output:
+          ${DUMMY_DATA.testCases[0].output}`}</OutputContent>
+        </MainContent>
       </TestCase>
     </TestCaseContainer>
   );

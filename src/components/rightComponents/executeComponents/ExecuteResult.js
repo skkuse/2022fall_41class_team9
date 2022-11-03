@@ -4,7 +4,7 @@ import { actionState } from "../../../atoms";
 
 const ExecuteResultContainer = styled.div`
   height: 100%;
-  background-color: white;
+  background-color: #3b5939;
   display: ${(props) => (props.action === "execute" ? "block" : "none")};
 `;
 
@@ -16,7 +16,6 @@ const ExecuteNavbar = styled.div`
 `;
 const ExecuteText = styled.div`
   width: 100%;
-  background-color: white;
 `;
 function ExecuteResult() {
   const action = useRecoilValue(actionState);
