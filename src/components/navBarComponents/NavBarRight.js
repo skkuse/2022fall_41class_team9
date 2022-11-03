@@ -3,6 +3,7 @@ import { AiTwotoneSetting } from "react-icons/ai";
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { DUMMY_DATA } from "../../constants/DummyData";
+import { useNavigate } from "react-router-dom";
 
 const NavBarRightContainer = styled.div`
   flex: 1;
@@ -55,6 +56,16 @@ const SettingSideBar = styled.div`
   width: 300px;
 `;
 
+const SettingMenu = styled.button`
+  height: 40px;
+  width: 100%;
+  background-color: aliceblue;
+  display: flex;
+  padding-left: 20px;
+  align-items: center;
+  border: none;
+`;
+
 const CloseBtn = styled.button`
   width: 50px;
   height: 50px;
@@ -66,6 +77,7 @@ const CloseBtn = styled.button`
 `;
 function NavBarRight() {
   const [isSettingOpen, setIsSettingOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <NavBarRightContainer>
@@ -78,9 +90,16 @@ function NavBarRight() {
         onClick={() => setIsSettingOpen(false)}
       />
       <SettingSideBar isSettingOpen={isSettingOpen}>
-        <CloseBtn onClick={() => setIsSettingOpen(false)}>
+        <CloseBtn
+          onClick={() => {
+            setIsSettingOpen(false);
+            console.log(isSettingOpen);
+          }}
+        >
           <AiOutlineClose size="1.8rem" />
         </CloseBtn>
+        <SettingMenu onClick={() => navigate("/login")}>로그인</SettingMenu>
+        <SettingMenu onClick={() => navigate("/signup")}>회원가입</SettingMenu>
       </SettingSideBar>
     </NavBarRightContainer>
   );
