@@ -5,16 +5,18 @@ from file import TestFileManager
 BASECOMMAND = "multimetric"
 
 class MultiMetric(TestFileManager):
-    #multimetric tests only files not dirs
-    #if no files do nothing
+    """    
+    """
     def __init__(self, files):
         super().__init__(files)
+        self.multi_metric = None
         self.build_metric()
 
     def build_metric(self):
-        command = util.build_command(BASECOMMAND, *self.test_files)
-        multi_metric = util.execute_shell_command(command)
-        self.multi_metric = json.loads(multi_metric) #json
+        if len(self.test_files) > 0:
+            command = util.build_command(BASECOMMAND, *self.test_files)
+            multi_metric = util.execute_shell_command(command)
+            self.multi_metric = json.loads(multi_metric) #json
 
     def overall(self):
         """
