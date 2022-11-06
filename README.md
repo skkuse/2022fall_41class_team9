@@ -2,6 +2,14 @@
 
 ## Don't push directly to master branch!! Use your own branch
 
+## Project Topology
+Project: codingplatform
+- APP1: codes
+- APP2: onlinejudges
+- APP3: problems
+- APP4: analysis
+
+
 ## Project Environment
 every materials are based on the "BOOK, Chapter 6"
 PLZ Watch the BOOK!
