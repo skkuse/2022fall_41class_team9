@@ -12,7 +12,7 @@ const NavBarCenterContainer = styled.div`
 `;
 
 const InfoContainer = styled.div`
-  background-color: whitesmoke;
+  background-color: ${({ theme }) => theme.bgColor};
   border-radius: 10px;
   height: 60%;
   flex: 1;

@@ -9,7 +9,7 @@ const ResultContentContainer = styled.div`
 `;
 
 const OverallScore = styled.div`
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   flex: 4;
 `;
 

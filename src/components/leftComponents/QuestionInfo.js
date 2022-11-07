@@ -22,19 +22,19 @@ const Condition = styled.div`
 `;
 
 const MiniNavBar = styled.div`
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   height: 30px;
   display: flex;
   align-items: center;
   padding-left: 15px;
   border-bottom: 1px solid;
-  color: #f7f7b8;
+  color: ${({ theme }) => theme.color};
 `;
 
 const MainContent = styled.div`
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   flex: 1;
-  color: #f7f7b8;
+  color: ${({ theme }) => theme.color};
   border-bottom: 1px solid;
   padding: 20px;
 `;

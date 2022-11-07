@@ -5,17 +5,16 @@ import { actionState } from "../../../atoms";
 const GradingResutlsContainer = styled.div`
   height: 100%;
   width: 100%;
-  background-color: aliceblue;
+  background-color: ${({ theme }) => theme.bgColor};
   display: ${(props) => (props.action === "grading" ? "flex" : "none")};
   flex-direction: column;
-  background-color: #3b5939;
 `;
 
 const GradingHeader = styled.div`
   width: 100%;
   height: 30px;
   border-bottom: 1px solid;
-  color: #f7f7b8;
+  color: ${({ theme }) => theme.color};
   padding-left: 15px;
   display: flex;
   align-items: center;

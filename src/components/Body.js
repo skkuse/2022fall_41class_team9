@@ -15,7 +15,7 @@ function Body() {
     <BodyContainer>
       <Left />
       <Center />
-      <Right />
+      {/* <Right /> */}
     </BodyContainer>
   );
 }

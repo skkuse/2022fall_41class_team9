@@ -5,11 +5,11 @@ const TestCaseContainer = styled.div`
   flex: 4;
   display: flex;
   flex-direction: column;
-  color: #f7f7b8;
+  color: ${({ theme }) => theme.color};
 `;
 
 const TestCaseNavBar = styled.div`
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   height: 50px;
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@ const TestCase = styled.div`
 `;
 
 const MiniNavBar = styled.div`
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   height: 20px;
   display: flex;
   align-items: center;
@@ -55,7 +55,7 @@ const ValidateButton = styled.button`
 `;
 
 const MainContent = styled.div`
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   flex: 1;
   display: flex;
   white-space: pre-line;

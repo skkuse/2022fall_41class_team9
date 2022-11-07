@@ -12,13 +12,14 @@ const HomeBtn = styled.button`
   background-color: transparent;
   border: none;
   margin-left: 18px;
+  color: ${({ theme }) => theme.color};
 `;
 
 function NavBarLeft() {
   return (
     <NavBarLeftContainer>
       <HomeBtn>
-        <IoHomeSharp size="1.8rem" color="#E5E535" />
+        <IoHomeSharp size="1.8rem" />
       </HomeBtn>
     </NavBarLeftContainer>
   );

@@ -1,19 +1,11 @@
 import { RecoilRoot } from "recoil";
-import MainPage from "./pages/MainPage";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Login from "./Login";
-import Signup from "./Signup";
+
+import AppRouter from "./AppRouter";
 
 function App() {
   return (
     <RecoilRoot>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-        </Routes>
-      </BrowserRouter>
+      <AppRouter />
     </RecoilRoot>
   );
 }

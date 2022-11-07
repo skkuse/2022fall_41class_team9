@@ -6,7 +6,7 @@ import NavBarRight from "./NavBarRight";
 const NavBarContainer = styled.header`
   width: 100%;
   height: 50px;
-  background-color: #012306;
+  background-color: ${({ theme }) => theme.primary};
   display: flex;
   border-bottom: solid;
 `;

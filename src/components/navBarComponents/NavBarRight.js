@@ -31,11 +31,9 @@ const SettingBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.color};
 `;
 
-// interface SettingOverlayType {
-//   isSettingOpen: boolean;
-// }
 const SettingOverlay = styled.div`
   display: ${(props) => (props.isSettingOpen ? "block" : "none")};
   background-color: rgba(0, 0, 0, 0.5);
@@ -83,7 +81,7 @@ function NavBarRight() {
     <NavBarRightContainer>
       <ShowDue>{DUMMY_DATA.due}</ShowDue>
       <SettingBtn onClick={() => setIsSettingOpen(true)}>
-        <AiTwotoneSetting size="1.8rem" color="#E5E535" />
+        <AiTwotoneSetting size="1.8rem" />
       </SettingBtn>
       <SettingOverlay
         isSettingOpen={isSettingOpen}

@@ -8,16 +8,16 @@ import SubmitResultChild from "./SubmitResultChild";
 const SubmitResultContainer = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   display: ${(props) => (props.action === "submit" ? "flex" : "none")};
   flex-direction: column;
   justify-content: end;
-  color: #f7f7b8;
+  color: ${({ theme }) => theme.color};
 `;
 
 const SubmitResultNavBar = styled.div`
   height: 50px;
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   border-bottom: 1px solid;
   display: flex;
   justify-content: space-between;
@@ -35,13 +35,13 @@ const PlagiarismRate = styled.div`
 const ExplanationContent = styled.div`
   display: ${(props) =>
     props.openedContent === "explanation" ? "flex" : "none"};
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   flex: 1;
 `;
 
 const RelatedContent = styled.div`
   display: ${(props) => (props.openedContent === "related" ? "flex" : "none")};
-  background-color: #3b5939;
+  background-color: ${({ theme }) => theme.bgColor};
   flex: 1;
 `;
 
