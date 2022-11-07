@@ -7,7 +7,7 @@ const LeftContainer = styled.div`
   width: 550px;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #f7f7b8;
+  border-right: 1px solid ${({ theme }) => theme.borderColor};
 `;
 
 function Left() {

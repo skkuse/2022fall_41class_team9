@@ -8,7 +8,7 @@ const NavBarContainer = styled.header`
   height: 50px;
   background-color: ${({ theme }) => theme.primary};
   display: flex;
-  border-bottom: solid;
+  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
 `;
 
 function NavBar() {

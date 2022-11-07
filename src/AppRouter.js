@@ -10,7 +10,7 @@ import { darkTheme, lightTheme } from "./theme";
 function AppRouter() {
   const theme = useRecoilValue(themeState);
   return (
-    <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
+    <ThemeProvider theme={theme ? darkTheme : lightTheme}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />

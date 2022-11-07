@@ -3,44 +3,61 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import CenterFooter from "./centerComponents/CenterFooter";
 import CenterHeader from "./centerComponents/CenterHeader";
-import tomorrowTheme from "monaco-themes/themes/Tomorrow.json";
+
+import cobaltTheme from "monaco-themes/themes/Cobalt2.json";
+import idleTheme from "monaco-themes/themes/IDLE.json";
+import { useRecoilValue } from "recoil";
+import { actionState, themeState } from "../atoms";
 
 const CenterContainer = styled.div`
+  position: relative;
   background-color: ${({ theme }) => theme.bgColor};
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `;
 
 const CenterEditor = styled.div`
   width: 100%;
-  height: 80%;
-  margin: 0 auto;
+  flex: 1;
 `;
 
-const CenterLine = styled.div`
+const Terminal = styled.div`
   width: 100%;
-  height: 2px;
-  background-color: black;
+  height: 250px;
+  background-color: ${({ theme }) => theme.terminal};
+  bottom: 0;
 `;
 
 function Center() {
+  const action = useRecoilValue(actionState);
+  const theme = useRecoilValue(themeState);
   const monaco = useMonaco();
 
-  // useEffect(() => {
-  //   if (!monaco) return;
-
-  //   monaco.editor.defineTheme("tomorrow", tomorrowTheme);
-  //   monaco.editor.setTheme("tomorrow");
-  // }, [monaco]);
+  useEffect(() => {
+    if (!monaco) {
+      return;
+    } else {
+      monaco.editor.defineTheme("cobalt", cobaltTheme);
+      monaco.editor.defineTheme("idle", idleTheme);
+      if (theme) {
+        monaco.editor.setTheme("cobalt");
+      } else {
+        monaco.editor.setTheme("idle");
+      }
+    }
+  }, [monaco, theme]);
 
   return (
     <CenterContainer>
       <CenterHeader />
-      <CenterLine></CenterLine>
       <CenterEditor>
-        <Editor></Editor>
+        <Editor defaultLanguage="python"></Editor>
       </CenterEditor>
-      <CenterLine></CenterLine>
+
       <CenterFooter />
+      <Terminal action={action} />
     </CenterContainer>
   );
 }

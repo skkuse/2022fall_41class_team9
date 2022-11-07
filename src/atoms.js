@@ -7,5 +7,10 @@ export const actionState = atom({
 
 export const themeState = atom({
   key: "themeState",
-  default: "dark",
+  default: true,
+});
+
+export const dialogOpenState = atom({
+  key: "dialogOpenState",
+  default: false,
 });

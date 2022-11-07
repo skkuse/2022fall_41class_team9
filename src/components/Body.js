@@ -1,12 +1,15 @@
 import styled from "styled-components";
 import Center from "./Center";
 import Left from "./Left";
-import Right from "./Right";
+
+import SubmitResult from "./rightComponents/submitComponents/SubmitResult";
 
 const BodyContainer = styled.div`
   width: 100%;
+  /* height: 100vh;
+  max-height: 100vh; */
   flex: 1;
-  background-color: bisque;
+
   display: flex;
 `;
 
@@ -15,7 +18,8 @@ function Body() {
     <BodyContainer>
       <Left />
       <Center />
-      {/* <Right /> */}
+
+      <SubmitResult />
     </BodyContainer>
   );
 }

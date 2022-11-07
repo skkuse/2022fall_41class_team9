@@ -1,76 +1,73 @@
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { actionState } from "../../../atoms";
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import ListItemText from "@mui/material/ListItemText";
+import ListItem from "@mui/material/ListItem";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+// import CloseIcon from "@mui/icons-material/Close";
+import Slide from "@mui/material/Slide";
+import { useRecoilState } from "recoil";
+import { dialogOpenState } from "../../../atoms";
 
-import SubmitResultChild from "./SubmitResultChild";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
-const SubmitResultContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: ${({ theme }) => theme.bgColor};
-  display: ${(props) => (props.action === "submit" ? "flex" : "none")};
-  flex-direction: column;
-  justify-content: end;
-  color: ${({ theme }) => theme.color};
-`;
+export default function SubmitResult() {
+  const [open, setOpen] = useRecoilState(dialogOpenState);
 
-const SubmitResultNavBar = styled.div`
-  height: 50px;
-  background-color: ${({ theme }) => theme.bgColor};
-  border-bottom: 1px solid;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 15px;
-  padding-right: 15px;
-`;
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-const NavBarTitle = styled.div``;
-
-const PlagiarismRate = styled.div`
-  color: red;
-`;
-
-const ExplanationContent = styled.div`
-  display: ${(props) =>
-    props.openedContent === "explanation" ? "flex" : "none"};
-  background-color: ${({ theme }) => theme.bgColor};
-  flex: 1;
-`;
-
-const RelatedContent = styled.div`
-  display: ${(props) => (props.openedContent === "related" ? "flex" : "none")};
-  background-color: ${({ theme }) => theme.bgColor};
-  flex: 1;
-`;
-
-function SubmitResult() {
-  const action = useRecoilValue(actionState);
-
-  const [openedContent, setOpenedContent] = useState("result");
-
-  const handleNavBarClick = (type) => {
-    setOpenedContent(type);
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
-    <SubmitResultContainer action={action}>
-      <SubmitResultNavBar onClick={() => handleNavBarClick("result")}>
-        <NavBarTitle>제출결과</NavBarTitle>
-        <PlagiarismRate>표절률 20%</PlagiarismRate>
-      </SubmitResultNavBar>
-      <SubmitResultChild openedContent={openedContent}></SubmitResultChild>
-      <SubmitResultNavBar onClick={() => handleNavBarClick("explanation")}>
-        <NavBarTitle>코드 설명</NavBarTitle>
-      </SubmitResultNavBar>
-      <ExplanationContent openedContent={openedContent}></ExplanationContent>
-      <SubmitResultNavBar onClick={() => handleNavBarClick("related")}>
-        <NavBarTitle>관련 자료</NavBarTitle>
-      </SubmitResultNavBar>
-      <RelatedContent openedContent={openedContent}></RelatedContent>
-    </SubmitResultContainer>
+    <div>
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: "relative" }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              {/* <CloseIcon /> */}
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Sound
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleClose}>
+              save
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <List>
+          <ListItem button>
+            <ListItemText primary="Phone ringtone" secondary="Titania" />
+          </ListItem>
+          <Divider />
+          <ListItem button>
+            <ListItemText
+              primary="Default notification ringtone"
+              secondary="Tethys"
+            />
+          </ListItem>
+        </List>
+      </Dialog>
+    </div>
   );
 }
-
-export default SubmitResult;

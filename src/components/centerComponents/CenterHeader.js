@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 const CenterHeaderContainer = styled.div`
-  height: 100px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
 `;
 const CenterHeaderText = styled.h2`
   color: black;
@@ -15,16 +16,16 @@ const CenterHeaderBtnContainer = styled.div`
   align-items: center;
 `;
 const CenterHeaderBtn = styled.button`
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   background-color: black;
   color: white;
   margin: 4px;
   cursor: pointer;
 `;
 const Item = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   background-color: white;
   border: 1px solid black;
   display: inline-block;
@@ -37,7 +38,7 @@ const Item = styled.div`
 function CenterHeader() {
   return (
     <CenterHeaderContainer>
-      <CenterHeaderText>코드 입력</CenterHeaderText>
+      <CenterHeaderText></CenterHeaderText>
       <CenterHeaderBtnContainer>
         <Item>코드 저장</Item>
         <CenterHeaderBtn>1</CenterHeaderBtn>

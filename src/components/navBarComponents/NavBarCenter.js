@@ -20,6 +20,7 @@ const InfoContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  color: ${({ theme }) => theme.boldColor};
 `;
 
 const LeftArrowBtn = styled.button`

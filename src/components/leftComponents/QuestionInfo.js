@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { DUMMY_DATA } from "../../constants/DummyData";
 
 const QuestionInfoContainer = styled.div`
-  flex: 6;
+  flex: 2;
   display: flex;
   flex-direction: column;
 `;
@@ -23,19 +23,20 @@ const Condition = styled.div`
 
 const MiniNavBar = styled.div`
   background-color: ${({ theme }) => theme.bgColor};
-  height: 30px;
+  height: 40px;
   display: flex;
   align-items: center;
   padding-left: 15px;
-  border-bottom: 1px solid;
-  color: ${({ theme }) => theme.color};
+  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
+  color: ${({ theme }) => theme.boldColor};
+  font-weight: 600;
 `;
 
 const MainContent = styled.div`
   background-color: ${({ theme }) => theme.bgColor};
   flex: 1;
   color: ${({ theme }) => theme.color};
-  border-bottom: 1px solid;
+  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
   padding: 20px;
 `;
 

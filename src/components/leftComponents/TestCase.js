@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { DUMMY_DATA } from "../../constants/DummyData";
 
 const TestCaseContainer = styled.div`
-  flex: 4;
+  flex: 1;
   display: flex;
   flex-direction: column;
   color: ${({ theme }) => theme.color};
@@ -10,11 +10,13 @@ const TestCaseContainer = styled.div`
 
 const TestCaseNavBar = styled.div`
   background-color: ${({ theme }) => theme.bgColor};
-  height: 50px;
+  height: 40px;
   display: flex;
   align-items: center;
   padding-left: 15px;
-  border-top: 1px solid;
+  border-top: 1px solid ${({ theme }) => theme.borderColor};
+  color: ${({ theme }) => theme.boldColor};
+  font-weight: 600;
 `;
 
 const TestCase = styled.div`
@@ -31,8 +33,8 @@ const MiniNavBar = styled.div`
   padding-left: 15px;
   justify-content: space-between;
   padding-right: 15px;
-  border-bottom: 1px solid;
-  border-top: 1px solid;
+  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
+  border-top: 1px solid ${({ theme }) => theme.primary};
 `;
 
 const MiniNavBarTitle = styled.div``;
@@ -51,7 +53,7 @@ const ValidateResult = styled.div`
 const ValidateButton = styled.button`
   height: 100%;
   border: none;
-  background-color: aliceblue;
+  background-color: transparent;
 `;
 
 const MainContent = styled.div`
