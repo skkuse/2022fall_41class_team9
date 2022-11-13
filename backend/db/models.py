@@ -58,6 +58,6 @@ class Analysis(models.Model):
     submit_id = models.ForeignKey(Submission, on_delete=models.CASCADE)
     efficiency = models.TextField(blank=True)
     readability = models.TextField(blank=True)
-    plagiarism = models.TextField(blank=True)
+    plagiarism = models.FloatField()
     explanation = models.TextField(blank=True)
     functionability = models.TextField(blank=True)
