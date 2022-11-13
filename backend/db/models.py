@@ -25,8 +25,8 @@ class User(models.Model):
     course_id = models.ForeignKey(
         Course, on_delete=models.SET_NULL, null=True, blank=True
     )
-    setting_theme = models.CharField(choices=THEME, default="Light")
-    setting_font = models.CharField(choices=FONT, default="C")
+    setting_theme = models.CharField(choices=THEME, default="Light", max_length=50)
+    setting_font = models.CharField(choices=FONT, default="C", max_length=50)
 
 
 class Problem(models.Model):
@@ -37,7 +37,6 @@ class Problem(models.Model):
     tag = ArrayField(ArrayField(models.CharField(max_length=20)))
     description = models.TextField()
     constraint = models.TextField(blank=True)
-    prob_code = models.TextField()
     answer_code = models.TextField()
     skeleton = models.TextField(blank=True)
     max_submission = models.IntegerField()
@@ -61,4 +60,4 @@ class Analysis(models.Model):
     readability = models.TextField(blank=True)
     plagiarism = models.TextField(blank=True)
     explanation = models.TextField(blank=True)
-    funtionability = models.TextField(blank=True)
+    functionability = models.TextField(blank=True)
