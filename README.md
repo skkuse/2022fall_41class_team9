@@ -18,3 +18,4 @@ PLZ Watch the BOOK!
 - django_rest_framework: 3.12.2
 
 
+- admin user: laino / 1
