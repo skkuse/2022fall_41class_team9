@@ -60,7 +60,7 @@ class Submission(models.Model):
     counter = models.IntegerField()
 
     def __str__(self):
-        return "user {}: Q{} #{}".format(self.user_id, self.prob_id, self.counter)
+        return "{}: {} #{}".format(self.user_id, self.prob_id, self.counter)
 
 
 class Analysis(models.Model):
@@ -72,5 +72,5 @@ class Analysis(models.Model):
     functionability = models.TextField(blank=True)
 
     def __str__(self):
-        return "submit #{}".format(self.submit_id)
+        return "{}".format(self.submit_id)
 
