@@ -8,6 +8,9 @@ class Course(models.Model):
     course_name = models.CharField(max_length=50)
 
 
+"""Todo
+1. Make some fields unique
+"""
 class User(models.Model):
     DARK = "Dark"
     LIGHT = "Light"
@@ -25,9 +28,7 @@ class User(models.Model):
     user_id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
-    course_id = models.ForeignKey(
-        'Course', on_delete=models.SET_NULL, null=True, blank=True
-    )
+    courses = models.ManyToManyField('Course')
     setting_theme = models.CharField(choices=THEME, default=LIGHT, max_length=50)
     setting_font = models.CharField(choices=FONT, default=C, max_length=50)
 
