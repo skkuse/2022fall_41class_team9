@@ -59,6 +59,9 @@ class Submission(models.Model):
     user_output = models.TextField()
     counter = models.IntegerField()
 
+    def __str__(self):
+        return "user {}: Q{} #{}".format(self.user_id, self.prob_id, self.counter)
+
 
 class Analysis(models.Model):
     submit_id = models.ForeignKey('Submission', on_delete=models.CASCADE)
@@ -67,4 +70,7 @@ class Analysis(models.Model):
     plagiarism = models.FloatField()
     explanation = models.TextField(blank=True)
     functionability = models.TextField(blank=True)
+
+    def __str__(self):
+        return "submit #{}".format(self.submit_id)
 
