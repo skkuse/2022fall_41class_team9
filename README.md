@@ -22,4 +22,6 @@ PLZ Watch the BOOK!
 4. python pip install django==3.1.6 django_rest_framework==3.12.2
 5. python manage.py makemigrations
 6. python manage.py migrate
-7. python manage.py runserver
+7. python manage.py createsuperuser
+8. python manage.py runserver
+9. Goto https://localhost:8000/admin page.
