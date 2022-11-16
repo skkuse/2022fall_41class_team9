@@ -27,25 +27,27 @@ PLZ Watch the BOOK!
 9. python manage.py runserver
 10. Goto https://localhost:8000/admin page.
 
-## SELECT with Serializers
-"""
+## Usage
+### SELECT with Serializers
+```
 from db.models import *
 from db.serializers import *
 user = UserSerializer(User.objects.get(pk=1))  # SELECT FROM User WHERE primary_key('user_id') = 1
 user.data
-"""
+```
 You can get JSON data.
 
-## SELECT *
-"""
+### SELECT *
+```
 Course.objects.all()
-"""
+```
 
-## INSERT INTO db
-"""
+### INSERT INTO db
+```
 Course.objects.create(course_id='1', course_name='a_brand_new_course')
-"""
+```
 
-## DELETE FROM db
-"""
+### DELETE FROM db
+```
 Course.objects.get(pk=1).delete()
+```
