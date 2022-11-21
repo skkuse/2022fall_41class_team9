@@ -1,6 +1,6 @@
 import os
 import util
-from decorator import temp_py_handler
+from wrapper import temp_py_handler
 
 @temp_py_handler(name="temp.py")
 def scoring(code, answer, encoding='utf-8', **kwargs):
