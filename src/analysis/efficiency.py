@@ -14,7 +14,7 @@ class MultiMetric(TestFileManager):
 
     def build_metric(self):
         if len(self.test_files) > 0:
-            command = util.build_command(BASECOMMAND, *self.test_files)
+            command = util.token2command(BASECOMMAND, *self.test_files)
             multi_metric = util.execute_shell_command(command)
             self.multi_metric = json.loads(multi_metric) #json
 

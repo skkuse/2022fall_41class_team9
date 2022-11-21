@@ -16,7 +16,7 @@ class Auditor(TestFileManager):
 
     def analyze(self):
         if len(self.test_dirs)+len(self.test_files) > 0:
-            command = util.build_command(BASECOMMAND, *self.test_dirs, *self.test_files, "-l", self.linter_bundle)
+            command = util.token2command(BASECOMMAND, *self.test_dirs, *self.test_files, "-l", self.linter_bundle)
 
             audit_result = util.execute_shell_command(command)
             #parse result by regex & append to audit report
