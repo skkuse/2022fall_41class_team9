@@ -17,12 +17,12 @@ const BodyContainer = styled.div`
 `;
 
 function Body() {
-  useEffect(() => {
-    axios
-      .get("http://skku-nickel.iptime.org:8800/codes/users/")
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://skku-nickel.iptime.org:8800/codes/users/")
+  //     .then((res) => console.log(res))
+  //     .catch((error) => console.log(error));
+  // }, []);
   // const { data } = useQuery("getTest", getTest, {
   //   onSuccess: (data) => console.log(data),
   //   onError: (error) => console.log(error),
