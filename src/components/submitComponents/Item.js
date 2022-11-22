@@ -3,9 +3,9 @@ import { Paper } from "@mui/material";
 
 export const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
-  height: "200px",
+  height: "250px",
   // padding: "20px",
   textAlign: "center",
   color: "grey",
-  marginBottom: "16px",
+  marginBottom: "24px",
 }));

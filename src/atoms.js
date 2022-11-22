@@ -14,3 +14,8 @@ export const dialogOpenState = atom({
   key: "dialogOpenState",
   default: false,
 });
+
+export const openedContentState = atom({
+  key: "openedContentState",
+  default: "main",
+});
