@@ -2,7 +2,6 @@ import Dialog from "@mui/material/Dialog";
 
 import Slide from "@mui/material/Slide";
 import { useRecoilState } from "recoil";
-import { dialogOpenState } from "../../../atoms";
 
 import {
   Collapse,
@@ -16,6 +15,9 @@ import {
 import { forwardRef, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import styled from "@emotion/styled";
+import { dialogOpenState } from "../../atoms";
+import OverallDashboard from "./OverallDashboard";
+
 // "#1976D2"
 
 const DialogWrapper = styled.div`
@@ -46,29 +48,6 @@ const MainContent = styled.div`
   overflow: auto;
   padding-top: 100px;
 `;
-
-const OverallContainer = styled.div``;
-const OverallScore = styled.div``;
-const FuctionalityComparison = styled.div``;
-const EfficiencyComparison = styled.div``;
-const ReadabilityComparison = styled.div``;
-const FuctionalitySummary = styled.div``;
-const EfficiencySummary = styled.div``;
-const ReadabilitySummary = styled.div``;
-const OverallComparison = styled.div``;
-
-const FunctionalityContainer = styled.div``;
-const EfficienyContainer = styled.div``;
-const ReadabilityContainer = styled.div``;
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  height: "200px",
-  // padding: "20px",
-  textAlign: "center",
-  color: "grey",
-  marginBottom: "16px",
-}));
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -125,49 +104,7 @@ export default function SubmitResult() {
           </List>
         </SideBar>
         <MainContent>
-          <OverallContainer>
-            <Grid container spacing={4}>
-              <Grid item xs={7}>
-                <Item sx={{ height: "700px !important" }}>
-                  <OverallScore>Overall Score</OverallScore>
-                </Item>
-              </Grid>
-              <Grid item xs={5}>
-                <Item>
-                  <FuctionalityComparison>
-                    기능 점수 비교
-                  </FuctionalityComparison>
-                </Item>
-                <Item>
-                  <EfficiencyComparison>효율 점수 비교</EfficiencyComparison>
-                </Item>
-                <Item>
-                  <ReadabilityComparison>
-                    가독성 점수 비교
-                  </ReadabilityComparison>
-                </Item>
-
-                <Item>
-                  <OverallComparison>총점 비교</OverallComparison>
-                </Item>
-              </Grid>
-              <Grid item xs={4}>
-                <Item sx={{ height: "500px !important" }}>
-                  <FuctionalitySummary>기능 점수 요약(p/f)</FuctionalitySummary>
-                </Item>
-              </Grid>
-              <Grid item xs={4}>
-                <Item sx={{ height: "500px !important" }}>
-                  <EfficiencySummary>효율 점수 요약</EfficiencySummary>
-                </Item>
-              </Grid>
-              <Grid item xs={4}>
-                <Item sx={{ height: "500px !important" }}>
-                  <ReadabilitySummary>가독성 점수 요약</ReadabilitySummary>
-                </Item>
-              </Grid>
-            </Grid>
-          </OverallContainer>
+          <OverallDashboard />
         </MainContent>
       </DialogWrapper>
     </Dialog>

@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import Center from "./Center";
 import Left from "./Left";
-
-import SubmitResult from "./rightComponents/submitComponents/SubmitResult";
+import SubmitResult from "./submitComponents/SubmitResult";
 
 const BodyContainer = styled.div`
   width: 100%;
