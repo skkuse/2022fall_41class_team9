@@ -37,7 +37,7 @@ class UsersAPIView(APIView):
         serializer = UserSerializer(users,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     def post (self,request):
-        serializer=ProblemSerializer(data=request.data)
+        serializer=UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -67,11 +67,6 @@ class CourseAPIView(APIView):
         course=get_object_or_404(Course,course_id=pk)
         serializer = CourseSerializer(course)
         return Response(serializer.data,status=status.HTTP_200_OK)
-
-        
-# class CodeAPIView(APIView):
-#     def get(self, request):
-#         code = Code
 
 class ProblemsAPIView(APIView):
     def get(self,request):
@@ -105,9 +100,9 @@ class SubmissionsAPIView(APIView):
 
 class SubmissionAPIView(APIView):
     def get(self,request):
-        # sid=request.GET['submit_id']
-        # uid=request.GET['user_id']
-        # pid=request.GET['prob_id']
+        sid=request.GET['submit_id']
+        uid=request.GET['user_id']
+        pid=request.GET['prob_id']
         # print("sid: ",sid,type(sid)," uid: ",uid," pid: ",pid)
         serializer = None
         if sid == "":
