@@ -57,9 +57,6 @@ def get_py_execution_header():
 
     return header
 
-def compare_string(str1, str2):
-    return str1 == str2
-
 if __name__ == "__main__":
     command = token2command("python", "code_no_error.py")
     tokens = command2token(command)

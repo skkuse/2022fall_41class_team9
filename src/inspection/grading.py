@@ -1,31 +1,72 @@
 import os
 import util
-from wrapper import temp_py_handler
+import unittest
+from wrapper import temp_py_handler, timeout
+from execution import Runner
 
-@temp_py_handler(name="temp.py")
-def scoring(code, answer, encoding='utf-8', **kwargs):
-    fd = kwargs['fd']
-    name = kwargs['name']
-    fd.write(code)
-    os.fsync(fd)
-    fd.flush()
+LOCAL_TIMEOUT = 10
 
-    header = util.get_py_execution_header()
-    command = util.token2command(header, name)
+class AnswerTestCase(unittest.TestCase):
+    file = None
+    input = None #list format
+    output = None
+    answer = None
+    runner = Runner(code=None, encoding=None)
 
-    user_answer = util.execute_shell_command(command, encoding=encoding)
-    user_answer = user_answer.strip('\n')
-    
-    """
-    여기부터 다시 또 개발
-    """
+    @timeout(LOCAL_TIMEOUT)
+    def test_compare(self):
+        if self.file is not None:
+            self.output = self.runner.run_existing_soln(self.file, *self.input)
+            self.output = str(self.output)
+        self.assertEqual(self.answer, self.output)
 
+class Tester:
+    def __init__(self, code, inputs, answers):
+        self.code = code
+        
+        self.inputs = inputs
+        self.answers = answers
+        self.outputs = []
+        self.test_results = []
+        self.reports = []
+        
+        self.suite = unittest.TestSuite()
+        self.suite.addTest(AnswerTestCase("test_compare"))
+        self.runner = unittest.TextTestRunner()
+
+    def set_test_env(self, file, input, answer):
+        AnswerTestCase.file = file
+        AnswerTestCase.input = input
+        AnswerTestCase.answer = answer
+
+    @temp_py_handler(file="tester_temp.py")
+    def run(self, **kwargs):
+        assert len(self.inputs) == len(self.answers)
+        
+        fd = kwargs['fd']
+        file = kwargs['file']
+        fd.write(self.code)
+        os.fsync(fd)
+        fd.flush()
+
+        for input, answer in zip(self.inputs, self.answers):
+            self.set_test_env(file, input, answer)
+            result = self.runner(self.suite)
+            output = AnswerTestCase.output
+
+            self.test_results.append(result)
+            self.outputs.append(output)
+
+        return self.report()
+
+    def report(self):
+        #"P", "E", "F"
+        #아직 output format 안 정했습니다.
+        #(is_correct, input, output, answer)
+        pass
+        
 if __name__ == "__main__":
-    fd = open("code_error.py", "r")
-    code = fd.read()
-    fd.close()
-
-    print("================================")
-    print(scoring(code, 3, "cp949"))
-    print("================================")
-    #print(util.execute_shell_command("python temp.py", "cp949"))
+    inputs = [(3,4), (4,5), (5,6)]
+    answers = [11,10,35]
+    tester = Tester("", inputs, answers, AnswerTestCase)
+    tester.run()

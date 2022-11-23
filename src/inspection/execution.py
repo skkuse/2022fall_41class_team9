@@ -29,7 +29,7 @@ class Runner:
         end = time.time()
 
         run_time = math.floor((end-start)*1000.*1000.)
-        self.outputs.append({"runtime":run_time,"output":out})
+        self.outputs.append({"runtime":run_time, "output":out})
 
         return out        
 
@@ -42,9 +42,18 @@ class Runner:
         os.fsync(fd)
         fd.flush()
 
-        fd2 = open("runner_temp_soln.py","r")
-        print(fd2.read())
-        fd2.close()
+        start = time.time()
+        answer = importlib.import_module(name)
+        out = answer.solution(*params)
+        end = time.time()
+
+        run_time = math.floor((end-start)*1000.*1000.)
+        self.outputs.append({"runtime":run_time, "output":out})
+
+        return out
+
+    def run_existing_soln(self, file, *params):
+        name = file[:file.index('.')]
 
         start = time.time()
         answer = importlib.import_module(name)
@@ -52,9 +61,10 @@ class Runner:
         end = time.time()
 
         run_time = math.floor((end-start)*1000.*1000.)
-        self.outputs.append({"runtime":run_time,"output":out})
+        self.outputs.append({"runtime":run_time, "output":out})
 
-        return out
+        return out        
+
 
 if __name__ == "__main__":
     fd = open("code/code_no_error.py", "r")
