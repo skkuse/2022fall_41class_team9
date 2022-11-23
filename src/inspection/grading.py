@@ -1,6 +1,7 @@
 import os
 import util
 import unittest
+import json
 from wrapper import temp_py_handler, timeout
 from execution import Runner
 
@@ -60,10 +61,27 @@ class Tester:
         return self.report()
 
     def report(self):
-        #"P", "E", "F"
+        #"P":pass, "E":error, "F":fail
         #아직 output format 안 정했습니다.
         #(is_correct, input, output, answer)
-        pass
+        report = {}
+        for idx, (input, output, answer, result) in enumerate(zip(self.inputs, self.outputs, self.answers, self.test_results)):
+            sub_report = {}
+            flag = "P"
+            if not result.errors:
+                output = result.errors[0]
+                flag = "E"
+            if not result.failures:
+                flag = "F"
+            
+            sub_report["input"] = input
+            sub_report["output"] = output
+            sub_report["answer"] = answer
+            sub_report["flag"] = flag
+
+            report[f"case_{idx}"] = sub_report
+
+        return report
         
 if __name__ == "__main__":
     inputs = [(3,4), (4,5), (5,6)]
