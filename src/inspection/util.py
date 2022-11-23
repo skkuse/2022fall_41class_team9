@@ -57,6 +57,9 @@ def get_py_execution_header():
 
     return header
 
+def is_empty(lst):
+    return len(lst) == 0
+
 if __name__ == "__main__":
     command = token2command("python", "code_no_error.py")
     tokens = command2token(command)

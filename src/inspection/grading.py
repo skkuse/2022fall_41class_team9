@@ -8,52 +8,41 @@ from execution import Runner
 LOCAL_TIMEOUT = 10
 
 class AnswerTestCase(unittest.TestCase):
-    file = None
-    input = None #list format
     output = None
     answer = None
-    runner = Runner(code=None, encoding=None)
 
     @timeout(LOCAL_TIMEOUT)
     def test_compare(self):
-        if self.file is not None:
-            self.output = self.runner.run_existing_soln(self.file, *self.input)
-            self.output = str(self.output)
+        self.output = str(self.output)
         self.assertEqual(self.answer, self.output)
 
 class Tester:
-    def __init__(self, code, inputs, answers):
+    def __init__(self, code, inputs, answers, encoding="utf-8"):
         self.code = code
         
         self.inputs = inputs
         self.answers = answers
         self.outputs = []
         self.test_results = []
-        self.reports = []
-        
-        self.suite = unittest.TestSuite()
-        self.suite.addTest(AnswerTestCase("test_compare"))
-        self.runner = unittest.TextTestRunner()
 
-    def set_test_env(self, file, input, answer):
-        AnswerTestCase.file = file
-        AnswerTestCase.input = input
+        self.executer = Runner(code=code, encoding=encoding)
+
+    def set_test_env(self, output, answer):
+        AnswerTestCase.output = output
         AnswerTestCase.answer = answer
 
-    @temp_py_handler(file="tester_temp.py")
     def run(self, **kwargs):
         assert len(self.inputs) == len(self.answers)
         
-        fd = kwargs['fd']
-        file = kwargs['file']
-        fd.write(self.code)
-        os.fsync(fd)
-        fd.flush()
-
         for input, answer in zip(self.inputs, self.answers):
-            self.set_test_env(file, input, answer)
-            result = self.runner(self.suite)
-            output = AnswerTestCase.output
+            output = self.executer.run_soln(*input)
+
+            suite = unittest.TestSuite()
+            suite.addTest(AnswerTestCase("test_compare"))
+            runner = unittest.TextTestRunner()
+
+            self.set_test_env(output, answer)
+            result = runner.run(suite)
 
             self.test_results.append(result)
             self.outputs.append(output)
@@ -68,23 +57,33 @@ class Tester:
         for idx, (input, output, answer, result) in enumerate(zip(self.inputs, self.outputs, self.answers, self.test_results)):
             sub_report = {}
             flag = "P"
-            if not result.errors:
+            
+            if not util.is_empty(result.errors):
                 output = result.errors[0]
                 flag = "E"
-            if not result.failures:
-                flag = "F"
-            
+            if not util.is_empty(result.failures):
+                if "Error" in str(output):
+                    flag = "E"
+                else:
+                    flag = "F"
+
             sub_report["input"] = input
             sub_report["output"] = output
             sub_report["answer"] = answer
             sub_report["flag"] = flag
 
-            report[f"case_{idx}"] = sub_report
+            report[f"case_{idx+1}"] = sub_report
 
         return report
-        
+         
 if __name__ == "__main__":
-    inputs = [(3,4), (4,5), (5,6)]
-    answers = [11,10,35]
-    tester = Tester("", inputs, answers, AnswerTestCase)
-    tester.run()
+    fd = open("code/code_error.py", "r")
+    code = fd.read()
+    fd.close()
+
+    inputs = [(1,2),(3,4),(5,6), ("err", "or")]
+    answers = ["3","5","11", "error"]
+    print("----------------------------start-----------------------------")
+    tester = Tester(code, inputs, answers)
+    report = tester.run()
+    print(report)

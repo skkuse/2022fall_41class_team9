@@ -28,7 +28,7 @@ def timeout(timeout):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            res = [Exception('function [%s] timeout [%s seconds] exceeded!' % (func.__name__, timeout))]
+            res = [TimeoutError(f'TimeoutError: function "{func.__name__}" exceeds timeout {timeout} seconds')]
             def newFunc():
                 try:
                     res[0] = func(*args, **kwargs)

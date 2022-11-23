@@ -4,7 +4,9 @@ import sys
 import math
 import time
 import importlib
-from wrapper import temp_py_handler
+from wrapper import temp_py_handler, timeout
+
+LOCAL_TIMEOUT = 10
 
 class Runner:
     def __init__(self, code, encoding="utf-8"):
@@ -13,6 +15,7 @@ class Runner:
         self.encoding = encoding
 
     @temp_py_handler(file="runner_temp_script.py")
+    @timeout(LOCAL_TIMEOUT)
     def run_script(self, **kwargs):
         fd = kwargs['fd']
         file = kwargs['file']
@@ -34,6 +37,7 @@ class Runner:
         return out        
 
     @temp_py_handler(file="runner_temp_soln.py")
+    @timeout(LOCAL_TIMEOUT)
     def run_soln(self, *params, **kwargs):
         fd = kwargs["fd"]
         file = kwargs["file"]
@@ -52,6 +56,8 @@ class Runner:
 
         return out
 
+    @temp_py_handler(file="_.py")
+    @timeout(LOCAL_TIMEOUT)
     def run_existing_soln(self, file, *params):
         name = file[:file.index('.')]
 
