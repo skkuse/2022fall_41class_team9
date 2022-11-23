@@ -12,7 +12,7 @@ import openai
 # pip install openai
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.api_key = ""
+openai.api_key = "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"
 
 sample_class = """
 
@@ -49,7 +49,7 @@ class Log:
 
 sample_function = """
 
-def fib(n):
+def solution(n):
     a,b = 1,1
     if n==1 or n==2:
         return 1
@@ -70,6 +70,22 @@ def bubble_sort(arr):
                 
 """
 
+def get_explanation(input_code):
+    function_prompt = "\n\"\"\"\nHere's what the above function is doing:\n1"
+    prompt= input_code + function_prompt
+    response = openai.Completion.create(
+    model="code-davinci-002",
+    prompt=prompt,
+    temperature=0,
+    max_tokens=64,
+    top_p=1.0,
+    frequency_penalty=0.0,
+    presence_penalty=0.0,
+    stop=["\"\"\""]
+    )    
+    code_explanation = "1" + response["choices"][0]["text"]
+    
+    return code_explanation
 if __name__=="__main__":
     
     class_prompt = "\n\"\"\"\nHere's what the above class is doing:\n1"
