@@ -54,6 +54,7 @@ class SubmissionAPIView(APIView):
 # 일단 모든 python 백엔드 여기에 넣음. 인풋아웃풋 이해하기 편하게. 나중에 떼어낼 것.
 
 from src.codex.codex import get_explanation
+from src.memory_profile.memory_profile import get_memory_profile
 
 class AnalysisAPIView(APIView):
     def get(self,request,pk):
@@ -65,17 +66,25 @@ class AnalysisAPIView(APIView):
         
         
         #   get submission data
-        submit_id = submission_serializer['submit_id']
-        user_id = submission_serializer['user_id']
-        prob_id = submission_serializer['prob_id']
-        user_code = submission_serializer['user_code']
-        user_output = submission_serializer['user_output']
-        counter = submission_serializer['counter']
+        submit_id = submission_serializer['submit_id'].value
+        user_id = submission_serializer['user_id'].value
+        prob_id = submission_serializer['prob_id'].value
+        user_code = submission_serializer['user_code'].value
+        user_output = submission_serializer['user_output'].value
+        counter = submission_serializer['counter'].value
+        
+        print(submit_id)
+        print(user_id)
+        print(prob_id)
+        print(user_code)
+        print(user_output)
+        print(counter)
         
         #   get problem data
         answer_code = problem.answer_code
         deadline = problem.deadline
         constraint = problem.constraint
+        
         
         #   pip install eval
         tc_open = eval(problem.tc_open)
@@ -112,6 +121,22 @@ class AnalysisAPIView(APIView):
         analysis.plagiarism=99 #float
         analysis.explanation=get_explanation(str(user_code)) #text
         analysis.functionability="test f" #text
+        
+        
+        #   memory profile
+        # memory profile 결과 array받기
+        # memory profile 용 db key 가 따로 없기 때문에 analysis 결과 json 에 memory profile 값 이어붙여서 제공해야 할듯.
+        memory_profile_array = get_memory_profile(str(user_code),tc_open_input[0])
+        
+        maximum_memory_usage = max(memory_profile_array)
+        average_memory_usage = sum(memory_profile_array)/len(memory_profile_array)
+        print("MB used per sec: " + str(memory_profile_array))
+        print("maximum memory usage: " + str(maximum_memory_usage) + "MB")
+        print("average memory usage: " + str(average_memory_usage) + "MB")
+        
+        
+        
+        
         
         analysis_serializer=AnalysisSerializer(analysis)
         
