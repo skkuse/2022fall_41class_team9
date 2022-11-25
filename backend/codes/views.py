@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
-
+import json
 import sys
 sys.path.append("..")
 from db.models import Submission
@@ -37,24 +37,28 @@ class UsersAPIView(APIView):
         serializer = UserSerializer(users,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     def post (self,request):
-        serializer=ProblemSerializer(data=request.data)
+        serializer=UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.error,status=status.HTTP_400_BAD_REQUEST)
 
 class UserAPIView(APIView):
-    def get(self,request,pk):
-        user=get_object_or_404(User,user_id=pk)
+    def get(self,request):
+        uname= request.GET['user_name']
+        #user_name=User.objects.filter(username=uname)
+        user=get_object_or_404(User,username=uname)
         serializer = UserSerializer(user)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
 
 class CoursesAPIView(APIView):
+    # listserializer 접근법 :https://stackoverflow.com/questions/45532405/how-to-access-serializer-data-on-listserializer-parent-class-in-drf
     def get(self,request):
         courses=Course.objects.all()
         serializer = CourseSerializer(courses,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        print(serializer)
+        return Response(serializer.data,status=status   .HTTP_200_OK)
     def post(self, request):
         serializer = CourseSerializer(data=request.data)
         if serializer.is_valid():
@@ -68,7 +72,32 @@ class CourseAPIView(APIView):
         serializer = CourseSerializer(course)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
-        
+class UserCourseAPIView(APIView):
+    # 특정 유저가 수강하는 과목에 대한 정보를 가져오는 ..
+    def get(self,request):
+        username=request.GET['user_name']
+        if username:
+            obj={}
+            #filter는 list형으로 반환함.
+            userInfo=User.objects.filter(username=username)
+            courseid=userInfo[0].course_id.course_id # FK라서 한번 더 들어가야함.
+            # print("ppp",courseid)
+
+            #리스트가 아니면 리스트형태로 싸준다.
+            if type(courseid) != list:
+                courseid=[courseid]
+            #course정보 불러오기
+            for cid in courseid:
+                _course=get_object_or_404(Course,course_id=cid)
+
+                obj[_course.course_name]={
+                    "course_id":cid,
+                    "count":len(Problem.objects.filter(course_id=cid))
+                }
+            return Response(data=obj,status=status.HTTP_200_OK)
+        return Response(status=404)
+
+
 # class CodeAPIView(APIView):
 #     def get(self, request):
 #         code = Code
@@ -86,8 +115,9 @@ class ProblemsAPIView(APIView):
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
 
 class ProblemAPIView(APIView):
-    def get(self,request,pk):
-        prob=get_object_or_404(Problem,prob_id=pk)
+    def get(self,request):
+        problemid=request.GET['problem_id']
+        prob=get_object_or_404(Problem,prob_id=problemid)
         serializer = ProblemSerializer(prob)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
@@ -105,19 +135,57 @@ class SubmissionsAPIView(APIView):
 
 class SubmissionAPIView(APIView):
     def get(self,request):
-        # sid=request.GET['submit_id']
-        # uid=request.GET['user_id']
-        # pid=request.GET['prob_id']
-        # print("sid: ",sid,type(sid)," uid: ",uid," pid: ",pid)
+        sid=request.GET['submit_id']
+        uid=request.GET['user_id']
+        pid=request.GET['prob_id']
+        
+        #print("sid: ",sid,type(sid)," uid: ",uid," pid: ",pid)
         serializer = None
         if sid == "":
             submission= Submission.objects.filter(user_id=uid)
             serializer = SubmissionSerializer(submission,many=True)
         else:
-            submission=get_object_or_404(Submission,submit_id=sid)
+            submission=get_object_or_404(Submission,prob_id=pid,user_id=uid)
             serializer = SubmissionSerializer(submission)
         #submission = get_object_or_404(Submission,submit_id=sid)
         
+
         return Response(serializer.data,status=status.HTTP_200_OK)
+    def post(self,request):
+        #data=
+        return Response(status=200)
+            
 
         
+class TestAPIView(APIView):
+    def get(self,request):
+        testCase=request.GET['testcase']
+        print(testCase)
+        json_str={
+            "testcase":[([1,2,3],[0]),([1,2,3],[1])]
+        }
+        
+        return Response(data=json_str,status=status.HTTP_200_OK)
+
+class SubmissionCountAPIView(APIView):
+    def get(self,request):
+        user_id=request.GET['user_id']
+        prob_id=request.GET['problem_id']
+        subs=Submission.objects.filter(user_id=user_id,prob_id=prob_id)
+        return Response(data={'trial':len(subs)},status=status.HTTP_200_OK)
+class SkeletonCodeAPIView(APIView):
+    def get(self,request):
+        #해당 문제에 대한 스켈레톤 코드를 불러온다
+        # (problem id )->( skeleton code)
+        pid=request.GET['problem_id']
+        problem=Problem.objects.filter(prob_id=pid)
+        if len(problem)==0:
+            return Response(status=404)
+        print(problem)
+        skeletonCode={
+            "sceletonCode":problem[0].skeleton
+        }
+        print(skeletonCode)
+
+        return Response(data=skeletonCode,status=status.HTTP_200_OK)
+
