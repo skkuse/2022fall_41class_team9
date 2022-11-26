@@ -1,9 +1,7 @@
 import copydetect
 from copydetect import CopyDetector
 import os
-import numpy as np
-import pandas as pd
-from file import TestFileManager
+from .file import TestFileManager
 
 class Detector(TestFileManager):
     """
@@ -41,8 +39,7 @@ class Detector(TestFileManager):
         
         detector.run()
 
-        similarity = detector.similarity_matrix[:,:,0]
-        similarity = pd.DataFrame(similarity, columns = detector.ref_files, index=detector.test_files)
+        similarity = detector.similarity_matrix.tolist() #return is numpy array
 
         return detector, similarity        
 
@@ -65,10 +62,3 @@ def compare_file(file1, file2, token_size, window_size=1):
 
 def generate_html_report(detector):
     detector.generate_html_report()
-
-if __name__ == "__main__":
-    sc = Detector(['tests'])
-    print(sc.test_files)
-    detector, similarity = sc.similarity(['refers'])
-
-    print(similarity)
