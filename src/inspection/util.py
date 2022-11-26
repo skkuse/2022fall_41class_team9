@@ -59,21 +59,3 @@ def get_py_execution_header():
 
 def is_empty(lst):
     return len(lst) == 0
-
-if __name__ == "__main__":
-    command = token2command("python", "code_no_error.py")
-    tokens = command2token(command)
-    print(tokens)
-    print(command)
-    print("==========================")
-
-    try:
-        ls = sp.run(command, stdout=sp.PIPE, stderr=sp.PIPE ) #command에 tokens도 가능
-        ls.check_returncode()
-        print ( ls.stdout.decode("cp949") )
-    except sp.CalledProcessError as e:
-        print ( "Error:\nreturn code: ", e.returncode, "\nOutput: ", e.stderr.decode("cp949") )
-    print("==========================")
-    print(execute_shell_command(tokens, encoding="cp949"))
-    print("==========================")
-    print(execute_shell_command(command, encoding="cp949"))
