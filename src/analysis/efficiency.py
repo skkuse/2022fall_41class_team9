@@ -1,21 +1,22 @@
-import util
+from .util import token2command, execute_shell_command
+from .file import TestFileManager
 import json
-from file import TestFileManager
 
 BASECOMMAND = "multimetric"
 
 class MultiMetric(TestFileManager):
     """    
     """
-    def __init__(self, files):
+    def __init__(self, files, encoding='utf-8'):
         super().__init__(files)
+        self.encoding = encoding
         self.multi_metric = None
         self.build_metric()
 
     def build_metric(self):
         if len(self.test_files) > 0:
-            command = util.token2command(BASECOMMAND, *self.test_files)
-            multi_metric = util.execute_shell_command(command)
+            command = token2command(BASECOMMAND, *self.test_files)
+            multi_metric = execute_shell_command(command, self.encoding)
             self.multi_metric = json.loads(multi_metric) #json
 
     def overall(self):
@@ -50,14 +51,3 @@ class MultiMetric(TestFileManager):
     def change_files(self, files):
         super().change_files(files)
         self.build_metric()
-
-if __name__ == "__main__":
-    files = ['efficiency_test/free.py','efficiency_test/test_long.py','test.py']
-    mm = MultiMetric(files)
-    mm.add_file("efficiency_backup.py")
-    mm.del_file("test.py")
-    print(mm.multi_metric, type(mm.multi_metric))
-    print("--------------------------------------------")
-    print(mm.overall())
-    print("--------------------------------------------")
-    print(mm.halstead_difficulty())
