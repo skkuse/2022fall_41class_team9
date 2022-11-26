@@ -61,7 +61,7 @@ def get_grading_result(user_code, tc_open_input, tc_open_output, tc_close_input,
 
     return json.dumps(output)
     
-@wrapper.temp_py_handler_trace(file="temp_efficiency.py")
+@wrapper.temp_py_handler_error(file="temp_efficiency.py")
 @wrapper.timeout(LOCAL_TIMEOUT)
 def get_efficiency_analysis(user_code, encoding='utf-8', **kwargs):
     """
@@ -99,7 +99,7 @@ def get_efficiency_analysis(user_code, encoding='utf-8', **kwargs):
 
     return json.dumps(output)
 
-@wrapper.temp_py_handler_trace(file="temp_readability.py")
+@wrapper.temp_py_handler_error(file="temp_readability.py")
 @wrapper.timeout(LOCAL_TIMEOUT)
 def get_readability_analysis(user_code, encoding='utf-8', **kwargs):
     """
