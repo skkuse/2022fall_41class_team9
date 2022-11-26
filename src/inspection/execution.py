@@ -1,10 +1,11 @@
 import os
-import util
-import sys
 import math
+import re
 import time
 import importlib
-from wrapper import temp_py_handler, timeout
+from .util import get_py_execution_header, token2command, execute_shell_command
+from .wrapper import temp_py_handler_error, temp_py_handler_trace, timeout
+from .auditor import AuditCode
 
 LOCAL_TIMEOUT = 10
 
@@ -14,7 +15,7 @@ class Runner:
         self.code = code
         self.encoding = encoding
 
-    @temp_py_handler(file="runner_temp_script.py")
+    @temp_py_handler_trace(file="runner_temp_script.py")
     @timeout(LOCAL_TIMEOUT)
     def run_script(self, **kwargs):
         fd = kwargs['fd']
@@ -23,20 +24,27 @@ class Runner:
         os.fsync(fd)
         fd.flush()
 
-        header = util.get_py_execution_header()
-        command = util.token2command(header, file)
+        header = get_py_execution_header()
+        command = token2command(header, file)
+        error_line = None
 
         start = time.time()
-        out = util.execute_shell_command(command, encoding=self.encoding)
+        out = execute_shell_command(command, encoding=self.encoding)
         out = out.strip('\n')
         end = time.time()
+
+        if out.startswith("Traceback"):
+            expression = r'File .+, line (?P<line>\d+)'
+            regex = re.compile(expression)
+            parsed_result = regex.findall(out)
+            error_line = int(parsed_result[0])
 
         run_time = math.floor((end-start)*1000.*1000.)
         self.outputs.append({"runtime":run_time, "output":out})
 
-        return out        
+        return out, error_line
 
-    @temp_py_handler(file="runner_temp_soln.py")
+    @temp_py_handler_error(file="runner_temp_soln.py")
     @timeout(LOCAL_TIMEOUT)
     def run_soln(self, *params, **kwargs):
         fd = kwargs["fd"]
@@ -56,7 +64,8 @@ class Runner:
 
         return out
 
-    @temp_py_handler(file="_.py")
+"""
+    @temp_py_handler_trace(file="_.py")
     @timeout(LOCAL_TIMEOUT)
     def run_existing_soln(self, file, *params):
         name = file[:file.index('.')]
@@ -71,58 +80,34 @@ class Runner:
 
         return out        
 
+    @temp_py_handler_trace(file="runner_temp_script_exec.py")
+    @timeout(LOCAL_TIMEOUT)
+    def run_script_exec(self, **kwargs):
+        fd = kwargs['fd']
+        file = kwargs['file']
+        fd.write(self.code)
+        os.fsync(fd)
+        fd.flush()
 
-if __name__ == "__main__":
-    fd = open("code/code_no_error.py", "r")
-    code = fd.read()
-    fd.close()
-    runner = Runner(code, "cp949")
-    out = runner.run_soln()
-    print("================================")
-    print(out)
-    print("================================")
+        fd_temp = open(file, 'r')
+        code = fd_temp.read()
+        fd_temp.close()
 
+        buffer = io.StringIO()
+        original_buffer = sys.stdout
+        sys.stdout = buffer
 
-'''
-@temp_py_handler(file="temp_terminal.py")
-def executing_terminal(code, encoding="utf-8", **kwargs):
-    """
-    execute code
-    ----------------------------------------------------
-    input= 
-        code(string)
-    ----------------------------------------------------
-    return=
-        output(string)
-    ----------------------------------------------------
-    note
-        - @temp_py_handler는 함수 실행 전에 코드를 저장할 임시 파일을 만듭니다. 그리고 함수 실행 후 임시 파일을 지웁니다.
-        - 코드에 fd, name을 kwargs로부터 가져오는 부분이 있는데 fd, name은 데코레이터로부터 자동으로 만들어집니다
-    """
+        start = time.time()
+        exec(code)
+        end = time.time()
 
-    fd = kwargs['fd']
-    file = kwargs['file']
-    fd.write(code)
-    os.fsync(fd)
-    fd.flush()
+        out = buffer.getvalue()
+        sys.stdout = original_buffer
 
-    header = util.get_py_execution_header()
-    command = util.token2command(header, file)
+        print(out)
 
-    out = util.execute_shell_command(command, encoding=encoding)
-    out = out.strip('\n')
+        run_time = math.floor((end-start)*1000.*1000.)
+        self.outputs.append({"runtime":run_time, "output":out})
 
-    return out
-
-@temp_py_handler(file="temp_func.py")
-def executing_function(code, encoding='utf-8', **kwargs):
-    fd = kwargs['fd']
-    fname = kwargs['file'][:-3]
-    fd.write(code)
-    os.fsync(fd)
-    fd.flush()
-
-    exec(f"from {fname} import *")
-
-    return temp_func.solution()
-'''
+        return out 
+"""
