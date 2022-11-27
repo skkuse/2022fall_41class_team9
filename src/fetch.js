@@ -27,3 +27,5 @@ export const getSubmitTrial = (userId, problemId) =>
   axios
     .get(`/codes/submission?user_id=${userId}&problem_id=${problemId}`)
     .then((res) => res.data);
+export const executeCode = (code) =>
+  axios.post("url", { code }).then((res) => res.data);

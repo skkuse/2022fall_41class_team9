@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 export const actionState = atom({
   key: "action",
-  default: "execute",
+  default: "false",
 });
 
 export const themeState = atom({
@@ -33,4 +33,18 @@ export const saveState = atom({
 export const savePartState = atom({
   key: "savePartState",
   default: 1,
+});
+
+export const executeResultState = atom({
+  key: "executeResultState",
+  default: "",
+});
+
+export const gradingResultState = atom({
+  key: "gradingResultState",
+  default: "",
+});
+export const submitResultState = atom({
+  key: "submitResultState",
+  default: "",
 });
