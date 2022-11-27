@@ -57,6 +57,19 @@ from src.codex.codex import get_explanation
 from src.memory_profile.memory_profile import get_memory_profile
 from src import abstract
 
+class ExecuteAPIView(APIView):
+
+    def post(self, request):
+        x = request.data['user_code']
+        
+        print(x)
+        execution_result = abstract.get_execution_result(x)
+        print(execution_result[0])
+        print(execution_result[1])
+        dict_result = {"output": execution_result[0], "error": execution_result[1]}
+        return Response(data=dict_result)
+        
+
 class AnalysisAPIView(APIView):
     def get(self,request,pk):
         
@@ -146,6 +159,7 @@ class AnalysisAPIView(APIView):
         analysis.submit_id=None # change later to analysis.submit_id = submit_id
         analysis.efficiency=abstract.get_efficiency_analysis(user_code,tc_open_input, encoding="cp949") #text
         print("@@@")
+        
         #print(abstract.get_efficiency_analysis(user_code, tc_open_input, encoding="cp949")) #text
         analysis.readability=abstract.get_readability_analysis(user_code) #text
         analysis.plagiarism=abstract.get_plagiarism_score(user_code, past_submissions_list) #float
