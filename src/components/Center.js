@@ -1,15 +1,26 @@
 import Editor, { useMonaco } from "@monaco-editor/react";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import CenterFooter from "./centerComponents/CenterFooter";
 import CenterHeader from "./centerComponents/CenterHeader";
 
+import ExecuteResult from "./rightComponents/executeComponents/ExecuteResult";
+import GradingResults from "./rightComponents/gradingComponents/GradingResults";
 import cobaltTheme from "monaco-themes/themes/Cobalt2.json";
 import idleTheme from "monaco-themes/themes/IDLE.json";
-import { useRecoilValue } from "recoil";
-import { actionState, themeState } from "../atoms";
-import { useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  actionState,
+  themeState,
+  savePartState,
+  saveState,
+  executeResultState,
+  gradingResultState,
+  submitResultState,
+} from "../atoms";
 import { Rnd } from "react-rnd";
+import { useMutation, useQuery } from "react-query";
+import { executeCode, getUserInfo } from "../fetch";
 
 const CenterContainer = styled.div`
   position: relative;
@@ -43,8 +54,37 @@ const Terminal = styled.div`
 `;
 
 function Center() {
+  const editorCode = useRef("");
+
+  // const {data} = useQuery("getUsers", ()=>getUserInfo("nickel"), {onError:(error) => conso});
+  const { mutate: executeMutate } = useMutation(
+    () => executeCode(editorCode.current.getValue()),
+    {
+      onSuccess: (data) => {
+        setExecuteResult(data);
+      },
+    }
+  );
+  const handleEditorCode = (editor) => {
+    editorCode.current = editor;
+  };
+  const handleEditorCodeChange = () => {
+    console.log(editorCode.current.getValue());
+  };
+
+  const handleExecute = () => {
+    executeMutate();
+  };
+  const handleGrading = () => {};
+
   const action = useRecoilValue(actionState);
   const theme = useRecoilValue(themeState);
+  const savePart = useRecoilValue(savePartState);
+  const isSave = useRecoilValue(saveState);
+  const setExecuteResult = useSetRecoilState(executeResultState);
+  const gradingResultAction = useSetRecoilState(gradingResultState);
+  const submitResultAction = useSetRecoilState(submitResultState);
+
   const monaco = useMonaco();
 
   const [resize, setResize] = useState({ height: 40 });
@@ -63,11 +103,21 @@ function Center() {
     }
   }, [monaco, theme]);
 
+  if (action === "execute") {
+    handleExecute();
+  } else if (action === "grading") {
+    handleGrading();
+  }
   return (
     <CenterContainer>
       <CenterHeader />
       <CenterEditor>
-        <Editor defaultLanguage="python"></Editor>
+        <Editor
+          defaultLanguage="python"
+          defaultValue="base code"
+          onMount={handleEditorCode}
+          onChange={handleEditorCodeChange}
+        ></Editor>
       </CenterEditor>
       {/* <CenterFooter /> */}
       <BottomContainer>
@@ -107,6 +157,12 @@ function Center() {
           <Terminal></Terminal>
         </Rnd>
       </BottomContainer>
+
+      {action === "execute" ? (
+        <ExecuteResult></ExecuteResult>
+      ) : (
+        <GradingResults></GradingResults>
+      )}
     </CenterContainer>
   );
 }
