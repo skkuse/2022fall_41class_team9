@@ -96,7 +96,6 @@ def get_efficiency_analysis(user_code, encoding='utf-8', **kwargs):
     해줘
     output['DFC'] = 
     """
-
     return json.dumps(output)
 
 @wrapper.temp_py_handler_error(file="temp_readability.py")
@@ -124,6 +123,7 @@ def get_readability_analysis(user_code, encoding='utf-8', **kwargs):
     output = {}
     auditor = readability.Auditor([target_file], encoding)
     output = auditor.audit_report
+    output = output[target_file]
 
     return json.dumps(output)
 
