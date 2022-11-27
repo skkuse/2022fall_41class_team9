@@ -144,13 +144,13 @@ class AnalysisAPIView(APIView):
         # str bounderror 문제 발생시, str()로 감싸면 해결.
         
         analysis.submit_id=None # change later to analysis.submit_id = submit_id
-        analysis.efficiency=abstract.get_efficiency_analysis(user_code, encoding="cp949") #text
+        analysis.efficiency=abstract.get_efficiency_analysis(user_code,tc_open_input, encoding="cp949") #text
         print("@@@")
-        print(abstract.get_efficiency_analysis(user_code, encoding="cp949")) #text
+        #print(abstract.get_efficiency_analysis(user_code, tc_open_input, encoding="cp949")) #text
         analysis.readability=abstract.get_readability_analysis(user_code) #text
         analysis.plagiarism=abstract.get_plagiarism_score(user_code, past_submissions_list) #float
-        #analysis.explanation=get_explanation(str(user_code)) #text
-        analysis.explanation = "explain"
+        analysis.explanation=get_explanation(str(user_code)) #text
+        #analysis.explanation = "explain"
         analysis.functionability=abstract.get_grading_result(user_code, tc_open_input, tc_open_output, tc_close_input, tc_close_output) #text
         
         

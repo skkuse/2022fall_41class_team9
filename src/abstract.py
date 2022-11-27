@@ -2,6 +2,7 @@ from .analysis import efficiency, readability, plagiarism
 from .inspection import execution, grading
 from .util.auditor import AuditCode
 from .util import wrapper, iterator
+from .memory_profile import memory_profile
 import io
 import sys
 import os
@@ -63,7 +64,7 @@ def get_grading_result(user_code, tc_open_input, tc_open_output, tc_close_input,
     
 @wrapper.temp_py_handler_error(file="temp_efficiency.py")
 @wrapper.timeout(LOCAL_TIMEOUT)
-def get_efficiency_analysis(user_code, encoding='utf-8', **kwargs):
+def get_efficiency_analysis(user_code, tc_open_input, encoding='utf-8', **kwargs):
     """
     제출 코드에 대한 efficiency 분석 결과
     ------------------------------------------------------
@@ -84,18 +85,18 @@ def get_efficiency_analysis(user_code, encoding='utf-8', **kwargs):
     fd.flush()
 
     output = {}
-    multi_metric = efficiency.MultiMetric([target_file], encoding).overall()
+    """multi_metric = efficiency.MultiMetric([target_file], encoding).overall()"""
     #LOC
     output['LOC'] = user_code.count("\n")
     #halstead
-    output['halstead'] = {aitem:multi_metric[aitem] for aitem in multi_metric.keys() if aitem.startswith("halstead")}
+    """output['halstead'] = {aitem:multi_metric[aitem] for aitem in multi_metric.keys() if aitem.startswith("halstead")}
     #control flow complexity(CFC)
     output['CFC'] = multi_metric['cyclomatic_complexity']
     #data flow complexity(DFC)
-    """
-    해줘
-    output['DFC'] = 
-    """
+    #mean"""
+    memory_profile_array = memory_profile.get_memory_profile(user_code, tc_open_input[0])
+    maximum_memory_usage = max(memory_profile_array)
+    output['DFC'] = maximum_memory_usage
     return json.dumps(output)
 
 @wrapper.temp_py_handler_error(file="temp_readability.py")
