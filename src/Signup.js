@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const SignupContainer = styled.div`
   width: 560px;
@@ -45,7 +45,7 @@ const SignupFormBtn = styled.button`
   border-radius: 8px;
 `;
 function Signup() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     id: "",
@@ -56,7 +56,7 @@ function Signup() {
   const Login = (e) => {
     e.preventDefault();
     console.log(form);
-    navigate("/login");
+    // navigate("/login");
   };
   const handleChange = (e) => {
     const { name, value } = e.target;

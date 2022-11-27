@@ -11,11 +11,8 @@ function AppRouter() {
   const theme = useRecoilValue(themeState);
   return (
     <ThemeProvider theme={theme ? darkTheme : lightTheme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-        </Routes>
-      </BrowserRouter>
+      <MainPage />
+      {/* <Route path="/" element={<MainPage />} /> */}
     </ThemeProvider>
   );
 }

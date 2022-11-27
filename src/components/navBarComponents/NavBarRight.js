@@ -2,7 +2,7 @@ import { AiTwotoneSetting } from "react-icons/ai";
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { DUMMY_DATA } from "../../constants/DummyData";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -133,7 +133,7 @@ function NavBarRight() {
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   const [theme, setTheme] = useRecoilState(themeState);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [mode, setMode] = useState(true);
   const returnMode = (checked) => {
     if (checked) {

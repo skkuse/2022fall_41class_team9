@@ -4,7 +4,7 @@ import QuestionInfo from "./leftComponents/QuestionInfo";
 import TestCaseInfo from "./leftComponents/TestCase";
 
 const LeftContainer = styled.div`
-  width: 550px;
+  width: 450px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid ${({ theme }) => theme.borderColor};

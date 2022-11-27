@@ -25,31 +25,36 @@ export const currentProblemState = atom({
   default: {},
 });
 
-export const saveState = atom({
-  key: "saveState",
-  default: false,
-});
+// export const saveState = atom({
+//   key: "saveState",
+//   default: false,
+// });
 
-export const savePartState = atom({
-  key: "savePartState",
-  default: 1,
-});
+// export const savePartState = atom({
+//   key: "savePartState",
+//   default: 1,
+// });
 
-export const executeResultState = atom({
-  key: "executeResultState",
-  default: "",
-});
+// export const executeResultState = atom({
+//   key: "executeResultState",
+//   default: "",
+// });
 
-export const gradingResultState = atom({
-  key: "gradingResultState",
-  default: "",
-});
+// export const gradingResultState = atom({
+//   key: "gradingResultState",
+//   default: "",
+// });
 export const submitResultState = atom({
   key: "submitResultState",
   default: "",
 });
 
-export const codeState = atom({
-  key: "codeState",
-  dafault: "",
+// export const editorCodeState = atom({
+//   key: "editorCodeState",
+//   dafault: "",
+// });
+
+export const testState = atom({
+  key: "testState",
+  default: "",
 });

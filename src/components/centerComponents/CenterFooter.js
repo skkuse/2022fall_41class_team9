@@ -3,33 +3,36 @@ import styled from "styled-components";
 import { actionState, dialogOpenState } from "../../atoms";
 
 const CenterFooterContainer = styled.div`
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  background-color: ${({ theme }) => theme.bgColor};
   border-top: 1px solid ${({ theme }) => theme.primary};
 `;
-const FooterItems = styled.div``;
+const FooterItems = styled.div`
+  display: flex;
+`;
 const Item = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   background-color: transparent;
-  border: 1px solid black;
-  display: inline-block;
-  margin: 8px;
+  /* border: 1px solid black; */
+  /* display: inline-block; */
+  /* margin: 8px; */
   cursor: pointer;
   font-size: 10px;
   text-align: center;
-  line-height: 50px;
+  /* line-height: 50px; */
   border: none;
 `;
 const FooterBtns = styled.div``;
 const Btn = styled.button`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 30px;
   background-color: transparent;
   color: white;
-  margin: 8px;
+  /* margin: 8px; */
   cursor: pointer;
   border: none;
 `;

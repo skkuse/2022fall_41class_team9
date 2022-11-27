@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+// import { useNavigate, Link } from "react-router-dom";
 
 const LoginContainer = styled.div`
   width: 560px;
@@ -49,12 +49,12 @@ const LoginText = styled.span`
   font-size: 16px;
 `;
 function Login() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [form, setForm] = useState({ id: "", password: "" });
   const Login = (e) => {
     e.preventDefault();
     console.log(form);
-    navigate("/");
+    // navigate("/");
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,9 +82,7 @@ function Login() {
         />
         <LoginFormBtn>로그인</LoginFormBtn>
       </LoginForm>
-      <LoginText>
-        <Link to="/signup">회원가입</Link>
-      </LoginText>
+      <LoginText>{/* <Link to="/signup">회원가입</Link> */}</LoginText>
     </LoginContainer>
   );
 }
