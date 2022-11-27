@@ -55,6 +55,7 @@ class SubmissionAPIView(APIView):
 
 from src.codex.codex import get_explanation
 from src.memory_profile.memory_profile import get_memory_profile
+from src import abstract
 
 class AnalysisAPIView(APIView):
     def get(self,request,pk):
@@ -62,7 +63,12 @@ class AnalysisAPIView(APIView):
         submission=get_object_or_404(Submission,submit_id=pk)
         submission_serializer = SubmissionSerializer(submission)
         problem = Problem.objects.filter(prob_id=submission_serializer.data['prob_id'])        
+        
+        past_submissions = Submission.objects.filter(prob_id=submission_serializer.data['prob_id'])
         problem=problem[0]
+        
+        
+
         
         
         #   get submission data
@@ -80,6 +86,28 @@ class AnalysisAPIView(APIView):
         print(user_output)
         print(counter)
         
+        
+        
+        # get past submissions from other users ( not yours) with the same problem, 
+        
+        print("past_submissions!!")
+        print(len(past_submissions))
+        print("------")
+        
+        past_submissions_list = []
+        for i in range(len(past_submissions)):
+            # exlude if submitted by yourself..
+            temp = past_submissions[i]
+            
+            temp_serializer = SubmissionSerializer(temp)
+            print(temp_serializer['user_id'].value)
+            temp_user_id = temp_serializer['user_id'].value
+            if temp_user_id != user_id:
+                past_submissions_list.append(past_submissions[i].user_code)
+        
+        print(past_submissions_list)
+        print(len(past_submissions_list))
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         #   get problem data
         answer_code = problem.answer_code
         deadline = problem.deadline
@@ -116,11 +144,14 @@ class AnalysisAPIView(APIView):
         # str bounderror 문제 발생시, str()로 감싸면 해결.
         
         analysis.submit_id=None # change later to analysis.submit_id = submit_id
-        analysis.efficiency="test e" #text
-        analysis.readability="test r" #text
-        analysis.plagiarism=99 #float
-        analysis.explanation=get_explanation(str(user_code)) #text
-        analysis.functionability="test f" #text
+        analysis.efficiency=abstract.get_efficiency_analysis(user_code, encoding="cp949") #text
+        print("@@@")
+        print(abstract.get_efficiency_analysis(user_code, encoding="cp949")) #text
+        analysis.readability=abstract.get_readability_analysis(user_code) #text
+        analysis.plagiarism=abstract.get_plagiarism_score(user_code, past_submissions_list) #float
+        #analysis.explanation=get_explanation(str(user_code)) #text
+        analysis.explanation = "explain"
+        analysis.functionability=abstract.get_grading_result(user_code, tc_open_input, tc_open_output, tc_close_input, tc_close_output) #text
         
         
         #   memory profile
