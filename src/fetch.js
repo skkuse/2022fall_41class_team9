@@ -4,6 +4,9 @@ const baseUrl = "/codes";
 
 // export const getUsers = () => axios.get("/codes/users").then(res=>)
 
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+
 export const getUserInfo = (userName) =>
   axios.get(`/codes/user?user_name=${userName}`).then((res) => res.data);
 
@@ -30,5 +33,12 @@ export const getSubmitTrial = (userId, problemId) =>
   axios
     .get(`/codes/submission/count?user_id=${userId}&problem_id=${problemId}`)
     .then((res) => res.data);
-export const executeCode = (code) =>
-  axios.post("url", { code }).then((res) => res.data);
+
+export const executeCode = (codeInfo) =>
+  axios.post("/onlinejudge/execute/", codeInfo).then((res) => res.data);
+
+export const submitCode = (submitData) =>
+  axios.post("/codes/submission/", submitData).then((res) => res.data);
+
+export const getAnalysis = (submitId) =>
+  axios.get(`/onlinejudge/analysis/${submitId}`).then((res) => res.data);

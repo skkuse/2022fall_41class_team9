@@ -8,7 +8,7 @@ import ExecuteResult from "./rightComponents/executeComponents/ExecuteResult";
 import GradingResults from "./rightComponents/gradingComponents/GradingResults";
 import cobaltTheme from "monaco-themes/themes/Cobalt2.json";
 import idleTheme from "monaco-themes/themes/IDLE.json";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   actionState,
   themeState,
@@ -17,6 +17,7 @@ import {
   executeResultState,
   gradingResultState,
   submitResultState,
+  codeState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
@@ -57,23 +58,26 @@ function Center() {
   const editorCode = useRef("");
 
   // const {data} = useQuery("getUsers", ()=>getUserInfo("nickel"), {onError:(error) => conso});
-  const { mutate: executeMutate } = useMutation(
-    () => executeCode(editorCode.current.getValue()),
-    {
-      onSuccess: (data) => {
-        setExecuteResult(data);
-      },
-    }
-  );
+  // const { mutate: executeMutate } = useMutation(
+  //   () => executeCode(editorCode.current.getValue()),
+  //   {
+  //     onSuccess: (data) => {
+  //       setExecuteResult(data);
+  //     },
+  //   }
+  // );
+
+  // const [codes, setCodes] = useRecoilState(codeState);
   const handleEditorCode = (editor) => {
     editorCode.current = editor;
   };
   const handleEditorCodeChange = () => {
     console.log(editorCode.current.getValue());
+    // setCode(editorCode.current.getValue());
   };
 
   const handleExecute = () => {
-    executeMutate();
+    // executeMutate();
   };
   const handleGrading = () => {};
 

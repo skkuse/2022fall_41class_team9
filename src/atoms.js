@@ -48,3 +48,8 @@ export const submitResultState = atom({
   key: "submitResultState",
   default: "",
 });
+
+export const codeState = atom({
+  key: "codeState",
+  dafault: "",
+});
