@@ -7,8 +7,11 @@ const baseUrl = "/codes";
 export const getUserInfo = (userName) =>
   axios.get(`/codes/user?user_name=${userName}`).then((res) => res.data);
 
-export const getCourseInfo = (userName) =>
+export const getUserCourses = (userName) =>
   axios.get(`/codes/userCourse?user_name=${userName}`).then((res) => res.data);
+
+export const getCourseQuestions = (courseId) =>
+  axios.get(`/codes/problems?course_id=${courseId}`).then((res) => res.data);
 
 export const getQuestionInfo = (problemId) =>
   axios.get(`/codes/problem?problem_id=${problemId}`).then((res) => res.data);
@@ -25,5 +28,5 @@ export const getPastSubmitResult = (userId, probId) =>
 
 export const getSubmitTrial = (userId, problemId) =>
   axios
-    .get(`/codes/submission?user_id=${userId}&problem_id=${problemId}`)
+    .get(`/codes/submission/count?user_id=${userId}&problem_id=${problemId}`)
     .then((res) => res.data);

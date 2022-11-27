@@ -28,8 +28,8 @@ const CenterEditor = styled.div`
 const BottomContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 290px;
-  background-color: aliceblue;
+  height: 40px;
+
   bottom: 0;
   left: 0;
 `;
@@ -47,7 +47,7 @@ function Center() {
   const theme = useRecoilValue(themeState);
   const monaco = useMonaco();
 
-  const [resize, setResize] = useState({ height: 290 });
+  const [resize, setResize] = useState({ height: 40 });
 
   useEffect(() => {
     if (!monaco) {
@@ -95,6 +95,7 @@ function Center() {
             width: "100%",
           }}
           minWidth="100%"
+          minHeight="40px"
           maxHeight="800px"
           onResizeStop={(e, direction, ref, delta, position) => {
             setResize({
