@@ -8,6 +8,8 @@ import cobaltTheme from "monaco-themes/themes/Cobalt2.json";
 import idleTheme from "monaco-themes/themes/IDLE.json";
 import { useRecoilValue } from "recoil";
 import { actionState, themeState } from "../atoms";
+import { useState } from "react";
+import { Rnd } from "react-rnd";
 
 const CenterContainer = styled.div`
   position: relative;
@@ -35,6 +37,8 @@ function Center() {
   const theme = useRecoilValue(themeState);
   const monaco = useMonaco();
 
+  const [resize, setResize] = useState({ height: 250 });
+
   useEffect(() => {
     if (!monaco) {
       return;
@@ -55,9 +59,56 @@ function Center() {
       <CenterEditor>
         <Editor defaultLanguage="python"></Editor>
       </CenterEditor>
-
       <CenterFooter />
-      <Terminal action={action} />
+
+      {/* <div>
+        {" "}
+        <Rnd
+          style={{
+            position: "relative",
+            backgroundColor: "beige",
+            transform: "",
+            
+          }}
+          disableDragging
+          size={{ height: resize.height }}
+          minWidth="100%"
+          
+          onResizeStop={(e, direction, ref, delta, position) => {
+            setResize({
+              
+              height: ref.style.height,
+              
+            });
+          }}
+        >
+          001
+        </Rnd>
+      </div> */}
+
+      <Terminal action={action}>
+        {/* {" "}
+        <Rnd
+          style={{
+            position: "relative",
+            // backgroundColor: "beige",
+            transform: "",
+            // width: "100%",
+          }}
+          size={{ height: resize.height }}
+          minWidth="100%"
+          // onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+          onResizeStop={(e, direction, ref, delta, position) => {
+            setResize({
+              // width: ref.style.width,
+              height: ref.style.height,
+              // ...position,
+            });
+          }}
+        >
+          001
+        </Rnd> */}
+      </Terminal>
     </CenterContainer>
   );
 }

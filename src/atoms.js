@@ -19,3 +19,8 @@ export const openedContentState = atom({
   key: "openedContentState",
   default: "main",
 });
+
+export const currentProblemState = atom({
+  key: "currentProblemState",
+  default: {},
+});

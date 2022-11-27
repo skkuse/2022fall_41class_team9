@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-query": "^3.39.2",
+    "react-rnd": "^10.3.7",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "recoil": "^0.7.6",
@@ -48,5 +49,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:8800"
 }

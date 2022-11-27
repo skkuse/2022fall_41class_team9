@@ -76,7 +76,7 @@ export default function SubmitResult() {
   const [open, setOpen] = useRecoilState(dialogOpenState);
 
   const [openedContent, setOpenedContent] = useRecoilState(openedContentState);
-  console.log(openedContent);
+  // console.log(openedContent);
   const handleClose = () => {
     setOpen(false);
   };

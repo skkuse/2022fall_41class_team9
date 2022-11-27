@@ -1,4 +1,6 @@
+import { useQuery } from "react-query";
 import styled from "styled-components";
+import { getUserInfo } from "../../fetch";
 import NavBarCenter from "./NavBarCenter";
 import NavBarLeft from "./NavBarLeft";
 import NavBarRight from "./NavBarRight";
@@ -12,6 +14,14 @@ const NavBarContainer = styled.header`
 `;
 
 function NavBar() {
+  const { data: userInfoData } = useQuery(
+    "getUserInfo",
+    () => getUserInfo("nickel"),
+    {
+      onSuccess: (data) => console.log(data),
+      onError: (error) => console.log(error),
+    }
+  );
   return (
     <NavBarContainer>
       <NavBarLeft />
