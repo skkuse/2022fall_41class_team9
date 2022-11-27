@@ -104,8 +104,15 @@ class UserCourseAPIView(APIView):
 
 class ProblemsAPIView(APIView):
     def get(self,request):
-        probs = Problem.objects.all()
-        serializer = ProblemSerializer(probs,many=True)
+        cid=request.GET['course_id']
+        if cid=="":
+            probs = Problem.objects.all()
+            serializer = ProblemSerializer(probs,many=True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        
+        
+        probs=Problem.objects.filter(course_id=cid)
+        serializer=ProblemSerializer(probs,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     def post (self,request):
         serializer=ProblemSerializer(data=request.data)
