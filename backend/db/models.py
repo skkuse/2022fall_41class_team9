@@ -65,7 +65,7 @@ class Submission(models.Model):
 
 
 class Analysis(models.Model):
-    submit_id = models.AutoField(primary_key=True)#models.ForeignKey('Submission', on_delete=models.CASCADE)
+    submit_id = models.ForeignKey('Submission', on_delete=models.CASCADE)
     efficiency = models.TextField(blank=True)
     readability = models.TextField(blank=True)
     plagiarism = models.FloatField()
