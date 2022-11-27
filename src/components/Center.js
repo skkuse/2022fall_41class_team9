@@ -25,9 +25,19 @@ const CenterEditor = styled.div`
   flex: 1;
 `;
 
+const BottomContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 290px;
+  background-color: aliceblue;
+  bottom: 0;
+  left: 0;
+`;
+
 const Terminal = styled.div`
   width: 100%;
   height: 250px;
+  flex: 1;
   background-color: ${({ theme }) => theme.terminal};
   bottom: 0;
 `;
@@ -37,7 +47,7 @@ function Center() {
   const theme = useRecoilValue(themeState);
   const monaco = useMonaco();
 
-  const [resize, setResize] = useState({ height: 250 });
+  const [resize, setResize] = useState({ height: 290 });
 
   useEffect(() => {
     if (!monaco) {
@@ -59,51 +69,43 @@ function Center() {
       <CenterEditor>
         <Editor defaultLanguage="python"></Editor>
       </CenterEditor>
-      <CenterFooter />
-
-      {/* <Rnd
-        style={{
-          backgroundColor: "beige",
-          transform: "",
-          top: "",
-          bottom: 0,
-        }}
-        disableDragging
-        size={{ height: resize.height }}
-        minWidth="100%"
-        onResizeStop={(e, direction, ref, delta, position) => {
-          setResize({
-            height: ref.style.height,
-          });
-        }}
-      >
-        <CenterFooter />
-        <Terminal action={action}></Terminal>
-      </Rnd> */}
-
-      <Terminal action={action}>
-        {/* {" "}
+      {/* <CenterFooter /> */}
+      <BottomContainer>
         <Rnd
           style={{
-            position: "relative",
-            // backgroundColor: "beige",
-            transform: "",
-            // width: "100%",
+            position: "absolute",
+
+            backgroundColor: "beige",
+            display: "flex",
+            flexDirection: "column",
           }}
-          size={{ height: resize.height }}
+          disableDragging
+          enableResizing={{
+            bottom: false,
+            bottomLeft: false,
+            bottomRight: false,
+            left: false,
+            right: false,
+            top: true,
+            topLeft: false,
+            topRight: false,
+          }}
+          size={{
+            height: resize.height,
+            width: "100%",
+          }}
           minWidth="100%"
-          // onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+          maxHeight="800px"
           onResizeStop={(e, direction, ref, delta, position) => {
             setResize({
-              // width: ref.style.width,
               height: ref.style.height,
-              // ...position,
             });
           }}
         >
-          001
-        </Rnd> */}
-      </Terminal>
+          <CenterFooter />
+          <Terminal></Terminal>
+        </Rnd>
+      </BottomContainer>
     </CenterContainer>
   );
 }
