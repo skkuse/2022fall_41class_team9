@@ -4,7 +4,8 @@ from django.db.models.enums import Choices
 
 
 class Course(models.Model):
-    course_id = models.IntegerField(primary_key=True)
+    #course_id = models.IntegerField(primary_key=True)
+    course_id=models.AutoField(primary_key=True)
     course_name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -21,7 +22,7 @@ class User(models.Model):
         ("C", "Consolas"),
     ]
 
-    user_id = models.IntegerField(primary_key=True)
+    user_id = models.AutoField(primary_key=True)#models.IntegerField(primary_key=True)
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
     courses = models.ManyToManyField('Course')
@@ -33,7 +34,7 @@ class User(models.Model):
 
 
 class Problem(models.Model):
-    prob_id = models.IntegerField(primary_key=True)
+    prob_id = models.AutoField(primary_key=True)#models.IntegerField(primary_key=True)
     course_id = models.ForeignKey('Course', on_delete=models.CASCADE)
     writer = models.CharField(max_length=50)
     title = models.CharField(max_length=50, unique=True)
@@ -52,7 +53,7 @@ class Problem(models.Model):
 
 
 class Submission(models.Model):
-    submit_id = models.IntegerField(primary_key=True)
+    submit_id = models.AutoField(primary_key=True)#models.IntegerField(primary_key=True)
     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     prob_id = models.ForeignKey('Problem', on_delete=models.CASCADE)
     user_code = models.TextField()
@@ -64,7 +65,7 @@ class Submission(models.Model):
 
 
 class Analysis(models.Model):
-    submit_id = models.ForeignKey('Submission', on_delete=models.CASCADE)
+    submit_id = models.AutoField(primary_key=True)#models.ForeignKey('Submission', on_delete=models.CASCADE)
     efficiency = models.TextField(blank=True)
     readability = models.TextField(blank=True)
     plagiarism = models.FloatField()

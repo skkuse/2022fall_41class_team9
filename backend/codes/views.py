@@ -18,10 +18,16 @@ from db.serializers import *
 #     user_output = models.TextField()
 #     counter = models.IntegerField()
 
+def getCount(model):
+    queryset=model.objects.all()
+    return queryset.count()
+
+
 class SubmissionsAPIView(APIView):
 
 
-    def post(self, request, submit_id,user_id,prob_id,user_code,user_output,counter):
+    def post(self, request):
+
         serializer = SubmissionSerializer(data=request.data)
 
 
@@ -38,6 +44,7 @@ class UsersAPIView(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
     def post (self,request):
         serializer=UserSerializer(data=request.data)
+        serializer.data['user_id']=getCount(User)+1
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -58,9 +65,10 @@ class CoursesAPIView(APIView):
         courses=Course.objects.all()
         serializer = CourseSerializer(courses,many=True)
         print(serializer)
-        return Response(serializer.data,status=status   .HTTP_200_OK)
+        return Response(serializer.data,status=status.HTTP_200_OK)
     def post(self, request):
         serializer = CourseSerializer(data=request.data)
+        #serializer.data.
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -79,9 +87,10 @@ class UserCourseAPIView(APIView):
         if username:
             obj={}
             #filter는 list형으로 반환함.
-            userInfo=User.objects.filter(username=username)
-            courseid=userInfo[0].course_id.course_id # FK라서 한번 더 들어가야함.
-            # print("ppp",courseid)
+            user=get_object_or_404(User,username=username)
+            serializer=UserSerializer(user)
+            courseid=serializer.data['courses'] # FK라서 한번 더 들어가야함.
+            #print("ppp",courseid)
 
             #리스트가 아니면 리스트형태로 싸준다.
             if type(courseid) != list:
@@ -136,7 +145,14 @@ class SubmissionsAPIView(APIView):
     def post(self,request):
         serializer = SubmissionSerializer(data=request.data)
         if serializer.is_valid():
+            uid=serializer.data['user_id']
+            pid=serializer.data['prob_id']
+            submissions  = Submission.objects.filter(user_id=uid,prob_id=pid)
+            count=submission.count()
+
+            serializer.data['counter']=count+1
             serializer.save()
+            
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.error,status=status.HTTP_400_BAD_REQUEST)
 
@@ -159,11 +175,25 @@ class SubmissionAPIView(APIView):
 
         return Response(serializer.data,status=status.HTTP_200_OK)
     def post(self,request):
-        #data=
-        return Response(status=200)
+        
+        uid=request.data['user_id']
+        pid=request.data['prob_id']
+        submissions  = Submission.objects.filter(user_id=uid,prob_id=pid)
+        count=submissions.count()
+        request.data['counter']=count+1   
+        serializer = SubmissionSerializer(data=request.data)
+        #print(request.data['user_id']) 
+
+        if serializer.is_valid():
+            print("submitted")
+
+            serializer.save()
+            
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.error,status=status.HTTP_400_BAD_REQUEST)
             
 
-        
+#TEST    
 class TestAPIView(APIView):
     def get(self,request):
         testCase=request.GET['testcase']
