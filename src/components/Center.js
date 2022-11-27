@@ -61,30 +61,25 @@ function Center() {
       </CenterEditor>
       <CenterFooter />
 
-      {/* <div>
-        {" "}
-        <Rnd
-          style={{
-            position: "relative",
-            backgroundColor: "beige",
-            transform: "",
-            
-          }}
-          disableDragging
-          size={{ height: resize.height }}
-          minWidth="100%"
-          
-          onResizeStop={(e, direction, ref, delta, position) => {
-            setResize({
-              
-              height: ref.style.height,
-              
-            });
-          }}
-        >
-          001
-        </Rnd>
-      </div> */}
+      {/* <Rnd
+        style={{
+          backgroundColor: "beige",
+          transform: "",
+          top: "",
+          bottom: 0,
+        }}
+        disableDragging
+        size={{ height: resize.height }}
+        minWidth="100%"
+        onResizeStop={(e, direction, ref, delta, position) => {
+          setResize({
+            height: ref.style.height,
+          });
+        }}
+      >
+        <CenterFooter />
+        <Terminal action={action}></Terminal>
+      </Rnd> */}
 
       <Terminal action={action}>
         {/* {" "}
