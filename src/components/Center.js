@@ -84,6 +84,7 @@ function Center() {
   // const submitResultAction = useSetRecoilState(submitResultState);
 
   const functionAction = useRecoilValue(functionState);
+  const setFunction = useSetRecoilState(functionState);
 
   const monaco = useMonaco();
 
@@ -105,6 +106,23 @@ function Center() {
 
   if (functionAction === "upload") {
     editorCode.current.setValue(test);
+  } else if (functionAction === "refresh") {
+    editorCode.current.setValue("base code");
+    setFunction("false");
+  } else if (functionAction === "copy") {
+    navigator.clipboard.writeText(test);
+    alert("복사 성공");
+    setFunction("false");
+  } else if (functionAction === "download") {
+    const downloadTag = document.createElement("a");
+    const fileName = "code.py";
+    const code = new Blob([test], {
+      type: "text/plain",
+    });
+    downloadTag.href = URL.createObjectURL(code);
+    downloadTag.download = fileName;
+    document.body.appendChild(downloadTag);
+    downloadTag.click();
   }
   return (
     <CenterContainer>

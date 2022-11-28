@@ -108,11 +108,16 @@ function CenterFooter(props) {
     };
     reader.readAsText(userFile);
     setFunction("upload");
-    console.log(1);
   };
-  const handleRefreshBtnClick = () => {};
-  const handleCopyBtnClick = () => {};
-  const handleDownloadBtnClick = () => {};
+  const handleRefreshBtnClick = () => {
+    setFunction("refresh");
+  };
+  const handleCopyBtnClick = () => {
+    setFunction("copy");
+  };
+  const handleDownloadBtnClick = () => {
+    setFunction("download");
+  };
 
   const handleExecuteBtnClick = () => {
     setAction("execute");
@@ -155,9 +160,24 @@ function CenterFooter(props) {
             style={{ cursor: "pointer", width: "100%", height: "100%" }}
           ></FiUpload>
         </Item>
-        <Item onClick={handleRefreshBtnClick}>새로고침</Item>
-        <Item onClick={handleCopyBtnClick}>복사</Item>
-        <Item onClick={handleDownloadBtnClick}>다운로드</Item>
+        <Item>
+          <MdRefresh
+            onClick={handleRefreshBtnClick}
+            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+          ></MdRefresh>
+        </Item>
+        <Item>
+          <MdContentCopy
+            onClick={handleCopyBtnClick}
+            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+          ></MdContentCopy>
+        </Item>
+        <Item>
+          <BsDownload
+            onClick={handleDownloadBtnClick}
+            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+          ></BsDownload>
+        </Item>
       </FooterItems>
       <FooterBtns>
         <Button
