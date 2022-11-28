@@ -92,6 +92,7 @@ function CenterFooter() {
     try {
       const response = await axios.get(`/onlinejudge/analysis/${submitId}`);
       console.log(response.data);
+      // console.log(JSON.parse(response.data));
     } catch (error) {
       console.log(error);
     }
@@ -107,13 +108,15 @@ function CenterFooter() {
     setAction("submit");
   }
 
-  const handleSubmitBtnClick = () => {
-    submitMutate({
-      onSuccess: async (data) => {
-        await getSubmissionResult();
-      },
-    });
-    setLoaderOpen(true);
+  const handleSubmitBtnClick = async () => {
+    // submitMutate({
+    //   onSuccess: async (data) => {
+    //     await getSubmissionResult();
+    //     console.log(data);
+    //   },
+    // });
+    await getSubmissionResult(1);
+    // setLoaderOpen(true);
     // setDialogOpen(true);
   };
 
