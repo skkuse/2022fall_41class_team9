@@ -110,6 +110,7 @@ function Center() {
 
   if (functionAction === "upload") {
     editorCode.current.setValue(test);
+    setFunction("false");
   } else if (functionAction === "refresh") {
     editorCode.current.setValue("base code");
     setFunction("false");
@@ -127,6 +128,7 @@ function Center() {
     downloadTag.download = fileName;
     document.body.appendChild(downloadTag);
     downloadTag.click();
+    setFunction("false");
   }
 
   // if (savePart[1] === 1) {
