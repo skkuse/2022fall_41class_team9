@@ -107,6 +107,7 @@ function CenterFooter(props) {
       setUserCode(reader.result);
     };
     reader.readAsText(userFile);
+    // setTest(test)
     setFunction("upload");
   };
   const handleRefreshBtnClick = () => {

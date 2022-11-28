@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { saveState, savePartState } from "../../atoms";
+import { saveState, savePartState, testState } from "../../atoms";
 
 const CenterHeaderContainer = styled.div`
   height: 40px;
@@ -41,8 +41,25 @@ const Item = styled.div`
   line-height: 50px;
 `;
 
-function CenterHeader() {
+function CenterHeader(props) {
   const [savePart, setSavePart] = useRecoilState(savePartState);
+  const [test, setTest] = useRecoilState(testState);
+  if (savePart[1] === 1) {
+    const tmp = savePart[0];
+    localStorage.setItem(tmp, test);
+    console.log(savePart);
+    // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  } else if (savePart[1] === 2) {
+    const tmp = savePart[0];
+    localStorage.setItem(tmp, test);
+    console.log(savePart);
+    // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  } else if (savePart[1] === 3) {
+    const tmp = savePart[0];
+    localStorage.setItem(tmp, test);
+    console.log(savePart);
+    // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  }
 
   return (
     <CenterHeaderContainer>
@@ -53,7 +70,10 @@ function CenterHeader() {
           className="btn1"
           style={{ backgroundColor: savePart === 1 ? "blue" : "black" }}
           onClick={() => {
+            const tmp = savePart;
+            localStorage.setItem(tmp, test);
             setSavePart(1);
+            props.editor.current.setValue(localStorage.getItem(1));
           }}
         >
           1
@@ -62,7 +82,10 @@ function CenterHeader() {
           className="btn2"
           style={{ backgroundColor: savePart === 2 ? "blue" : "black" }}
           onClick={() => {
+            const tmp = savePart;
+            localStorage.setItem(tmp, test);
             setSavePart(2);
+            props.editor.current.setValue(localStorage.getItem(2));
           }}
         >
           2
@@ -71,7 +94,10 @@ function CenterHeader() {
           className="btn3"
           style={{ backgroundColor: savePart === 3 ? "blue" : "black" }}
           onClick={() => {
+            const tmp = savePart;
+            localStorage.setItem(tmp, test);
             setSavePart(3);
+            props.editor.current.setValue(localStorage.getItem(3));
           }}
         >
           3

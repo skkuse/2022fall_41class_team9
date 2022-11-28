@@ -63,7 +63,12 @@ function Center() {
     editorCode.current = editor;
   };
 
+  const [firstCode, setFirstCode] = useState("");
+  const [secondCode, setSecondCode] = useState("");
+  const [thirdCode, setThirdCode] = useState("");
+
   const [test, setTest] = useRecoilState(testState);
+  const savePart = useRecoilValue(savePartState);
   const handleEditorChange = (value, event) => {
     console.log(value);
     setTest(value);
@@ -74,7 +79,6 @@ function Center() {
 
   const action = useRecoilValue(actionState);
   const theme = useRecoilValue(themeState);
-  // const savePart = useRecoilValue(savePartState);
   // const isSave = useRecoilValue(saveState);
   // const code = useRecoilValue(codeState);
   const submitResult = useRecoilValue(submitResultState);
@@ -124,9 +128,26 @@ function Center() {
     document.body.appendChild(downloadTag);
     downloadTag.click();
   }
+
+  // if (savePart[1] === 1) {
+  //   const tmp = savePart[0];
+  //   localStorage.setItem(tmp, test);
+  //   console.log(savePart);
+  //   // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  // } else if (savePart[1] === 2) {
+  //   const tmp = savePart[0];
+  //   localStorage.setItem(tmp, test);
+  //   console.log(savePart);
+  //   // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  // } else if (savePart[1] === 3) {
+  //   const tmp = savePart[0];
+  //   localStorage.setItem(tmp, test);
+  //   console.log(savePart);
+  //   // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  // }
   return (
     <CenterContainer>
-      <CenterHeader />
+      <CenterHeader editor={editorCode} />
 
       <CenterEditor>
         <Editor
@@ -144,9 +165,7 @@ function Center() {
         style={{
           position: "absolute",
           top: "100%",
-
           left: 0,
-
           display: "flex",
           flexDirection: "column",
         }}
