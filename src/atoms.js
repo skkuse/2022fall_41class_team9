@@ -86,3 +86,8 @@ export const testState = atom({
   key: "testState",
   default: "",
 });
+
+export const functionState = atom({
+  key: "functionState",
+  default: "",
+});

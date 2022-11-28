@@ -16,9 +16,9 @@ import {
   saveState,
   // executeResultState,
   // gradingResultState,
-  // submitResultState,
   submitResultState,
   testState,
+  functionState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
@@ -57,6 +57,12 @@ const Terminal = styled.div`
 `;
 
 function Center() {
+  const editorCode = useRef("");
+
+  const handleEditor = (editor) => {
+    editorCode.current = editor;
+  };
+
   const [test, setTest] = useRecoilState(testState);
   const handleEditorChange = (value, event) => {
     console.log(value);
@@ -77,6 +83,8 @@ function Center() {
   // const gradingResultAction = useSetRecoilState(gradingResultState);
   // const submitResultAction = useSetRecoilState(submitResultState);
 
+  const functionAction = useRecoilValue(functionState);
+
   const monaco = useMonaco();
 
   const [resize, setResize] = useState({ height: 51 });
@@ -95,6 +103,9 @@ function Center() {
     }
   }, [monaco, theme]);
 
+  if (functionAction === "upload") {
+    editorCode.current.setValue(test);
+  }
   return (
     <CenterContainer>
       <CenterHeader />
@@ -105,6 +116,7 @@ function Center() {
           defaultLanguage="python"
           defaultValue="base code"
           onChange={handleEditorChange}
+          onMount={handleEditor}
         ></Editor>
       </CenterEditor>
 
@@ -143,7 +155,7 @@ function Center() {
           });
         }}
       >
-        <CenterFooter />
+        <CenterFooter editor={editorCode} />
         <Terminal>
           {action === "execute" ? (
             <ExecuteResult></ExecuteResult>
