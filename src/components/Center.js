@@ -16,9 +16,9 @@ import {
   saveState,
   // executeResultState,
   // gradingResultState,
-  // submitResultState,
   submitResultState,
   testState,
+  functionState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
@@ -57,7 +57,18 @@ const Terminal = styled.div`
 `;
 
 function Center() {
+  const editorCode = useRef("");
+
+  const handleEditor = (editor) => {
+    editorCode.current = editor;
+  };
+
+  const [firstCode, setFirstCode] = useState("");
+  const [secondCode, setSecondCode] = useState("");
+  const [thirdCode, setThirdCode] = useState("");
+
   const [test, setTest] = useRecoilState(testState);
+  const savePart = useRecoilValue(savePartState);
   const handleEditorChange = (value, event) => {
     console.log(value);
     setTest(value);
@@ -68,7 +79,6 @@ function Center() {
 
   const action = useRecoilValue(actionState);
   const theme = useRecoilValue(themeState);
-  // const savePart = useRecoilValue(savePartState);
   // const isSave = useRecoilValue(saveState);
   // const code = useRecoilValue(codeState);
   const submitResult = useRecoilValue(submitResultState);
@@ -76,6 +86,9 @@ function Center() {
   // const setExecuteResult = useSetRecoilState(executeResultState);
   // const gradingResultAction = useSetRecoilState(gradingResultState);
   // const submitResultAction = useSetRecoilState(submitResultState);
+
+  const functionAction = useRecoilValue(functionState);
+  const setFunction = useSetRecoilState(functionState);
 
   const monaco = useMonaco();
 
@@ -95,9 +108,48 @@ function Center() {
     }
   }, [monaco, theme]);
 
+  if (functionAction === "upload") {
+    editorCode.current.setValue(test);
+    setFunction("false");
+  } else if (functionAction === "refresh") {
+    editorCode.current.setValue("base code");
+    setFunction("false");
+  } else if (functionAction === "copy") {
+    navigator.clipboard.writeText(test);
+    alert("복사 성공");
+    setFunction("false");
+  } else if (functionAction === "download") {
+    const downloadTag = document.createElement("a");
+    const fileName = "code.py";
+    const code = new Blob([test], {
+      type: "text/plain",
+    });
+    downloadTag.href = URL.createObjectURL(code);
+    downloadTag.download = fileName;
+    document.body.appendChild(downloadTag);
+    downloadTag.click();
+    setFunction("false");
+  }
+
+  // if (savePart[1] === 1) {
+  //   const tmp = savePart[0];
+  //   localStorage.setItem(tmp, test);
+  //   console.log(savePart);
+  //   // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  // } else if (savePart[1] === 2) {
+  //   const tmp = savePart[0];
+  //   localStorage.setItem(tmp, test);
+  //   console.log(savePart);
+  //   // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  // } else if (savePart[1] === 3) {
+  //   const tmp = savePart[0];
+  //   localStorage.setItem(tmp, test);
+  //   console.log(savePart);
+  //   // editorCode.current.setValue(localStorage.getItem(savePart[1]));
+  // }
   return (
     <CenterContainer>
-      <CenterHeader />
+      <CenterHeader editor={editorCode} />
 
       <CenterEditor>
         <Editor
@@ -105,6 +157,7 @@ function Center() {
           defaultLanguage="python"
           defaultValue="base code"
           onChange={handleEditorChange}
+          onMount={handleEditor}
         ></Editor>
       </CenterEditor>
 
@@ -114,9 +167,7 @@ function Center() {
         style={{
           position: "absolute",
           top: "100%",
-
           left: 0,
-
           display: "flex",
           flexDirection: "column",
         }}
@@ -143,7 +194,7 @@ function Center() {
           });
         }}
       >
-        <CenterFooter />
+        <CenterFooter editor={editorCode} />
         <Terminal>
           {action === "execute" ? (
             <ExecuteResult></ExecuteResult>

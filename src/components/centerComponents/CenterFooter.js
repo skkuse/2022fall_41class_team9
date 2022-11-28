@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   actionState,
@@ -19,9 +19,12 @@ import {
   dialogOpenState,
   testState,
   userState,
+  functionState,
 } from "../../atoms";
 import { executeCode, getAnalysis, gradeCode, submitCode } from "../../fetch";
-
+import { FiUpload } from "react-icons/fi";
+import { MdRefresh, MdContentCopy } from "react-icons/md";
+import { BsDownload } from "react-icons/bs";
 const CenterFooterContainer = styled.div`
   height: 50px;
   display: flex;
@@ -41,7 +44,6 @@ const Item = styled.div`
   cursor: pointer;
   font-size: 10px;
   text-align: center;
-
   border: none;
 `;
 const FooterBtns = styled.div`
@@ -50,11 +52,13 @@ const FooterBtns = styled.div`
   color: ${({ theme }) => theme.color};
 `;
 
-function CenterFooter() {
+function CenterFooter(props) {
   const setAction = useSetRecoilState(actionState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
   const userCode = useRecoilValue(testState);
+  const setUserCode = useSetRecoilState(testState);
   const userInfo = useRecoilValue(userState);
+  const setFunction = useSetRecoilState(functionState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
   const [loaderOpen, setLoaderOpen] = useState(false);
 
@@ -97,26 +101,42 @@ function CenterFooter() {
       console.log(error);
     }
   };
+  const handleFileUploadBtnClick = (e) => {
+    const reader = new FileReader();
+    const userFile = e.target.files[0];
+    reader.onload = () => {
+      setUserCode(reader.result);
+    };
+    reader.readAsText(userFile);
+    // setTest(test)
+    setFunction("upload");
+  };
+  const handleRefreshBtnClick = () => {
+    setFunction("refresh");
+  };
+  const handleCopyBtnClick = () => {
+    setFunction("copy");
+  };
+  const handleDownloadBtnClick = () => {
+    setFunction("download");
+  };
 
-  function execute() {
+  const handleExecuteBtnClick = () => {
     setAction("execute");
-  }
-  function grading() {
+  };
+  const handleGradingClick = () => {
     setAction("grading");
-  }
-  function submit() {
-    setAction("submit");
-  }
+  };
 
   const handleSubmitBtnClick = async () => {
+    // setAction("submit");
     // submitMutate({
     //   onSuccess: async (data) => {
     //     await getSubmissionResult();
-    //     console.log(data);
     //   },
     // });
     await getSubmissionResult(1);
-    // setLoaderOpen(true);
+    setLoaderOpen(true);
     // setDialogOpen(true);
   };
 
@@ -128,16 +148,49 @@ function CenterFooter() {
   return (
     <CenterFooterContainer>
       <FooterItems>
-        <Item>파일업로드</Item>
-        <Item>새로고침</Item>
-        <Item>복사</Item>
-        <Item>다운로드</Item>
+        <Item>
+          <input
+            type="file"
+            onChange={handleFileUploadBtnClick}
+            accept=".py"
+            style={{ display: "none" }}
+            className="fileUpload"
+          />
+          <FiUpload
+            onClick={() => {
+              document.querySelector(".fileUpload").click();
+            }}
+            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+          ></FiUpload>
+        </Item>
+        <Item>
+          <MdRefresh
+            onClick={handleRefreshBtnClick}
+            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+          ></MdRefresh>
+        </Item>
+        <Item>
+          <MdContentCopy
+            onClick={handleCopyBtnClick}
+            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+          ></MdContentCopy>
+        </Item>
+        <Item>
+          <BsDownload
+            onClick={handleDownloadBtnClick}
+            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+          ></BsDownload>
+        </Item>
       </FooterItems>
       <FooterBtns>
-        <Button color="inherit" variant="outlined">
+        <Button
+          color="inherit"
+          variant="outlined"
+          onClick={handleExecuteBtnClick}
+        >
           실행
         </Button>
-        <Button color="inherit" variant="outlined">
+        <Button color="inherit" variant="outlined" onClick={handleGradingClick}>
           채점
         </Button>
         <Button
