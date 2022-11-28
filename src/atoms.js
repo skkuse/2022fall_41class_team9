@@ -53,15 +53,15 @@ export const currentProblemInfoState = atom({
   },
 });
 
-// export const saveState = atom({
-//   key: "saveState",
-//   default: false,
-// });
+export const saveState = atom({
+  key: "saveState",
+  default: false,
+});
 
-// export const savePartState = atom({
-//   key: "savePartState",
-//   default: 1,
-// });
+export const savePartState = atom({
+  key: "savePartState",
+  default: 1,
+});
 
 // export const executeResultState = atom({
 //   key: "executeResultState",
