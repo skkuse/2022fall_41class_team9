@@ -56,8 +56,8 @@ class SubmissionAPIView(APIView):
 ################################################################################################
 # 일단 모든 python 백엔드 여기에 넣음. 인풋아웃풋 이해하기 편하게. 나중에 떼어낼 것.
 
-from src.codex.codex import get_explanation
-from src.memory_profile.memory_profile import get_memory_profile
+from src.codex import get_explanation
+from src.memory_profile import get_memory_profile
 from src import abstract
 
 class ExecuteAPIView(APIView):
@@ -95,20 +95,20 @@ class AnalysisAPIView(APIView):
         user_output = submission_serializer['user_output'].value
         counter = submission_serializer['counter'].value
         
-        print(submit_id)
+        """print(submit_id)
         print(user_id)
         print(prob_id)
         print(user_code)
         print(user_output)
-        print(counter)
+        print(counter)"""
         
         
         
         # get past submissions from other users ( not yours) with the same problem, 
         
-        print("past_submissions!!")
+        """print("past_submissions!!")
         print(len(past_submissions))
-        print("------")
+        print("------")"""
         
         past_submissions_list = []
         for i in range(len(past_submissions)):
@@ -140,13 +140,14 @@ class AnalysisAPIView(APIView):
         
         
         # tc open 값 확인하고 싶다면,
-        print(tc_open)
+        print(tc_open_input, tc_open_output, tc_close_input, tc_close_output)
+        """print(tc_open)
         print(type(tc_open))
         for i in tc_open_input:
             print(i)
             print(type(i))
         print(tc_open_input)
-        print(type(tc_open_input))
+        print(type(tc_open_input))"""
         
         
         
@@ -160,16 +161,14 @@ class AnalysisAPIView(APIView):
         # str bounderror 문제 발생시, str()로 감싸면 해결.
         
         analysis.submit_id=None # change later to analysis.submit_id = submit_id
-        analysis.efficiency=abstract.get_efficiency_analysis(user_code,tc_open_input, encoding="cp949") #text
+        analysis.efficiency=abstract.get_efficiency_analysis(user_code,tc_open_input) #text
         print("@@@")
         
         #print(abstract.get_efficiency_analysis(user_code, tc_open_input, encoding="cp949")) #text
         analysis.readability=abstract.get_readability_analysis(user_code) #text
-        analysis.plagiarism=abstract.get_plagiarism_score(user_code, past_submissions_list) #float
+        analysis.plagiarism=abstract.get_plagiarism_score(user_code, [user_code]) #float
         analysis.explanation=get_explanation(str(user_code)) #text
-        #analysis.explanation = "explain"
         analysis.functionability=abstract.get_grading_result(user_code, tc_open_input, tc_open_output, tc_close_input, tc_close_output) #text
-        
         
         #   memory profile
         # memory profile 결과 array받기
