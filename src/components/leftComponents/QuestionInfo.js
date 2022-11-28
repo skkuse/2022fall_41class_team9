@@ -1,4 +1,6 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { currentProblemInfoState } from "../../atoms";
 import { DUMMY_DATA } from "../../constants/DummyData";
 
 const QuestionInfoContainer = styled.div`
@@ -41,15 +43,23 @@ const MainContent = styled.div`
 `;
 
 function QuestionInfo() {
+  const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+  // console.log(currentProblemInfo);
+  // console.log(
+  //   JSON.parse('{"input" : [7, 15, 43], "output" : [13,610,433494437]}')
+  // );
+  // console.log(
+  //   JSON.stringify({ input: [7, 15, 43], output: [13, 610, 433494437] })
+  // );
   return (
     <QuestionInfoContainer>
       <Question>
         <MiniNavBar>문제</MiniNavBar>
-        <MainContent>{DUMMY_DATA.question}</MainContent>
+        <MainContent>{currentProblemInfo.description}</MainContent>
       </Question>
       <Condition>
         <MiniNavBar>참조/제약사항</MiniNavBar>
-        <MainContent>{DUMMY_DATA.constraint}</MainContent>
+        <MainContent>{currentProblemInfo.constraint}</MainContent>
       </Condition>
     </QuestionInfoContainer>
   );

@@ -7,8 +7,8 @@ import styled from "@emotion/styled";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import { useRecoilState } from "recoil";
-import { themeState } from "../../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { currentProblemInfoState, themeState } from "../../atoms";
 // import styled from "styled-components";
 
 const NavBarRightContainer = styled.div`
@@ -132,7 +132,7 @@ const MaterialUISwitch = styled(Switch)({
 function NavBarRight() {
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   const [theme, setTheme] = useRecoilState(themeState);
-
+  const currentProblemInfo = useRecoilValue(currentProblemInfoState);
   // const navigate = useNavigate();
   const [mode, setMode] = useState(true);
   const returnMode = (checked) => {
@@ -147,7 +147,7 @@ function NavBarRight() {
   };
   return (
     <NavBarRightContainer>
-      <ShowDue>{DUMMY_DATA.due}</ShowDue>
+      <ShowDue>{currentProblemInfo.deadline}</ShowDue>
       <SettingBtn onClick={() => setIsSettingOpen(true)}>
         <AiTwotoneSetting size="1.8rem" />
       </SettingBtn>

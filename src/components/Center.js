@@ -57,19 +57,13 @@ const Terminal = styled.div`
 `;
 
 function Center() {
-  const editorCode = useRef("");
-
-  const handleEditorCode = (editor) => {
-    editorCode.current = editor;
-  };
-  const handleEditorCodeChange = () => {
-    console.log(editorCode.current.getValue());
+  const [test, setTest] = useRecoilState(testState);
+  const handleEditorChange = (value, event) => {
+    console.log(value);
+    setTest(value);
     // setCode(editorCode.current.getValue());
   };
 
-  // const handleExecute = () => {
-  //   executeMutate();
-  // };
   const handleGrading = () => {};
 
   const action = useRecoilValue(actionState);
@@ -78,7 +72,6 @@ function Center() {
   // const isSave = useRecoilValue(saveState);
   // const code = useRecoilValue(codeState);
   const submitResult = useRecoilValue(submitResultState);
-  const [test, setTest] = useRecoilState(testState);
 
   // const setExecuteResult = useSetRecoilState(executeResultState);
   // const gradingResultAction = useSetRecoilState(gradingResultState);
@@ -102,12 +95,6 @@ function Center() {
     }
   }, [monaco, theme]);
 
-  if (action === "execute") {
-    // handleExecute();
-  } else if (action === "grading") {
-    handleGrading();
-  }
-  console.log(window.innerHeight);
   return (
     <CenterContainer>
       <CenterHeader />
@@ -117,18 +104,17 @@ function Center() {
           width={"100%"}
           defaultLanguage="python"
           defaultValue="base code"
-          onMount={handleEditorCode}
-          onChange={handleEditorCodeChange}
+          onChange={handleEditorChange}
         ></Editor>
       </CenterEditor>
 
       {/* <BottomContainer> */}
       <Rnd
-        default={{ x: 0, y: window.innerHeight - 103 }}
+        default={{ x: 0, y: window.innerHeight - 102 }}
         style={{
           position: "absolute",
           top: "100%",
-          // bottom: 0,
+
           left: 0,
 
           display: "flex",
@@ -147,11 +133,10 @@ function Center() {
         }}
         size={{
           height: resize.height,
-          // width: "100%",
         }}
         minWidth="100%"
         minHeight="40px"
-        maxHeight="800px"
+        maxHeight="80%"
         onResizeStop={(e, direction, ref, delta, position) => {
           setResize({
             height: ref.style.height,
@@ -159,15 +144,17 @@ function Center() {
         }}
       >
         <CenterFooter />
-        <Terminal></Terminal>
+        <Terminal>
+          {action === "execute" ? (
+            <ExecuteResult></ExecuteResult>
+          ) : (
+            <GradingResults></GradingResults>
+          )}
+        </Terminal>
       </Rnd>
       {/* </BottomContainer> */}
 
-      {action === "execute" ? (
-        <ExecuteResult></ExecuteResult>
-      ) : (
-        <GradingResults></GradingResults>
-      )}
+      {}
     </CenterContainer>
   );
 }

@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { userState } from "../../atoms";
 
 import {
   executeCode,
@@ -28,109 +29,31 @@ const NavBarContainer = styled.header`
 `;
 
 function NavBar() {
-  // const editorCode = useRecoilValue(editorCodeState);
-  // const { data: userInfoData } = useQuery(
-  //   "getUserInfo",
-  //   () => getUserInfo("nickel"),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
+  const setUser = useSetRecoilState(userState);
 
-  // const { data: userCoursesData } = useQuery(
-  //   "getUserCourses",
-  //   () => getUserCourses("nickel"),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
+  const { data: userInfoData } = useQuery(
+    "getUserInfo",
+    () => getUserInfo("nickel"),
+    {
+      onSuccess: (data) => {
+        setUser(data);
 
-  // const { data: questionsData } = useQuery(
-  //   "getCourseQuestions",
-  //   () => getCourseQuestions(1),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
+        console.log(data);
+      },
+      onError: (error) => console.log(error),
+      refetchOnWindowFocus: false,
+    }
+  );
 
-  // const { data: questionData } = useQuery(
-  //   "getQuestionInfo",
-  //   () => getQuestionInfo(1),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
-  // const { data: skeletonData } = useQuery(
-  //   "getSkeletonCode",
-  //   () => getSkeletonCode(1),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
-
-  // const { data: submitResultData } = useQuery(
-  //   "getPastSubmitResult",
-  //   () => getPastSubmitResult(1, 1),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
-
-  // const { data: submitTrialData } = useQuery(
-  //   "getSubmitTrial",
-  //   () => getSubmitTrial(1, 1),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
-
-  // const { mutate } = useMutation(
-  //   () =>
-  //     submitCode({
-  //       user_id: 1,
-  //       prob_id: 1,
-  //       user_code:
-  //         "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
-  //       user_output: "useroutput",
-  //       counter: 0,
-  //     }),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
-
-  // const { mutate } = useMutation(() => getAnalysis(13), {
-  //   onSuccess: (data) => console.log(data),
-  //   onError: (error) => console.log(error),
-  // });
-
-  // const { mutate } = useMutation(
-  //   () => executeCode({ user_code: "print('hello')\nprint('world')" }),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
-  // useEffect(() => {
-  //   mutate();
-  // }, []);
   return (
     <NavBarContainer>
-      <button
+      {/* <button
       // onClick={() => {
       //   mutate();
       // }}
       >
         제발
-      </button>
+      </button> */}
       <NavBarLeft />
       <NavBarCenter />
       <NavBarRight />
