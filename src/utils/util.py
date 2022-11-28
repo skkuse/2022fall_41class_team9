@@ -27,10 +27,13 @@ def execute_shell_command(command, encoding):
     out = None
     try:
         exe = sp.run(command, stdout=sp.PIPE, stderr=sp.PIPE)
-        exe.check_returncode()
-        out = exe.stdout.decode(encoding=encoding)
+        #exe.check_returncode()
+        if exe.stdout.decode(encoding=encoding) != '':
+            out = exe.stdout.decode(encoding=encoding)
+        else:
+            out = exe.stderr.decode(encoding=encoding)
     except sp.CalledProcessError as e:
-        out = e.stderr.decode(encoding)
+        out = e.stderr.decode(encoding=encoding)
 
     return out
 
@@ -59,3 +62,14 @@ def get_py_execution_header():
 
 def is_empty(lst):
     return len(lst) == 0
+
+def flatten_list(lst):
+    flat_list = []
+    for element in lst:
+        flat_element = []
+        if isinstance(element, list):
+            flat_element = flatten_list(element)
+            flat_list += flat_element
+        else:
+            flat_list.append(element)
+    return flat_list

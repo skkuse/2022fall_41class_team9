@@ -1,5 +1,5 @@
-from .file import TestFileManager
-from .util import build_command, execute_shell_command
+from .utils.file import TestFileManager
+from .utils.util import token2command, execute_shell_command, command2token
 import re
 
 BASECOMMAND = "pylama"
@@ -16,8 +16,8 @@ class Auditor(TestFileManager):
 
     def analyze(self):
         if len(self.test_dirs)+len(self.test_files) > 0:
-            command = build_command(BASECOMMAND, *self.test_dirs, *self.test_files, "-l", self.linter_bundle)
-            audit_result = execute_shell_command(command, encoding=self.encoding)
+            command = token2command(BASECOMMAND, *self.test_dirs, *self.test_files, "-l", self.linter_bundle) #"-l", self.linter_bundle
+            audit_result = execute_shell_command(command2token(command), encoding=self.encoding)
             #parse result by regex & append to audit report
             expression = r"(?P<file>.+):(?P<line>\d+):(?P<col>\d+) (?P<type>\w*) (?P<content>.+) \[(?P<linter>\w+)\]\n?"
             regex = re.compile(expression)

@@ -1,7 +1,7 @@
 import copydetect
 from copydetect import CopyDetector
 import os
-from .file import TestFileManager
+from .utils.file import TestFileManager
 
 class Detector(TestFileManager):
     """

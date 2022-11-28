@@ -1,7 +1,7 @@
 import os
 import unittest
 import json
-from .wrapper import timeout
+from .utils.wrapper import timeout
 from .execution import Runner
 
 LOCAL_TIMEOUT = 10
@@ -38,6 +38,7 @@ class Tester:
         for input, answer in zip(self.inputs, self.answers):
             if not hasattr(input, "__iter__"):
                 input = [input]
+            print(input, answer)
             output = self.executer.run_soln(*input)
 
             suite = unittest.TestSuite()
