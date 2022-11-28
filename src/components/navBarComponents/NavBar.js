@@ -88,26 +88,26 @@ function NavBar() {
   //   }
   // );
 
-  const { mutate } = useMutation(
-    () =>
-      submitCode({
-        user_id: 1,
-        prob_id: 1,
-        user_code:
-          "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
-        user_output: "useroutput",
-        counter: 0,
-      }),
-    {
-      onSuccess: (data) => console.log(data),
-      onError: (error) => console.log(error),
-    }
-  );
+  // const { mutate } = useMutation(
+  //   () =>
+  //     submitCode({
+  //       user_id: 1,
+  //       prob_id: 1,
+  //       user_code:
+  //         "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
+  //       user_output: "useroutput",
+  //       counter: 0,
+  //     }),
+  //   {
+  //     onSuccess: (data) => console.log(data),
+  //     onError: (error) => console.log(error),
+  //   }
+  // );
 
-  // const { mutate } = useMutation(() => getAnalysis(13), {
-  //   onSuccess: (data) => console.log(data),
-  //   onError: (error) => console.log(error),
-  // });
+  const { mutate } = useMutation(() => getAnalysis(1), {
+    onSuccess: (data) => console.log(data),
+    onError: (error) => console.log(error),
+  });
 
   // const { mutate } = useMutation(
   //   () => executeCode({ user_code: "print('hello')\nprint('world')" }),
