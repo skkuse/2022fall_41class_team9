@@ -20,36 +20,69 @@ export const openedContentState = atom({
   default: "main",
 });
 
-export const currentProblemState = atom({
+export const userState = atom({
+  key: "userState",
+  default: {
+    courses: [1, 2, 3],
+    password: "1234",
+    setting_font: "C",
+    setting_theme: "Dark",
+    user_id: 10,
+    username: "eric",
+  },
+});
+
+export const currentProblemInfoState = atom({
   key: "currentProblemState",
-  default: {},
+  default: {
+    answer_code:
+      "def solution(n): \\n a,b = 1,1 \\n if n==1 or n==2: \\n return 1 \\n for i in range(1,n): \\n a,b = b, a+b \\n return a",
+    constraint: "N is given in the first line. N < 45",
+    course_id: 1,
+    deadline: "2022-03-12",
+    description:
+      "Fibonacci numbers start with 0 and 1. 0th fibonacci number is 0, 1st fibonacci number is 1. Fibonacci numbers appearing after is the addition of previous two numbers. When you write fibonacci numbers until n=17 , the sequence is 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597. Given n, return the nth fibonacci number",
+    max_submission: 3,
+    prob_id: 1,
+    skeleton: "def solution(arr): \\n    answer = \\n\\n    return answer",
+    tag: "none",
+    tc_close: "{'input' : [7, 15, 43], 'output' : [13,610,433494437]}",
+    tc_open: "{'input' : [5, 10], 'output' : [5,55]}",
+    title: "fibonnachi",
+    writer: "adf",
+  },
 });
 
-export const saveState = atom({
-  key: "saveState",
-  default: false,
-});
+// export const saveState = atom({
+//   key: "saveState",
+//   default: false,
+// });
 
-export const savePartState = atom({
-  key: "savePartState",
-  default: 1,
-});
+// export const savePartState = atom({
+//   key: "savePartState",
+//   default: 1,
+// });
 
-export const executeResultState = atom({
-  key: "executeResultState",
-  default: "",
-});
+// export const executeResultState = atom({
+//   key: "executeResultState",
+//   default: "",
+// });
 
-export const gradingResultState = atom({
-  key: "gradingResultState",
-  default: "",
-});
+// export const gradingResultState = atom({
+//   key: "gradingResultState",
+//   default: "",
+// });
 export const submitResultState = atom({
   key: "submitResultState",
   default: "",
 });
 
-export const codeState = atom({
-  key: "codeState",
-  dafault: "",
+// export const editorCodeState = atom({
+//   key: "editorCodeState",
+//   dafault: "",
+// });
+
+export const testState = atom({
+  key: "testState",
+  default: "",
 });

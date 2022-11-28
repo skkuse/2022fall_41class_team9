@@ -1,5 +1,5 @@
 import Editor, { useMonaco } from "@monaco-editor/react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import styled from "styled-components";
 import CenterFooter from "./centerComponents/CenterFooter";
 import CenterHeader from "./centerComponents/CenterHeader";
@@ -14,10 +14,11 @@ import {
   themeState,
   savePartState,
   saveState,
-  executeResultState,
-  gradingResultState,
+  // executeResultState,
+  // gradingResultState,
+  // submitResultState,
   submitResultState,
-  codeState,
+  testState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
@@ -33,6 +34,7 @@ const CenterContainer = styled.div`
 `;
 
 const CenterEditor = styled.div`
+  position: relative;
   width: 100%;
   flex: 1;
 `;
@@ -40,7 +42,7 @@ const CenterEditor = styled.div`
 const BottomContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 40px;
+  height: 450px;
 
   bottom: 0;
   left: 0;
@@ -48,50 +50,36 @@ const BottomContainer = styled.div`
 
 const Terminal = styled.div`
   width: 100%;
-  height: 250px;
+  height: 0;
   flex: 1;
   background-color: ${({ theme }) => theme.terminal};
   bottom: 0;
 `;
 
 function Center() {
-  const editorCode = useRef("");
-
-  // const {data} = useQuery("getUsers", ()=>getUserInfo("nickel"), {onError:(error) => conso});
-  // const { mutate: executeMutate } = useMutation(
-  //   () => executeCode(editorCode.current.getValue()),
-  //   {
-  //     onSuccess: (data) => {
-  //       setExecuteResult(data);
-  //     },
-  //   }
-  // );
-
-  // const [codes, setCodes] = useRecoilState(codeState);
-  const handleEditorCode = (editor) => {
-    editorCode.current = editor;
-  };
-  const handleEditorCodeChange = () => {
-    console.log(editorCode.current.getValue());
+  const [test, setTest] = useRecoilState(testState);
+  const handleEditorChange = (value, event) => {
+    console.log(value);
+    setTest(value);
     // setCode(editorCode.current.getValue());
   };
 
-  const handleExecute = () => {
-    // executeMutate();
-  };
   const handleGrading = () => {};
 
   const action = useRecoilValue(actionState);
   const theme = useRecoilValue(themeState);
-  const savePart = useRecoilValue(savePartState);
-  const isSave = useRecoilValue(saveState);
-  const setExecuteResult = useSetRecoilState(executeResultState);
-  const gradingResultAction = useSetRecoilState(gradingResultState);
-  const submitResultAction = useSetRecoilState(submitResultState);
+  // const savePart = useRecoilValue(savePartState);
+  // const isSave = useRecoilValue(saveState);
+  // const code = useRecoilValue(codeState);
+  const submitResult = useRecoilValue(submitResultState);
+
+  // const setExecuteResult = useSetRecoilState(executeResultState);
+  // const gradingResultAction = useSetRecoilState(gradingResultState);
+  // const submitResultAction = useSetRecoilState(submitResultState);
 
   const monaco = useMonaco();
 
-  const [resize, setResize] = useState({ height: 40 });
+  const [resize, setResize] = useState({ height: 51 });
 
   useEffect(() => {
     if (!monaco) {
@@ -107,66 +95,66 @@ function Center() {
     }
   }, [monaco, theme]);
 
-  if (action === "execute") {
-    handleExecute();
-  } else if (action === "grading") {
-    handleGrading();
-  }
   return (
     <CenterContainer>
       <CenterHeader />
+
       <CenterEditor>
         <Editor
+          width={"100%"}
           defaultLanguage="python"
           defaultValue="base code"
-          onMount={handleEditorCode}
-          onChange={handleEditorCodeChange}
+          onChange={handleEditorChange}
         ></Editor>
       </CenterEditor>
-      {/* <CenterFooter /> */}
-      <BottomContainer>
-        <Rnd
-          style={{
-            position: "absolute",
 
-            backgroundColor: "beige",
-            display: "flex",
-            flexDirection: "column",
-          }}
-          disableDragging
-          enableResizing={{
-            bottom: false,
-            bottomLeft: false,
-            bottomRight: false,
-            left: false,
-            right: false,
-            top: true,
-            topLeft: false,
-            topRight: false,
-          }}
-          size={{
-            height: resize.height,
-            width: "100%",
-          }}
-          minWidth="100%"
-          minHeight="40px"
-          maxHeight="800px"
-          onResizeStop={(e, direction, ref, delta, position) => {
-            setResize({
-              height: ref.style.height,
-            });
-          }}
-        >
-          <CenterFooter />
-          <Terminal></Terminal>
-        </Rnd>
-      </BottomContainer>
+      {/* <BottomContainer> */}
+      <Rnd
+        default={{ x: 0, y: window.innerHeight - 102 }}
+        style={{
+          position: "absolute",
+          top: "100%",
 
-      {action === "execute" ? (
-        <ExecuteResult></ExecuteResult>
-      ) : (
-        <GradingResults></GradingResults>
-      )}
+          left: 0,
+
+          display: "flex",
+          flexDirection: "column",
+        }}
+        disableDragging
+        enableResizing={{
+          bottom: false,
+          bottomLeft: false,
+          bottomRight: false,
+          left: false,
+          right: false,
+          top: true,
+          topLeft: false,
+          topRight: false,
+        }}
+        size={{
+          height: resize.height,
+        }}
+        minWidth="100%"
+        minHeight="40px"
+        maxHeight="80%"
+        onResizeStop={(e, direction, ref, delta, position) => {
+          setResize({
+            height: ref.style.height,
+          });
+        }}
+      >
+        <CenterFooter />
+        <Terminal>
+          {action === "execute" ? (
+            <ExecuteResult></ExecuteResult>
+          ) : (
+            <GradingResults></GradingResults>
+          )}
+        </Terminal>
+      </Rnd>
+      {/* </BottomContainer> */}
+
+      {}
     </CenterContainer>
   );
 }
