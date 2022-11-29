@@ -59,9 +59,9 @@ class SubmissionAPIView(APIView):
 from src.codex import get_explanation
 from src.memory_profile import get_memory_profile
 from src import abstract
-
+import re
 class ExecuteAPIView(APIView):
-
+    
     def post(self, request):
         x = request.data['user_code']
         
@@ -69,9 +69,148 @@ class ExecuteAPIView(APIView):
         execution_result = abstract.get_execution_result(x)
         print(execution_result[0])
         print(execution_result[1])
-        dict_result = {"output": execution_result[0], "error": execution_result[1]}
-        return Response(data=dict_result)
+        er = execution_result[0]
         
+        
+        errorline = 0
+        
+        status = "success" if "Error" not in er else "fail"
+        
+        
+        dict_result = {"status": status, "result": er}
+        
+        if "Error" in er:
+            
+            
+            
+            pattern = re.compile('(line\s*\d+)')
+            pattern2 = pattern2 = re.compile('\d+')
+            
+            try:
+                x = pattern.findall(er)
+                y = pattern2.findall(x[0])
+                errorline = y[0]
+                
+                dict_result["linePos"] = int(errorline)
+            except:
+                pass
+                
+     
+
+        
+        
+        
+        return Response(data=dict_result)
+
+class validateTestcaseAPIView(APIView):
+
+    def post(self, request):
+        x = request.data['user_code']
+        prob_id = request.data['prob_id']
+        tc_num = request.data['tc_num']
+        
+        problem = Problem.objects.filter(prob_id=prob_id)
+        problem=problem[0]
+        
+        answer_code = problem.answer_code
+        deadline = problem.deadline
+        constraint = problem.constraint
+        
+        
+        #   pip install eval
+        tc_open = eval(problem.tc_open)
+        tc_open_input = tc_open['input']  # test case inputs. type: array , len N
+        tc_open_output = tc_open['output'] # test case outputs. type:array , len N
+        tc_close = eval(problem.tc_close)  
+        tc_close_input = tc_close['input'] # hidden test case inputs. type: array, len M
+        tc_close_output = tc_close['output'] # hidden test case inputs. type: array, len M
+        
+        
+        current_testcase_input = tc_open_input[tc_num]
+        current_testcase_output = tc_open_output[tc_num]
+        
+        print("current testcase input : ")
+        print(current_testcase_input)
+        print("current testcase output : ")
+        print(current_testcase_output)
+        
+        print(x)
+        execution_result = abstract.get_execution_result(x)
+        print(execution_result[0])
+        print(execution_result[1])
+        y=abstract.get_grading_result(x, tc_open_input, tc_open_output, tc_close_input, tc_close_output)
+        print(y)
+        
+        y = y.replace('true','True')
+        y = y.replace('false','False')
+        testcaseresult = eval(y)
+        print(type(testcaseresult))
+        
+        print(testcaseresult[tc_num])
+        
+        if current_testcase_output == execution_result:
+            print("true")
+        else:
+            print("false")
+        dict_result = {"id" : tc_num , "status" : testcaseresult[tc_num]["status"] , "input" : testcaseresult[tc_num]["input"] , "output" : tc_open_output[tc_num], "userOutput" : testcaseresult[tc_num]["output"]}
+        #dict_result = {"output": execution_result[0], "error": execution_result[1]}
+        return Response(data=dict_result)
+
+
+class gradeCodeAPIView(APIView):
+
+    def post(self, request):
+        x = request.data['user_code']
+        prob_id = request.data['prob_id']
+        tc_num = request.data['tc_num']
+        
+        problem = Problem.objects.filter(prob_id=prob_id)
+        problem=problem[0]
+        
+        answer_code = problem.answer_code
+        deadline = problem.deadline
+        constraint = problem.constraint
+        
+        
+        #   pip install eval
+        tc_open = eval(problem.tc_open)
+        tc_open_input = tc_open['input']  # test case inputs. type: array , len N
+        tc_open_output = tc_open['output'] # test case outputs. type:array , len N
+        tc_close = eval(problem.tc_close)  
+        tc_close_input = tc_close['input'] # hidden test case inputs. type: array, len M
+        tc_close_output = tc_close['output'] # hidden test case inputs. type: array, len M
+        
+        
+        current_testcase_input = tc_open_input[tc_num]
+        current_testcase_output = tc_open_output[tc_num]
+        
+        print("current testcase input : ")
+        print(current_testcase_input)
+        print("current testcase output : ")
+        print(current_testcase_output)
+        
+        print(x)
+        execution_result = abstract.get_execution_result(x)
+        print(execution_result[0])
+        print(execution_result[1])
+        y=abstract.get_grading_result(x, tc_open_input, tc_open_output, tc_close_input, tc_close_output)
+        print(y)
+        
+        y = y.replace('true','True')
+        y = y.replace('false','False')
+        testcaseresult = eval(y)
+        print(type(testcaseresult))
+        
+        print(testcaseresult[tc_num])
+        
+        if current_testcase_output == execution_result:
+            print("true")
+        else:
+            print("false")
+        dict_result = {"id" : tc_num , "status" : testcaseresult[tc_num]["status"] , "input" : testcaseresult[tc_num]["input"] , "output" : tc_open_output[tc_num], "userOutput" : testcaseresult[tc_num]["output"]}
+        #dict_result = {"output": execution_result[0], "error": execution_result[1]}
+        return Response(data=dict_result)
+
 
 class AnalysisAPIView(APIView):
     def get(self,request,pk):
@@ -82,10 +221,6 @@ class AnalysisAPIView(APIView):
         
         past_submissions = Submission.objects.filter(prob_id=submission_serializer.data['prob_id'])
         problem=problem[0]
-        
-        
-
-        
         
         #   get submission data
         submit_id = submission_serializer['submit_id'].value
@@ -101,7 +236,6 @@ class AnalysisAPIView(APIView):
         print(user_code)
         print(user_output)
         print(counter)"""
-        
         
         
         # get past submissions from other users ( not yours) with the same problem, 
@@ -192,5 +326,8 @@ class AnalysisAPIView(APIView):
         # analysis_serializer.save()
         
         return Response(analysis_serializer.data,status=status.HTTP_200_OK)
-    
+
+
+
+
 ################################################################################################
