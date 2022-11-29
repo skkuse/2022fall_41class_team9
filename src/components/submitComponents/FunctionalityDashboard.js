@@ -4,10 +4,19 @@ import styled from "styled-components";
 import GraphContainer from "./GraphContainer";
 import InfoContainer from "./InfoContainer";
 import Title from "./Title";
-import { Rnd } from "react-rnd";
+import { MdExpandLess, MdExpandMore } from "react-icons/md";
+import {
+  Button,
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemText,
+  ListSubheader,
+} from "@mui/material";
 
 function FunctionalityDashboard() {
   const [resize, setResize] = useState({ width: 350, height: 350 });
+  const [openedIdx, setOpenedIdx] = useState(0);
   const functionalityChart = {
     series: [70],
     options: {
@@ -26,6 +35,14 @@ function FunctionalityDashboard() {
     },
   };
 
+  const handleTestcaseClick = (idx) => {
+    if (idx === openedIdx) {
+      setOpenedIdx(-1);
+    } else {
+      setOpenedIdx(idx);
+    }
+  };
+
   return (
     <>
       <Title label={"기능성 결과"} />
@@ -37,27 +54,41 @@ function FunctionalityDashboard() {
           height={450}
         />
       </GraphContainer>
-      <InfoContainer></InfoContainer>
-      <div>
-        <Rnd
-          style={{
-            position: "relative",
-            backgroundColor: "beige",
-            transform: "",
-          }}
-          size={{ width: resize.width, height: resize.height }}
-          // onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
-          onResizeStop={(e, direction, ref, delta, position) => {
-            setResize({
-              width: ref.style.width,
-              height: ref.style.height,
-              // ...position,
-            });
-          }}
+      <InfoContainer>
+        <List
+          sx={{ width: "100%", bgcolor: "background.paper" }}
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              Nested List Items
+            </ListSubheader>
+          }
         >
-          001
-        </Rnd>
-      </div>
+          {[...Array(7).keys()].map((num, idx) => (
+            <div key={idx}>
+              <ListItemButton onClick={() => handleTestcaseClick(idx)}>
+                <ListItemText primary={idx} />
+                <Button variant="contained">Pass</Button>
+                {openedIdx === idx ? <MdExpandLess /> : <MdExpandMore />}
+              </ListItemButton>
+              <Collapse in={openedIdx === idx} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemText primary="Input : " />
+                  </ListItemButton>
+                  <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemText primary="Output : " />
+                  </ListItemButton>
+                  <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemText primary="User Output :" />
+                  </ListItemButton>
+                </List>
+              </Collapse>
+            </div>
+          ))}
+        </List>
+      </InfoContainer>
     </>
   );
 }
