@@ -6,5 +6,5 @@ urlpatterns =[
     path('grade/',gradeCodeAPIView.as_view()),
     path('execute/',ExecuteAPIView.as_view()),
     path('analysis/<int:pk>',AnalysisAPIView.as_view()),
-    
+    path('analysis2/<int:pk>',AnalysisAPIView2.as_view()),
 ]
