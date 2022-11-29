@@ -61,6 +61,7 @@ function Center() {
 
   const handleEditor = (editor) => {
     editorCode.current = editor;
+    editorCode.current.setValue(localStorage.getItem(1));
   };
 
   const [firstCode, setFirstCode] = useState("");
@@ -194,7 +195,7 @@ function Center() {
           });
         }}
       >
-        <CenterFooter editor={editorCode} />
+        <CenterFooter editorCode={editorCode} />
         <Terminal>
           {action === "execute" ? (
             <ExecuteResult></ExecuteResult>

@@ -105,10 +105,11 @@ function CenterFooter(props) {
     const userFile = e.target.files[0];
     reader.onload = () => {
       setUserCode(reader.result);
+      props.editorCode.current.setValue(reader.result);
+      console.log(reader.result);
     };
     reader.readAsText(userFile);
-    // setTest(test)
-    setFunction("upload");
+    // setFunction("upload");
   };
   const handleRefreshBtnClick = () => {
     setFunction("refresh");
