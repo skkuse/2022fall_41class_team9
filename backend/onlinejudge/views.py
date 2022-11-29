@@ -156,13 +156,11 @@ class validateTestcaseAPIView(APIView):
         #dict_result = {"output": execution_result[0], "error": execution_result[1]}
         return Response(data=dict_result)
 
-
 class gradeCodeAPIView(APIView):
 
     def post(self, request):
         x = request.data['user_code']
         prob_id = request.data['prob_id']
-        tc_num = request.data['tc_num']
         
         problem = Problem.objects.filter(prob_id=prob_id)
         problem=problem[0]
@@ -181,14 +179,6 @@ class gradeCodeAPIView(APIView):
         tc_close_output = tc_close['output'] # hidden test case inputs. type: array, len M
         
         
-        current_testcase_input = tc_open_input[tc_num]
-        current_testcase_output = tc_open_output[tc_num]
-        
-        print("current testcase input : ")
-        print(current_testcase_input)
-        print("current testcase output : ")
-        print(current_testcase_output)
-        
         print(x)
         execution_result = abstract.get_execution_result(x)
         print(execution_result[0])
@@ -200,17 +190,17 @@ class gradeCodeAPIView(APIView):
         y = y.replace('false','False')
         testcaseresult = eval(y)
         print(type(testcaseresult))
+        list_result = []
+        for i in testcaseresult:
+            
+            
+            if i["is_open"]:
+                dict_result = {"id" : i["id"] , "status" : i["status"] , "input" : i["input"] , "output" : i["answer"], "userOutput" : i["output"]}
+            else:
+                dict_result = {"id" : i["id"] , "status" : i["status"] , "input" : "hidden" , "output" : "hidden", "userOutput" : "hidden"}
+            list_result.append(dict_result)
         
-        print(testcaseresult[tc_num])
-        
-        if current_testcase_output == execution_result:
-            print("true")
-        else:
-            print("false")
-        dict_result = {"id" : tc_num , "status" : testcaseresult[tc_num]["status"] , "input" : testcaseresult[tc_num]["input"] , "output" : tc_open_output[tc_num], "userOutput" : testcaseresult[tc_num]["output"]}
-        #dict_result = {"output": execution_result[0], "error": execution_result[1]}
-        return Response(data=dict_result)
-
+        return Response(data=list_result)
 
 class AnalysisAPIView(APIView):
     def get(self,request,pk):
