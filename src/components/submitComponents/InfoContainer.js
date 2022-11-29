@@ -6,6 +6,7 @@ const Container = styled.div`
   margin: 0 auto;
   background-color: bisque;
   height: 500px;
+  margin-bottom: 100px;
 `;
 
 function InfoContainer({ children }) {

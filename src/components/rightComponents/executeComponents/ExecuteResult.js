@@ -4,7 +4,7 @@ import { actionState } from "../../../atoms";
 
 const ExecuteResultContainer = styled.div`
   height: 100%;
-  background-color: ${({ theme }) => theme.bgColor};
+  /* background-color: ${({ theme }) => theme.bgColor}; */
   display: ${(props) => (props.action === "execute" ? "block" : "none")};
 `;
 

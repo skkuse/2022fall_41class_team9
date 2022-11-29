@@ -35,7 +35,9 @@ const CenterFooterContainer = styled.div`
 `;
 const FooterItems = styled.div`
   display: flex;
+  gap: 15px;
 `;
+
 const Item = styled.div`
   width: 30px;
   height: 30px;
@@ -52,15 +54,15 @@ const FooterBtns = styled.div`
   color: ${({ theme }) => theme.color};
 `;
 
-function CenterFooter(props) {
+function CenterFooter({ editorCode }) {
   const setAction = useSetRecoilState(actionState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
-  const userCode = useRecoilValue(testState);
-  const setUserCode = useSetRecoilState(testState);
+  const [userCode, setUserCode] = useRecoilState(testState);
   const userInfo = useRecoilValue(userState);
-  const setFunction = useSetRecoilState(functionState);
+
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
   const [loaderOpen, setLoaderOpen] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   const { mutate: executeMutate } = useMutation(
     () => executeCode({ user_code: userCode }),
@@ -96,29 +98,42 @@ function CenterFooter(props) {
     try {
       const response = await axios.get(`/onlinejudge/analysis/${submitId}`);
       console.log(response.data);
+      setIsDataLoading(false);
+      // console.log(JSON.parse(response.data));
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleFileUploadBtnClick = (e) => {
     const reader = new FileReader();
     const userFile = e.target.files[0];
     reader.onload = () => {
       setUserCode(reader.result);
-      props.editorCode.current.setValue(reader.result);
+      editorCode.current.setValue(reader.result);
       console.log(reader.result);
     };
     reader.readAsText(userFile);
-    // setFunction("upload");
   };
+
   const handleRefreshBtnClick = () => {
-    setFunction("refresh");
+    editorCode.current.setValue("base code");
   };
+
   const handleCopyBtnClick = () => {
-    setFunction("copy");
+    navigator.clipboard.writeText(userCode);
   };
+
   const handleDownloadBtnClick = () => {
-    setFunction("download");
+    const downloadTag = document.createElement("a");
+    const fileName = "code.py";
+    const code = new Blob([userCode], {
+      type: "text/plain",
+    });
+    downloadTag.href = URL.createObjectURL(code);
+    downloadTag.download = fileName;
+    document.body.appendChild(downloadTag);
+    downloadTag.click();
   };
 
   const handleExecuteBtnClick = () => {
@@ -128,14 +143,15 @@ function CenterFooter(props) {
     setAction("grading");
   };
 
-  const handleSubmitBtnClick = () => {
-    // setAction("submit");
-    submitMutate({
-      onSuccess: async (data) => {
-        await getSubmissionResult();
-      },
-    });
+  const handleSubmitBtnClick = async () => {
     setLoaderOpen(true);
+
+    // submitMutate({
+    //   onSuccess: async (data) => {
+    //     await getSubmissionResult();
+    //   },
+    // });
+    await getSubmissionResult(1);
     // setDialogOpen(true);
   };
 
@@ -220,12 +236,16 @@ function CenterFooter(props) {
             Let Google help apps determine location. This means sending
             anonymous location data to Google, even when no apps are running.
           </DialogContentText> */}
-          <CircularProgress color="inherit" />
+          {isDataLoading ? (
+            <CircularProgress color="inherit" />
+          ) : (
+            <div>결과를 보러 가시겠습니까?</div>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setLoaderOpen(false)}>Disagree</Button>
+          <Button onClick={() => setLoaderOpen(false)}>아니요</Button>
           <Button onClick={handleMoveBtnClick} autoFocus>
-            Agree
+            네
           </Button>
         </DialogActions>
       </Dialog>
