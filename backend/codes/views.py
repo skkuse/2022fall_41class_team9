@@ -264,6 +264,7 @@ class SubmissionAPIView(APIView):
         #sub=Submission.objects.create(user_id=uid,prob_id=pid,user_code=,user_output="",counter=)
         request.data.update(
             {
+                
                 "user_id:":uid,
                 "prob_id":pid,
                 "user_input":"",
@@ -273,8 +274,10 @@ class SubmissionAPIView(APIView):
         )
         serializer=SubmissionSerializer(data=request.data)
         if serializer.is_valid():
-            print("validddd")
-        return Response({},status=status.HTTP_200_OK)
+            print("valid submission")
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
         # #req=request.json()
         # body =  json.loads(request.body.decode('utf-8'))
         # print(body)
