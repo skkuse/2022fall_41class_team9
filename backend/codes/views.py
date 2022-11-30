@@ -375,7 +375,26 @@ class SearchAPIView(APIView):
         """
         response=requests.get(url).json()
         print(response.keys())
-        print(response.items)
-        items=response.items
+        print()
+        items=[]
 
-        return Response(response,status=status.HTTP_200_OK)
+        for item in response.get('items'):
+            #print(item.keys())
+            #item=response.items['key']
+            print(item.get('title'))
+            print(item.get('link'))
+            #print(item.get('snippet'))
+            print(item.get('pagemap').get('cse_thumbnail'))
+            items.append(
+                {
+                    "title":item.get('title'),
+                    "link":item.get('link'),
+                    "snippet":item.get('snippet'),
+                    "thumbnail":item.get('pagemap').get('cse_thumbnail')
+                }
+            )
+
+
+
+        return Response(items,status=status.HTTP_200_OK)
+        return Response({"items":json(response.get('items'))},status=status.HTTP_200_OK)
