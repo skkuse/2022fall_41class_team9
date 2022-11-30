@@ -1,16 +1,20 @@
 import { Button, CircularProgress } from "@mui/material";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { testState } from "../../atoms";
+import { currentProblemInfoState, testState } from "../../atoms";
 import { DUMMY_DATA } from "../../constants/DummyData";
 import { validateTestCase } from "../../fetch";
 
-const TestCaseContainer = styled.div`
+const TestCaseContainer = styled(motion.div)`
   flex: 1;
   display: flex;
   flex-direction: column;
   color: ${({ theme }) => theme.color};
+  height: auto;
+  /* display: none; */
 `;
 
 const TestCaseNavBar = styled.div`
@@ -22,6 +26,13 @@ const TestCaseNavBar = styled.div`
   border-top: 1px solid ${({ theme }) => theme.borderColor};
   color: ${({ theme }) => theme.boldColor};
   font-weight: 600;
+  justify-content: space-between;
+`;
+
+const CasesWrapper = styled(motion.div)`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 `;
 
 const TestCase = styled.div`
@@ -53,12 +64,7 @@ const ValidateContainer = styled.div`
 
 const ValidateResult = styled.div`
   flex: 1;
-`;
-
-const ValidateButton = styled.button`
-  height: 100%;
-  border: none;
-  background-color: transparent;
+  color: ${(props) => (props.status === "pass" ? "blue" : "red")};
 `;
 
 const MainContent = styled.div`
@@ -90,56 +96,105 @@ const ValidateLoader = styled.div`
   align-items: center;
 `;
 
+const testCaseVariants = {
+  open: {
+    scale: 1,
+  },
+  closed: {
+    scale: 0,
+    display: "none",
+  },
+};
+
 function TestCaseInfo() {
   const userCode = useRecoilValue(testState);
-  const { isLoading, mutate } = useMutation(() =>
-    validateTestCase({ user_code: userCode })
+  const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+  const [validateResult, setValidateResult] = useState({
+    0: { show: false, status: "fail" },
+    1: { show: false, status: "fail" },
+  });
+  const [isOpen, setIsOpen] = useState(true);
+  const { isLoading, mutate } = useMutation(
+    (tcNum) => validateTestCase(userCode, currentProblemInfo.prob_id, tcNum),
+    {
+      onSuccess: (data, variables) => {
+        console.log(data);
+
+        setValidateResult((prev) => ({
+          ...prev,
+          [variables]: { show: true, status: data.status },
+        }));
+      },
+      onError: (error) => console.log(error),
+    }
   );
 
-  const handleValidateBtnClick = () => {
-    // mutate();
+  const handleToggleBtnclick = () => setIsOpen(!isOpen);
+
+  const handleValidateBtnClick = (tcNum) => {
+    mutate(tcNum);
+    console.log(userCode);
   };
   return (
-    <TestCaseContainer>
-      <TestCaseNavBar>테스트케이스</TestCaseNavBar>
-      <TestCase>
-        <MiniNavBar>
-          <MiniNavBarTitle>테스트케이스 1</MiniNavBarTitle>
-          <ValidateContainer>
-            <ValidateResult>PASS</ValidateResult>
-            {/* <ValidateButton>검증</ValidateButton> */}
-            <Button variant="contained">검증</Button>
-          </ValidateContainer>
-        </MiniNavBar>
-        <MainContent>
-          <InputContent>{`input:
+    <TestCaseContainer initial={true} animate={isOpen ? "open" : "closed"}>
+      <TestCaseNavBar>
+        테스트케이스 <button onClick={handleToggleBtnclick}>힝</button>
+      </TestCaseNavBar>
+
+      <CasesWrapper variants={testCaseVariants}>
+        <TestCase>
+          <MiniNavBar>
+            <MiniNavBarTitle>테스트케이스 1</MiniNavBarTitle>
+            <ValidateContainer>
+              <ValidateResult status={validateResult[0].status}>
+                {validateResult[0].status}
+              </ValidateResult>
+
+              <Button
+                variant="contained"
+                onClick={() => handleValidateBtnClick(0)}
+              >
+                검증
+              </Button>
+            </ValidateContainer>
+          </MiniNavBar>
+          <MainContent>
+            <InputContent>{`input:
           ${DUMMY_DATA.testCases[0].input}`}</InputContent>
-          <OutputContent>{`output:
+            <OutputContent>{`output:
           ${DUMMY_DATA.testCases[0].output}`}</OutputContent>
-          <ValidateLoader isLoading={isLoading}>
-            <CircularProgress color="inherit" />
-          </ValidateLoader>
-        </MainContent>
-      </TestCase>
-      <TestCase>
-        <MiniNavBar>
-          <MiniNavBarTitle>테스트케이스 2</MiniNavBarTitle>
-          <ValidateContainer>
-            <ValidateResult>PASS</ValidateResult>
-            {/* <ValidateButton>검증</ValidateButton> */}
-            <Button variant="contained">검증</Button>
-          </ValidateContainer>
-        </MiniNavBar>
-        <MainContent>
-          <InputContent>{`input:
+            <ValidateLoader isLoading={isLoading}>
+              <CircularProgress color="inherit" />
+            </ValidateLoader>
+          </MainContent>
+        </TestCase>
+        <TestCase>
+          <MiniNavBar>
+            <MiniNavBarTitle>테스트케이스 2</MiniNavBarTitle>
+            <ValidateContainer>
+              <ValidateResult status={validateResult[0].status}>
+                {validateResult[1].status}
+              </ValidateResult>
+
+              <Button
+                variant="contained"
+                onClick={() => handleValidateBtnClick(1)}
+              >
+                검증
+              </Button>
+            </ValidateContainer>
+          </MiniNavBar>
+          <MainContent>
+            <InputContent>{`input:
           ${DUMMY_DATA.testCases[1].input}`}</InputContent>
-          <OutputContent>{`output:
+            <OutputContent>{`output:
           ${DUMMY_DATA.testCases[0].output}`}</OutputContent>
-          <ValidateLoader isLoading={isLoading}>
-            <CircularProgress color="inherit" />
-          </ValidateLoader>
-        </MainContent>
-      </TestCase>
+            <ValidateLoader isLoading={isLoading}>
+              <CircularProgress color="inherit" />
+            </ValidateLoader>
+          </MainContent>
+        </TestCase>
+      </CasesWrapper>
     </TestCaseContainer>
   );
 }

@@ -16,13 +16,18 @@ const ExecuteNavbar = styled.div`
 `;
 const ExecuteText = styled.div`
   width: 100%;
+  color: white;
+  white-space: pre-line;
 `;
 function ExecuteResult() {
   const action = useRecoilValue(actionState);
   return (
     <ExecuteResultContainer action={action}>
       <ExecuteNavbar>실행결과</ExecuteNavbar>
-      <ExecuteText>Jser@Terminal ~ %</ExecuteText>
+      <ExecuteText>
+        Jser@Terminal ~ %{" "}
+        {`adf\nadfgsdf\ndfg\ndfgsff\nadf\nadfgsdf\ndfg\ndfgsff\nadf\nadfgsdf\ndfg\ndfgsff\nadf\nadfgsdf\ndfg\ndfgsff\nadf\nadfgsdf\ndfg\ndfgsff\nadf\nadfgsdf\ndfg\ndfgsff\nadf\nadfgsdf\ndfg\ndfgsff\nadf\nadfgsdf\ndfg\ndfgsff\nadf\nadfgsdf\ndfg\ndfgsff\n`}
+      </ExecuteText>
     </ExecuteResultContainer>
   );
 }

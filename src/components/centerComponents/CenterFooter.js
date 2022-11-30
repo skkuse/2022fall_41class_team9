@@ -54,7 +54,7 @@ const FooterBtns = styled.div`
   color: ${({ theme }) => theme.color};
 `;
 
-function CenterFooter({ editorCode }) {
+function CenterFooter({ editorCode, resize, setResize }) {
   const setAction = useSetRecoilState(actionState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
   const [userCode, setUserCode] = useRecoilState(testState);
@@ -72,7 +72,7 @@ function CenterFooter({ editorCode }) {
     }
   );
   const { mutate: gradingMutate } = useMutation(
-    () => gradeCode({ user_code: userCode }),
+    () => gradeCode(userCode, currentProblemInfo.prob_id),
     {
       onSuccess: (data) => console.log(data),
       onError: (error) => console.log(error),
@@ -96,8 +96,10 @@ function CenterFooter({ editorCode }) {
 
   const getSubmissionResult = async (submitId) => {
     try {
-      const response = await axios.get(`/onlinejudge/analysis/${submitId}`);
+      const response = await axios.get(`/onlinejudge/analysis2/${submitId}`);
       console.log(response.data);
+      // console.log(response.data.efficiency);
+      // console.log(JSON.parse(response.data.efficiency));
       setIsDataLoading(false);
       // console.log(JSON.parse(response.data));
     } catch (error) {
@@ -138,9 +140,11 @@ function CenterFooter({ editorCode }) {
 
   const handleExecuteBtnClick = () => {
     setAction("execute");
+    executeMutate();
   };
   const handleGradingClick = () => {
     setAction("grading");
+    gradingMutate();
   };
 
   const handleSubmitBtnClick = async () => {

@@ -34,17 +34,23 @@ export const getSubmitTrial = (userId, problemId) =>
     .get(`/codes/submission/count?user_id=${userId}&problem_id=${problemId}`)
     .then((res) => res.data);
 
-export const validateTestCase = (userCode, probId, tcNum) =>
-  axios.post(`/onlinejudge/validate/`, userCode).then((res) => res.data);
+export const validateTestCase = (user_code, prob_id, tc_num) => {
+  console.log({ user_code, prob_id, tc_num });
+  return axios
+    .post(`/onlinejudge/validate/`, { user_code, prob_id, tc_num })
+    .then((res) => res.data);
+};
 
 export const executeCode = (codeInfo) =>
   axios.post("/onlinejudge/execute/", codeInfo).then((res) => res.data);
 
-export const gradeCode = (codeInfo) =>
-  axios.post("/onlinejudge/grade/", codeInfo).then((res) => res.data);
+export const gradeCode = (user_code, prob_id) =>
+  axios
+    .post("/onlinejudge/grade/", { user_code, prob_id })
+    .then((res) => res.data);
 
 export const submitCode = (submitData) =>
   axios.post("/codes/submission/", submitData).then((res) => res.data);
 
 export const getAnalysis = (submitId) =>
-  axios.get(`/onlinejudge/analysis/${submitId}`).then((res) => res.data);
+  axios.get(`/onlinejudge/analysis2/${submitId}`).then((res) => res.data);

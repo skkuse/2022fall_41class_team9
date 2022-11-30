@@ -35,6 +35,7 @@ const CenterContainer = styled.div`
 const CenterEditor = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
   flex: 1;
 `;
 
@@ -53,38 +54,28 @@ const Terminal = styled.div`
   flex: 1;
   background-color: ${({ theme }) => theme.terminal};
   bottom: 0;
+  overflow: scroll;
 `;
 
 function Center() {
+  const editorWrapper = useRef();
   const editorCode = useRef("");
 
   const handleEditor = (editor) => {
     editorCode.current = editor;
   };
 
-  const [firstCode, setFirstCode] = useState("");
-  const [secondCode, setSecondCode] = useState("");
-  const [thirdCode, setThirdCode] = useState("");
-
   const [test, setTest] = useRecoilState(testState);
   const savePart = useRecoilValue(savePartState);
   const handleEditorChange = (value, event) => {
-    console.log(value);
+    // console.log(value);
     setTest(value);
     // setCode(editorCode.current.getValue());
   };
 
-  const handleGrading = () => {};
-
   const action = useRecoilValue(actionState);
   const theme = useRecoilValue(themeState);
-  // const isSave = useRecoilValue(saveState);
-  // const code = useRecoilValue(codeState);
   const submitResult = useRecoilValue(submitResultState);
-
-  // const setExecuteResult = useSetRecoilState(executeResultState);
-  // const gradingResultAction = useSetRecoilState(gradingResultState);
-  // const submitResultAction = useSetRecoilState(submitResultState);
 
   const monaco = useMonaco();
 
@@ -108,9 +99,12 @@ function Center() {
     <CenterContainer>
       <CenterHeader editor={editorCode} />
 
-      <CenterEditor>
+      <CenterEditor
+        ref={editorWrapper}
+        // onResizeStop={() => console.log("hello")}
+      >
         <Editor
-          width={"100%"}
+          width="100%"
           defaultLanguage="python"
           defaultValue="base code"
           onChange={handleEditorChange}
@@ -124,6 +118,7 @@ function Center() {
         style={{
           position: "absolute",
           top: "100%",
+          bottom: 0,
           left: 0,
           display: "flex",
           flexDirection: "column",
@@ -143,7 +138,7 @@ function Center() {
           height: resize.height,
         }}
         minWidth="100%"
-        minHeight="40px"
+        minHeight="45px"
         maxHeight="80%"
         onResizeStop={(e, direction, ref, delta, position) => {
           setResize({
@@ -151,7 +146,11 @@ function Center() {
           });
         }}
       >
-        <CenterFooter editorCode={editorCode} />
+        <CenterFooter
+          editorCode={editorCode}
+          resize={resize}
+          setResize={setResize}
+        />
         <Terminal>
           {action === "execute" ? (
             <ExecuteResult></ExecuteResult>

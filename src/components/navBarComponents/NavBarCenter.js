@@ -82,6 +82,8 @@ function NavBarCenter() {
       const response = await axios.get(`/codes/problems?course_id=${courseId}`);
 
       if (response.data.length > 0) {
+        // console.log(response.data);
+        // console.log(JSON.parse(response.data[0].tc_close));
         setCourseQuestions(response.data);
         setCurrentQuestionIdx({
           course_id: courseId,
