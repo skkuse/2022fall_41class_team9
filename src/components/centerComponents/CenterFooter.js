@@ -84,7 +84,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
     {
       onSuccess: (data) => {
         console.log(data);
-        setExecuteResult(data);
+        setExecuteResult({ ...data, code: userCode });
       },
       onError: (error) => console.log(error),
     }
@@ -163,12 +163,12 @@ function CenterFooter({ editorCode, resize, setResize }) {
   const handleExecuteBtnClick = () => {
     setAction("execute");
     executeMutate();
+    // getExecutionResult();
   };
   const handleGradingClick = () => {
     setAction("grading");
     // getGradeResult();
     gradingMutate();
-    // getExecutionResult();
   };
 
   const handleSubmitBtnClick = async () => {

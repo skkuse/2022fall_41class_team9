@@ -63,6 +63,8 @@ function Center() {
 
   const handleEditor = (editor) => {
     editorCode.current = editor;
+    editorCode.current.setValue(localStorage.getItem(1));
+    setTest(localStorage.getItem(1));
   };
   const [executeFinish, setExecuteFinish] = useRecoilState(executefinishState);
 
@@ -99,9 +101,9 @@ function Center() {
   // if (executeFinish === true) {
   //   editorCode.current.setValue(test);
   // }
-  setInterval(() => {
-    localStorage.setItem(savePart, test);
-  }, 10000);
+  // setInterval(() => {
+  //   localStorage.setItem(savePart, test);
+  // }, 10000);
   return (
     <CenterContainer>
       <CenterHeader editor={editorCode} />
@@ -113,7 +115,7 @@ function Center() {
         <Editor
           width="100%"
           defaultLanguage="python"
-          defaultValue={localStorage.getItem(1)}
+          defaultValue="base code"
           onChange={handleEditorChange}
           onMount={handleEditor}
         ></Editor>
@@ -160,7 +162,7 @@ function Center() {
         />
         <Terminal>
           {action === "execute" ? (
-            <ExecuteResult editorCode={editorCode}></ExecuteResult>
+            <ExecuteResult></ExecuteResult>
           ) : (
             <GradingResults></GradingResults>
           )}
