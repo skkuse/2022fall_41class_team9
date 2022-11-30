@@ -20,6 +20,8 @@ import {
   testState,
   userState,
   functionState,
+  executeResultState,
+  gradingResultState,
 } from "../../atoms";
 import { executeCode, getAnalysis, gradeCode, submitCode } from "../../fetch";
 import { FiUpload } from "react-icons/fi";
@@ -47,6 +49,7 @@ const Item = styled.div`
   font-size: 10px;
   text-align: center;
   border: none;
+  margin-left: 24px;
 `;
 const FooterBtns = styled.div`
   display: flex;
@@ -63,6 +66,9 @@ function CenterFooter({ editorCode }) {
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
   const [loaderOpen, setLoaderOpen] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
+
+  const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
+  const [gradingResult, setGradingResult] = useRecoilState(gradingResultState);
 
   const { mutate: executeMutate } = useMutation(
     () => executeCode({ user_code: userCode }),
@@ -93,6 +99,72 @@ function CenterFooter({ editorCode }) {
       onError: (error) => console.log(error),
     }
   );
+  const getExecutionResult = async () => {
+    const code = editorCode.current.getValue();
+    // console.log(code);
+    //axios 코드
+    //then
+    const data1 = {
+      status: "success",
+      result: "1234",
+    };
+    const data2 = {
+      status: "fail",
+      result: "message error\n메세지 오류",
+      linePos: 4,
+    };
+    setExecuteResult(data2);
+  };
+  const getGradeResult = async () => {
+    const code = editorCode.current.getValue();
+    console.log(code);
+    // axios 코드
+    //then
+    const data = [
+      {
+        id: 1,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "pass",
+        userOutput: "true",
+      },
+      {
+        id: 2,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "pass",
+        userOutput: "true",
+      },
+      {
+        id: 3,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "pass",
+        userOutput: "true",
+      },
+      {
+        id: 4,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "fail",
+        userOutput: "hidden",
+      },
+      {
+        id: 5,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "pass",
+        userOutput: "hidden",
+      },
+    ];
+    setGradingResult(data);
+    //error
+  };
 
   const getSubmissionResult = async (submitId) => {
     try {
@@ -138,9 +210,11 @@ function CenterFooter({ editorCode }) {
 
   const handleExecuteBtnClick = () => {
     setAction("execute");
+    getExecutionResult();
   };
   const handleGradingClick = () => {
     setAction("grading");
+    getGradeResult();
   };
 
   const handleSubmitBtnClick = async () => {
