@@ -1,5 +1,5 @@
-from .util import token2command, execute_shell_command
-from .file import TestFileManager
+from .utils.util import token2command, execute_shell_command, command2token
+from .utils.file import TestFileManager
 import json
 
 BASECOMMAND = "multimetric"
@@ -16,7 +16,7 @@ class MultiMetric(TestFileManager):
     def build_metric(self):
         if len(self.test_files) > 0:
             command = token2command(BASECOMMAND, *self.test_files)
-            multi_metric = execute_shell_command(command, self.encoding)
+            multi_metric = execute_shell_command(command2token(command), self.encoding)
             self.multi_metric = json.loads(multi_metric) #json
 
     def overall(self):

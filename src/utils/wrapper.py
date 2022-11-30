@@ -5,6 +5,54 @@ from threading import Thread
 import functools
 import traceback
 
+def error_trace_handler():
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                out = func(*args, **kwargs)
+            except Exception as e:
+                out = traceback.format_exc()
+            return out
+        return wrapper
+    return decorator
+
+def error_type_handler():
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                out = func(*args, **kwargs)
+            except Exception as e:
+                out = str(type(e)) + "\n"
+                out += str(e)
+            return out
+        return wrapper
+    return decorator
+
+def timeout(timeout):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            res = [TimeoutError(f'TimeoutError: function "{func.__name__}" exceeds timeout {timeout} seconds')]
+            def newFunc():
+                try:
+                    res[0] = func(*args, **kwargs)
+                except Exception as e:
+                    res[0] = e
+            t = Thread(target=newFunc)
+            t.daemon = True
+            try:
+                t.start()
+                t.join(timeout)
+            except Exception as je:
+                print ('error starting thread')
+                raise je
+            ret = res[0]
+            if isinstance(ret, BaseException):
+                raise ret
+            return ret
+        return wrapper
+    return decorator
+
 def temp_py_handler_trace(file):
     def decorator(func):
         #print("create file")
@@ -13,13 +61,17 @@ def temp_py_handler_trace(file):
             fd.write(AuditCode.input_audit())
             kwargs['fd'] = fd
             kwargs['file'] = file
+            error_line = None
             try:
                 out = func(*args, **kwargs)
             except Exception as e:
+                _, _, error_traceback = sys.exc_info()
                 out = traceback.format_exc()
+                print("error_traceback")
+                error_line = error_traceback.tb_lineno
             fd.close()
             os.remove(file)
-            return out
+            return out, error_line
         return wrapper
     return decorator
 
@@ -39,7 +91,7 @@ def temp_py_handler_error(file):
                 out += str(e)
             #print("delete file")
             fd.close()
-            os.remove(file)
+            #os.remove(file)
             return out
         return wrapper
     return decorator
@@ -79,30 +131,5 @@ def comp_temp_py_handler(file, comp_code_header):
                 os.remove(comp_file)
 
             return out
-        return wrapper
-    return decorator
-
-def timeout(timeout):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            res = [TimeoutError(f'TimeoutError: function "{func.__name__}" exceeds timeout {timeout} seconds')]
-            def newFunc():
-                try:
-                    res[0] = func(*args, **kwargs)
-                except Exception as e:
-                    res[0] = e
-            t = Thread(target=newFunc)
-            t.daemon = True
-            try:
-                t.start()
-                t.join(timeout)
-            except Exception as je:
-                print ('error starting thread')
-                raise je
-            ret = res[0]
-            if isinstance(ret, BaseException):
-                raise ret
-            return ret
         return wrapper
     return decorator
