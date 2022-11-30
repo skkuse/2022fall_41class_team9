@@ -30,58 +30,62 @@ const ExecuteText = styled.div`
 function ExecuteResult() {
   const action = useRecoilValue(actionState);
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
-  let code = "";
-
-  const errorLine = executeResult.linePos;
-  const errorMessage = executeResult.result;
-  const userCode = executeResult.code;
-  // console.log(userCode);
-
-  let codeLst = userCode.split("\n");
-  let errorBefore = codeLst.slice(0, errorLine);
-  let errorAfter = codeLst.slice(errorLine);
 
   const showErrorBefore = () => {
-    let lst = [];
+    if (executeResult) {
+      const errorLine = executeResult.linePos;
+      const userCode = executeResult.code;
+      const codeLst = userCode.split("\n");
+      const errorBefore = codeLst.slice(0, errorLine);
 
-    errorBefore.forEach((element, index) => {
-      if (index + 1 === Number(errorLine)) {
-        lst.push(<div style={{ color: "green" }}>{element}</div>);
-      } else {
-        lst.push(<div>{element}</div>);
-      }
-    });
-    return lst;
+      let lst = [];
+
+      errorBefore.forEach((element, index) => {
+        if (index + 1 === Number(errorLine)) {
+          lst.push(<div style={{ color: "green" }}>{element}</div>);
+        } else {
+          lst.push(<div>{element}</div>);
+        }
+      });
+      return lst;
+    }
+    return;
   };
   const showError = () => {
-    return <div style={{ color: "red" }}>errorMessage</div>;
+    if (executeResult) {
+      const errorMessage = executeResult.result;
+      return <div style={{ color: "red" }}>errorMessage</div>;
+    }
+    return;
   };
   const showErrorAfter = () => {
-    let lst = [];
-    errorAfter.forEach((element) => {
-      lst.push(<div>{element}</div>);
-    });
-    return lst;
+    if (executeResult) {
+      const userCode = executeResult.code;
+      const codeLst = userCode.split("\n");
+      const errorLine = executeResult.linePos;
+      const errorAfter = codeLst.slice(errorLine);
+      let lst = [];
+      errorAfter.forEach((element) => {
+        lst.push(<div>{element}</div>);
+      });
+      return lst;
+    }
+    return;
   };
 
-  code = code + "\r" + errorMessage;
-  errorAfter.forEach((element) => {
-    const separator = "\n";
-    if (code.length === 0) {
-      code = code + element;
-    } else {
-      code = code + separator + element;
-    }
-  });
   const showExecuteResult = () => {
-    console.log(executeResult);
-    if (executeResult.status === "success") {
-      return <div>{executeResult.result}</div>;
-    } else if (executeResult.status === "fail") {
-      return (
-        <div>{executeResult.linePos} 번째 줄에 에러가 있습니다 수정하세요</div>
-      );
+    if (executeResult) {
+      if (executeResult.status === "success") {
+        return <div>{executeResult.result}</div>;
+      } else if (executeResult.status === "fail") {
+        return (
+          <div>
+            {executeResult.linePos} 번째 줄에 에러가 있습니다 수정하세요
+          </div>
+        );
+      }
     }
+    return;
   };
 
   return (
