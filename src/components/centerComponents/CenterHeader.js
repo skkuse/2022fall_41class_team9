@@ -53,15 +53,15 @@ function CenterHeader(props) {
     console.log(savePart);
     // editorCode.current.setValue(localStorage.getItem(savePart[1]));
   }
-  if (action === "submit") {
-    document.querySelector(".btn1").disabled = true;
-    document.querySelector(".btn2").disabled = true;
-    document.querySelector(".btn3").disabled = true;
-  } else {
-    document.querySelector(".btn1").disabled = false;
-    document.querySelector(".btn2").disabled = false;
-    document.querySelector(".btn3").disabled = false;
-  }
+  // if (action === "submit") {
+  //   document.querySelector(".btn1").disabled = true;
+  //   document.querySelector(".btn2").disabled = true;
+  //   document.querySelector(".btn3").disabled = true;
+  // } else {
+  //   document.querySelector(".btn1").disabled = false;
+  //   document.querySelector(".btn2").disabled = false;
+  //   document.querySelector(".btn3").disabled = false;
+  // }
   return (
     <CenterHeaderContainer>
       <CenterHeaderBtnContainer>
