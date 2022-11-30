@@ -177,10 +177,9 @@ function CenterFooter({ editorCode, resize, setResize }) {
         await getSubmissionResult(data.submit_id);
       },
     });
+    setAction("submit");
 
     // await getSubmissionResult(18);
-
-    // setDialogOpen(true);
   };
   // const { data: pastData } = useQuery(
   //   "getPastSubmitResult",

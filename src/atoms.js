@@ -75,7 +75,11 @@ export const gradingResultState = atom({
 
 export const submitResultState = atom({
   key: "submitResultState",
-  default: {},
+  default: {
+    codeDiff: {
+      answerCoder: "skadnjsandjasndjn ",
+    },
+  },
 });
 
 export const testState = atom({
