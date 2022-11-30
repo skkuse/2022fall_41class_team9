@@ -72,15 +72,11 @@ export const gradingResultState = atom({
   key: "gradingResultState",
   default: "",
 });
+
 export const submitResultState = atom({
   key: "submitResultState",
-  default: "",
+  default: {},
 });
-
-// export const editorCodeState = atom({
-//   key: "editorCodeState",
-//   dafault: "",
-// });
 
 export const testState = atom({
   key: "testState",

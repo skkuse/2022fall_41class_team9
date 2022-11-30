@@ -50,7 +50,7 @@ function GradingResults() {
     for (let i = 0; i < resultLen; i++) {
       let str1 = "";
       let str2 = "";
-      if (gradingResult[i].userOutput === "true") {
+      if (gradingResult[i].userOutput !== "hidden") {
         str1 = openTestCase;
       } else if (gradingResult[i].userOutput === "hidden") {
         str1 = hiddenTestCase;

@@ -22,8 +22,15 @@ import {
   functionState,
   executeResultState,
   gradingResultState,
+  submitResultState,
 } from "../../atoms";
-import { executeCode, getAnalysis, gradeCode, submitCode } from "../../fetch";
+import {
+  executeCode,
+  getAnalysis,
+  getPastSubmitResult,
+  gradeCode,
+  submitCode,
+} from "../../fetch";
 import { FiUpload } from "react-icons/fi";
 import { MdRefresh, MdContentCopy } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
@@ -64,23 +71,31 @@ function CenterFooter({ editorCode, resize, setResize }) {
   const userInfo = useRecoilValue(userState);
 
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+
   const [loaderOpen, setLoaderOpen] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
 
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
   const [gradingResult, setGradingResult] = useRecoilState(gradingResultState);
+  const setSubmitResult = useSetRecoilState(submitResultState);
 
   const { mutate: executeMutate } = useMutation(
     () => executeCode({ user_code: userCode }),
     {
-      onSuccess: (data) => console.log(data),
+      onSuccess: (data) => {
+        console.log(data);
+        setExecuteResult(data);
+      },
       onError: (error) => console.log(error),
     }
   );
   const { mutate: gradingMutate } = useMutation(
     () => gradeCode(userCode, currentProblemInfo.prob_id),
     {
-      onSuccess: (data) => console.log(data),
+      onSuccess: (data) => {
+        console.log(data);
+        setGradingResult(data);
+      },
       onError: (error) => console.log(error),
     }
   );
@@ -91,80 +106,14 @@ function CenterFooter({ editorCode, resize, setResize }) {
         prob_id: currentProblemInfo.prob_id,
         user_code:
           "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
-        // user_output: "useroutput",
-        // counter: 0,
       }),
     {
-      onSuccess: (data) => console.log(data),
+      // onSuccess: (data) => {
+      //   console.log(data);
+      // },
       onError: (error) => console.log(error),
     }
   );
-  const getExecutionResult = async () => {
-    const code = editorCode.current.getValue();
-    // console.log(code);
-    //axios 코드
-    //then
-    const data1 = {
-      status: "success",
-      result: "1234",
-    };
-    const data2 = {
-      status: "fail",
-      result: "message error\n메세지 오류",
-      linePos: 4,
-    };
-    setExecuteResult(data2);
-  };
-  const getGradeResult = async () => {
-    const code = editorCode.current.getValue();
-    console.log(code);
-    // axios 코드
-    //then
-    const data = [
-      {
-        id: 1,
-        input: 5,
-        output: 5,
-        answer: 5,
-        status: "pass",
-        userOutput: "true",
-      },
-      {
-        id: 2,
-        input: 5,
-        output: 5,
-        answer: 5,
-        status: "pass",
-        userOutput: "true",
-      },
-      {
-        id: 3,
-        input: 5,
-        output: 5,
-        answer: 5,
-        status: "pass",
-        userOutput: "true",
-      },
-      {
-        id: 4,
-        input: 5,
-        output: 5,
-        answer: 5,
-        status: "fail",
-        userOutput: "hidden",
-      },
-      {
-        id: 5,
-        input: 5,
-        output: 5,
-        answer: 5,
-        status: "pass",
-        userOutput: "hidden",
-      },
-    ];
-    setGradingResult(data);
-    //error
-  };
 
   const getSubmissionResult = async (submitId) => {
     try {
@@ -173,6 +122,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
       // console.log(response.data.efficiency);
       // console.log(JSON.parse(response.data.efficiency));
       setIsDataLoading(false);
+      // setSubmitResult(response.data);
       // console.log(JSON.parse(response.data));
     } catch (error) {
       console.log(error);
@@ -216,9 +166,9 @@ function CenterFooter({ editorCode, resize, setResize }) {
   };
   const handleGradingClick = () => {
     setAction("grading");
-    getGradeResult();
+    // getGradeResult();
     gradingMutate();
-    getExecutionResult();
+    // getExecutionResult();
   };
 
   const handleSubmitBtnClick = async () => {
@@ -226,13 +176,23 @@ function CenterFooter({ editorCode, resize, setResize }) {
 
     // submitMutate({
     //   onSuccess: async (data) => {
+    //     console.log(data);
     //     await getSubmissionResult();
     //   },
     // });
-    await getSubmissionResult(1);
+
+    await getSubmissionResult(2);
+
     // setDialogOpen(true);
   };
-
+  // const { data: pastData } = useQuery(
+  //   "getPastSubmitResult",
+  //   () => getPastSubmitResult(1, 1),
+  //   {
+  //     onSuccess: (data) => console.log(data),
+  //     onError: (error) => console.log(error),
+  //   }
+  // );
   const handleMoveBtnClick = () => {
     setLoaderOpen(false);
     setDialogOpen(true);
@@ -310,10 +270,6 @@ function CenterFooter({ editorCode, resize, setResize }) {
             alignItems: "center",
           }}
         >
-          {/* <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
-          </DialogContentText> */}
           {isDataLoading ? (
             <CircularProgress color="inherit" />
           ) : (
