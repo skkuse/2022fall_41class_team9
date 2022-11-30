@@ -381,10 +381,10 @@ class SearchAPIView(APIView):
         for item in response.get('items'):
             #print(item.keys())
             #item=response.items['key']
-            print(item.get('title'))
-            print(item.get('link'))
+            #print(item.get('title'))
+            #print(item.get('link'))
             #print(item.get('snippet'))
-            print(item.get('pagemap').get('cse_thumbnail'))
+            #print(item.get('pagemap').get('cse_thumbnail'))
             items.append(
                 {
                     "title":item.get('title'),
@@ -396,5 +396,5 @@ class SearchAPIView(APIView):
 
 
 
-        return Response(items,status=status.HTTP_200_OK)
+        #return Response(items,status=status.HTTP_200_OK)
         return Response({"items":json(response.get('items'))},status=status.HTTP_200_OK)
