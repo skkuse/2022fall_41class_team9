@@ -9,6 +9,7 @@ import sys
 sys.path.append("..")
 from db.models import Submission
 from db.serializers import *
+import requests
 # Create your views here.
 # class Submission(models.Model):
 #     submit_id = models.IntegerField(primary_key=True)
@@ -255,22 +256,57 @@ class SubmissionAPIView(APIView):
 
         return Response(serializer.data,status=status.HTTP_200_OK)
     def post(self,request):
+        data=request.data
         
-        uid=request.data['user_id']
-        pid=request.data['prob_id']
-        submissions  = Submission.objects.filter(user_id=uid,prob_id=pid)
-        count=submissions.count()
-        request.data['counter']=count+1   
-        serializer = SubmissionSerializer(data=request.data)
-        #print(request.data['user_id']) 
-
+        uid=data['user_id']
+        pid=data['prob_id']
+        count=Submission.objects.filter(user_id=request.data['user_id'],prob_id=request.data['prob_id']).count()
+        #sub=Submission.objects.create(user_id=uid,prob_id=pid,user_code=,user_output="",counter=)
+        request.data.update(
+            {
+                "user_id:":uid,
+                "prob_id":pid,
+                "user_input":"",
+                "user_output":request.data['user_code'],
+                "counter":count+1
+            }
+        )
+        serializer=SubmissionSerializer(data=request.data)
         if serializer.is_valid():
-            print("submitted")
+            print("validddd")
+        return Response({},status=status.HTTP_200_OK)
+        # #req=request.json()
+        # body =  json.loads(request.body.decode('utf-8'))
+        # print(body)
+        # uid=request.data['user_id']
+        # pid=request.data['prob_id']
+        # submissions  = Submission.objects.filter(user_id=uid,prob_id=pid)
+        # count=submissions.count()
+        # # request.data['counter']=count+1   
+        # # request.data['user_output']=""
+        # print("subdata::\n",request.data)
+        # # putdata={
+        # #     'user_id':uid,
+        # #     'prob_id':pid,
+        # #     'counter':count+1,
+        # #     'user_code':request.data['user_code'],
+        # #     'user_output':""
 
-            serializer.save()
+        # # }
+        # body['counter']=count+1
+        # body['user_output']=""
+        # body['submit_id']=1
+        # print(body)
+        # serializer = SubmissionSerializer(Submission,data=body)
+        # #print(request.data['user_id']) 
+
+        # if serializer.is_valid():
+        #     print("submitted")
+
+        #     serializer.save()
             
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.error,status=status.HTTP_400_BAD_REQUEST)
+        #     return Response(serializer.data,status=status.HTTP_201_CREATED)
+        # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
             
 
 #TEST    
@@ -290,6 +326,8 @@ class SubmissionCountAPIView(APIView):
         prob_id=request.GET['problem_id']
         subs=Submission.objects.filter(user_id=user_id,prob_id=prob_id)
         return Response(data={'trial':len(subs)},status=status.HTTP_200_OK)
+
+
 class SkeletonCodeAPIView(APIView):
     def get(self,request):
         #해당 문제에 대한 스켈레톤 코드를 불러온다
@@ -306,3 +344,35 @@ class SkeletonCodeAPIView(APIView):
 
         return Response(data=skeletonCode,status=status.HTTP_200_OK)
 
+class SearchAPIView(APIView):
+    
+    def get(self,request):
+        API_KEY="AIzaSyAUe0XqYJwEo2PQPgBPka3ZrlzflIoajrw"
+        CX="718753750860d4b39"
+        baseUrl="https://www.googleapis.com/customsearch/v1?key="+API_KEY+"&cx="+CX+"&filter=1&num=5&q="
+        tag=request.GET['tag']
+        print("search %s"%tag)
+        url=baseUrl+tag
+        """
+        items:[
+            "title",
+            "link",
+            "snippet",
+            "pagemap":{
+                "cse_thumbnail":[
+                    {
+                        "src":이미지 소스,
+                        "width":이미지 크기,
+                        "height": 이미지 크기
+                    }
+                ]
+            }
+
+        ]
+        """
+        response=requests.get(url).json()
+        print(response.keys())
+        print(response.items)
+        items=response.items
+
+        return Response(response,status=status.HTTP_200_OK)

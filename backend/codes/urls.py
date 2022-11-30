@@ -16,5 +16,6 @@ urlpatterns =[
     path('skeleton/',SkeletonCodeAPIView.as_view()),
     path('userCourse/',UserCourseAPIView.as_view()),
     path('submission/count',SubmissionCountAPIView.as_view()),
+    path('search/',SearchAPIView.as_view()),
     #path()
 ]
