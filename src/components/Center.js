@@ -14,14 +14,14 @@ import {
   themeState,
   savePartState,
   saveState,
-  // executeResultState,
-  // gradingResultState,
   submitResultState,
   testState,
+  executefinishState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
 import { executeCode, getUserInfo } from "../fetch";
+import { act } from "react-dom/test-utils";
 
 const CenterContainer = styled.div`
   position: relative;
@@ -64,6 +64,7 @@ function Center() {
   const handleEditor = (editor) => {
     editorCode.current = editor;
   };
+  const [executeFinish, setExecuteFinish] = useRecoilState(executefinishState);
 
   const [test, setTest] = useRecoilState(testState);
   const savePart = useRecoilValue(savePartState);
@@ -95,6 +96,12 @@ function Center() {
     }
   }, [monaco, theme]);
 
+  // if (executeFinish === true) {
+  //   editorCode.current.setValue(test);
+  // }
+  setInterval(() => {
+    localStorage.setItem(savePart, test);
+  }, 10000);
   return (
     <CenterContainer>
       <CenterHeader editor={editorCode} />
@@ -106,7 +113,7 @@ function Center() {
         <Editor
           width="100%"
           defaultLanguage="python"
-          defaultValue="base code"
+          defaultValue={localStorage.getItem(1)}
           onChange={handleEditorChange}
           onMount={handleEditor}
         ></Editor>
@@ -153,7 +160,7 @@ function Center() {
         />
         <Terminal>
           {action === "execute" ? (
-            <ExecuteResult></ExecuteResult>
+            <ExecuteResult editorCode={editorCode}></ExecuteResult>
           ) : (
             <GradingResults></GradingResults>
           )}

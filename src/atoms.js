@@ -63,15 +63,15 @@ export const savePartState = atom({
   default: 1,
 });
 
-// export const executeResultState = atom({
-//   key: "executeResultState",
-//   default: "",
-// });
+export const executeResultState = atom({
+  key: "executeResultState",
+  default: "",
+});
 
-// export const gradingResultState = atom({
-//   key: "gradingResultState",
-//   default: "",
-// });
+export const gradingResultState = atom({
+  key: "gradingResultState",
+  default: "",
+});
 export const submitResultState = atom({
   key: "submitResultState",
   default: "",
@@ -85,4 +85,9 @@ export const submitResultState = atom({
 export const testState = atom({
   key: "testState",
   default: "",
+});
+
+export const executefinishState = atom({
+  key: "executefinishState",
+  default: false,
 });
