@@ -78,7 +78,9 @@ class ExecuteAPIView(APIView):
         
         
         dict_result = {"status": status, "result": er}
-        
+        if execution_result[1] > -1:
+            dict_result['linePos'] = execution_result[1]
+        """
         if "Error" in er:
             
             
@@ -99,7 +101,7 @@ class ExecuteAPIView(APIView):
 
         
         
-        
+        """
         return Response(data=dict_result)
 
 class validateTestcaseAPIView(APIView):
@@ -136,14 +138,17 @@ class validateTestcaseAPIView(APIView):
         
         print(x)
         execution_result = abstract.get_execution_result(x)
+        print("###################$$$$$$$$$$$$$$$$#################")
         print(execution_result[0])
         print(execution_result[1])
+        print("###################$$$$$$$$$$$$$$$$#################")
         y=abstract.get_grading_result(x, tc_open_input, tc_open_output, tc_close_input, tc_close_output)
         print(y)
         
-        y = y.replace('true','True')
-        y = y.replace('false','False')
-        testcaseresult = eval(y)
+        #y = y.replace('true','True')
+        #y = y.replace('false','False')
+        #testcaseresult = eval(y)
+        testcaseresult = y
         print(type(testcaseresult))
         
         print(testcaseresult[tc_num])
@@ -186,9 +191,10 @@ class gradeCodeAPIView(APIView):
         y=abstract.get_grading_result(x, tc_open_input, tc_open_output, tc_close_input, tc_close_output)
         print(y)
         
-        y = y.replace('true','True')
-        y = y.replace('false','False')
-        testcaseresult = eval(y)
+        #y = y.replace('true','True')
+        #y = y.replace('false','False')
+        #testcaseresult = eval(y)
+        testcaseresult = y
         print(type(testcaseresult))
         list_result = []
         for i in testcaseresult:
@@ -321,16 +327,21 @@ class AnalysisAPIView2(APIView):
         ##############################
         submitresult = {}
         result_testcase = []
-        testcaseresult = analysis.functionability.replace('true','True')
-        testcaseresult = testcaseresult.replace('false','False')
-        testcaseresult = eval(testcaseresult)
+        print("========@@@@@@@@@@@@@@@@@@@@@@@@@@@@================")
+        print(analysis.functionability)
+        print("========@@@@@@@@@@@@@@@@@@@@@@@@@@@@================")
+        #testcaseresult = analysis.functionability.replace('true','True')
+        #testcaseresult = testcaseresult.replace('false','False')
+        #testcaseresult = eval(testcaseresult)
+        testcaseresult = analysis.functionability
         for i in testcaseresult:
             dict_i = {"id" : i["id"] , "status" : i["status"] , "input" : i["input"] , "output" : i["answer"], "userOutput" : i["output"]}
             result_testcase.append(dict_i)
             
         result_efficiency = []
-        efficiencyresult = eval(analysis.efficiency)    
-        print(efficiencyresult)
+        efficiencyresult = analysis.efficiency
+        #efficiencyresult = eval(analysis.efficiency)    
+        #print(efficiencyresult)
         
         for i in efficiencyresult:
             efficiencytype = {}
@@ -413,7 +424,8 @@ class AnalysisAPIView2(APIView):
 
         result_readability = []
         
-        readabilityresult = eval(analysis.readability)    
+        #readabilityresult = eval(analysis.readability)    
+        readabilityresult = analysis.readability
         print(readabilityresult)
         
         for i in readabilityresult:
