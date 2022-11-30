@@ -14,14 +14,13 @@ import {
   themeState,
   savePartState,
   saveState,
-  // executeResultState,
-  // gradingResultState,
   submitResultState,
   testState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
 import { executeCode, getUserInfo } from "../fetch";
+import { act } from "react-dom/test-utils";
 
 const CenterContainer = styled.div`
   position: relative;

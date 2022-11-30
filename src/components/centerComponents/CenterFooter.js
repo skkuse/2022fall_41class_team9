@@ -20,6 +20,8 @@ import {
   testState,
   userState,
   functionState,
+  executeResultState,
+  gradingResultState,
 } from "../../atoms";
 import { executeCode, getAnalysis, gradeCode, submitCode } from "../../fetch";
 import { FiUpload } from "react-icons/fi";
@@ -64,6 +66,9 @@ function CenterFooter({ editorCode }) {
   const [loaderOpen, setLoaderOpen] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
 
+  const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
+  const [gradingResult, setGradingResult] = useRecoilState(gradingResultState);
+
   const { mutate: executeMutate } = useMutation(
     () => executeCode({ user_code: userCode }),
     {
@@ -93,6 +98,57 @@ function CenterFooter({ editorCode }) {
       onError: (error) => console.log(error),
     }
   );
+  const getExecutionResult = async () => {};
+  const getGradeResult = async () => {
+    const code = editorCode.current.getValue();
+    console.log(code);
+    // axios 코드
+    //then
+    const data = [
+      {
+        id: 1,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "pass",
+        isopen: "true",
+      },
+      {
+        id: 2,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "pass",
+        isopen: "true",
+      },
+      {
+        id: 3,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "pass",
+        isopen: "true",
+      },
+      {
+        id: 4,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "fail",
+        isopen: "false",
+      },
+      {
+        id: 5,
+        input: 5,
+        output: 5,
+        answer: 5,
+        status: "pass",
+        isopen: "false",
+      },
+    ];
+    setGradingResult(data);
+    //error
+  };
 
   const getSubmissionResult = async (submitId) => {
     try {
@@ -141,6 +197,7 @@ function CenterFooter({ editorCode }) {
   };
   const handleGradingClick = () => {
     setAction("grading");
+    getGradeResult();
   };
 
   const handleSubmitBtnClick = async () => {

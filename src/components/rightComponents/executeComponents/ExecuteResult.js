@@ -1,6 +1,6 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import styled from "styled-components";
-import { actionState } from "../../../atoms";
+import { actionState, executeResultState } from "../../../atoms";
 
 const ExecuteResultContainer = styled.div`
   height: 100%;
@@ -16,13 +16,20 @@ const ExecuteNavbar = styled.div`
 `;
 const ExecuteText = styled.div`
   width: 100%;
+  color: white;
 `;
 function ExecuteResult() {
   const action = useRecoilValue(actionState);
+  const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
+
   return (
     <ExecuteResultContainer action={action}>
       <ExecuteNavbar>실행결과</ExecuteNavbar>
-      <ExecuteText>Jser@Terminal ~ %</ExecuteText>
+      <ExecuteText>
+        Jser@Terminal ~ %
+        <br />
+        {/* {JSON.stringify(executeResult)} */}
+      </ExecuteText>
     </ExecuteResultContainer>
   );
 }
