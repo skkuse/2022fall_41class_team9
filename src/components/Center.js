@@ -16,6 +16,7 @@ import {
   saveState,
   submitResultState,
   testState,
+  executefinishState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
@@ -61,6 +62,7 @@ function Center() {
     editorCode.current = editor;
     editorCode.current.setValue(localStorage.getItem(1));
   };
+  const [executeFinish, setExecuteFinish] = useRecoilState(executefinishState);
 
   const [firstCode, setFirstCode] = useState("");
   const [secondCode, setSecondCode] = useState("");
@@ -103,7 +105,9 @@ function Center() {
       }
     }
   }, [monaco, theme]);
-
+  // if (executeFinish === true) {
+  //   editorCode.current.setValue(test);
+  // }
   return (
     <CenterContainer>
       <CenterHeader editor={editorCode} />
@@ -154,7 +158,7 @@ function Center() {
         <CenterFooter editorCode={editorCode} />
         <Terminal>
           {action === "execute" ? (
-            <ExecuteResult></ExecuteResult>
+            <ExecuteResult editorCode={editorCode}></ExecuteResult>
           ) : (
             <GradingResults></GradingResults>
           )}

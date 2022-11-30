@@ -98,7 +98,22 @@ function CenterFooter({ editorCode }) {
       onError: (error) => console.log(error),
     }
   );
-  const getExecutionResult = async () => {};
+  const getExecutionResult = async () => {
+    const code = editorCode.current.getValue();
+    // console.log(code);
+    //axios 코드
+    //then
+    const data1 = {
+      status: "success",
+      result: "1234",
+    };
+    const data2 = {
+      status: "fail",
+      result: "message error\n메세지 오류",
+      linePos: 4,
+    };
+    setExecuteResult(data2);
+  };
   const getGradeResult = async () => {
     const code = editorCode.current.getValue();
     console.log(code);
@@ -194,6 +209,7 @@ function CenterFooter({ editorCode }) {
 
   const handleExecuteBtnClick = () => {
     setAction("execute");
+    getExecutionResult();
   };
   const handleGradingClick = () => {
     setAction("grading");
