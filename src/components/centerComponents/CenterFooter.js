@@ -34,6 +34,7 @@ import {
 import { FiUpload } from "react-icons/fi";
 import { MdRefresh, MdContentCopy } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
+
 const CenterFooterContainer = styled.div`
   height: 50px;
   display: flex;

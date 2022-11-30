@@ -53,20 +53,20 @@ function CenterHeader(props) {
     console.log(savePart);
     // editorCode.current.setValue(localStorage.getItem(savePart[1]));
   }
-  if (action === "submit") {
-    document.querySelector(".btn1").disabled = true;
-    document.querySelector(".btn2").disabled = true;
-    document.querySelector(".btn3").disabled = true;
-  } else {
-    document.querySelector(".btn1").disabled = false;
-    document.querySelector(".btn2").disabled = false;
-    document.querySelector(".btn3").disabled = false;
-  }
+  // if (action === "submit") {
+  //   document.querySelector(".btn1").disabled = true;
+  //   document.querySelector(".btn2").disabled = true;
+  //   document.querySelector(".btn3").disabled = true;
+  // } else {
+  //   document.querySelector(".btn1").disabled = false;
+  //   document.querySelector(".btn2").disabled = false;
+  //   document.querySelector(".btn3").disabled = false;
+  // }
   return (
     <CenterHeaderContainer>
       <CenterHeaderBtnContainer>
         <CenterHeaderBtn
-          className="btn1"
+          disabled={action === "submit"}
           style={{
             backgroundColor: savePart === 1 ? "rgba(0,0,0,0.3)" : "grey",
           }}
@@ -81,7 +81,7 @@ function CenterHeader(props) {
           1
         </CenterHeaderBtn>
         <CenterHeaderBtn
-          className="btn2"
+          disabled={action === "submit"}
           style={{
             backgroundColor: savePart === 2 ? "rgba(0,0,0,0.3)" : "grey",
           }}
@@ -96,7 +96,7 @@ function CenterHeader(props) {
           2
         </CenterHeaderBtn>
         <CenterHeaderBtn
-          className="btn3"
+          disabled={action === "submit"}
           style={{
             backgroundColor: savePart === 3 ? "rgba(0,0,0,0.3)" : "grey",
           }}

@@ -139,6 +139,7 @@ function Center() {
               original={test}
               modified={submitResult.codeDiff.answerCoder}
               onMount={handleEditorDidMount}
+              theme={theme ? "cobalt" : "idle"}
             />
           </div>
         ) : (
@@ -148,6 +149,7 @@ function Center() {
             defaultValue="base code"
             onChange={handleEditorChange}
             onMount={handleEditor}
+            theme={theme ? "cobalt" : "idle"}
           ></Editor>
         )}
       </CenterEditor>
