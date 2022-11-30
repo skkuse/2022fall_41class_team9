@@ -33,7 +33,7 @@ function NavBar() {
 
   const { data: userInfoData } = useQuery(
     "getUserInfo",
-    () => getUserInfo("kang"),
+    () => getUserInfo("nickel"),
     {
       onSuccess: (data) => {
         setUser(data);

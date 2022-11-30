@@ -182,37 +182,6 @@ const Label = styled.div`
   font-weight: 500;
 `;
 
-const overallScoreChart = {
-  series: [44, 55, 67, 83],
-  options: {
-    chart: {
-      height: 350,
-      type: "radialBar",
-    },
-    plotOptions: {
-      radialBar: {
-        dataLabels: {
-          name: {
-            fontSize: "22px",
-          },
-          value: {
-            fontSize: "16px",
-          },
-          total: {
-            show: true,
-            label: "Total",
-            formatter: function (w) {
-              // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-              return 249;
-            },
-          },
-        },
-      },
-    },
-    labels: ["Apples", "Oranges", "Bananas", "Berries"],
-  },
-};
-
 const functionalityComparisionChart = {
   series: [
     {
@@ -286,8 +255,77 @@ const efficencySummaryChart = {
 function OverallDashboard() {
   const submitResult = useRecoilValue(submitResultState);
   useEffect(() => {
-    console.log(submitResult);
+    // console.log([
+    //   submitResult.functionality.reduce((sum, curr) => {
+    //     if (curr.status === "pass") {
+    //       return sum + 1;
+    //     } else {
+    //       return sum;
+    //     }
+    //   }, 0),
+    //   submitResult.efficiency.reduce((sum, curr) => {
+    //     return sum + curr.score;
+    //   }, 0),
+    //   submitResult.readability.reduce((sum, curr) => {
+    //     return sum + curr.score;
+    //   }, 0),
+    // ]);
+    console.log(
+      submitResult.efficiency.reduce((sum, curr) => {
+        return sum + curr.score;
+      }, 0) / 40
+    );
   }, [submitResult]);
+
+  const overallScoreChart = {
+    series:
+      submitResult.functionality &&
+      submitResult.efficiency &&
+      submitResult.readabilityType
+        ? [
+            submitResult.functionality.reduce((sum, curr) => {
+              if (curr.status === "pass") {
+                return sum + 1;
+              } else {
+                return sum;
+              }
+            }, 0) * 20,
+            submitResult.efficiency.reduce((sum, curr) => {
+              return sum + curr.score;
+            }, 0) / 4,
+            submitResult.readabilityType.reduce((sum, curr) => {
+              return sum + curr.score;
+            }, 0) / 8,
+          ]
+        : [44, 55, 67],
+    options: {
+      chart: {
+        height: 350,
+        type: "radialBar",
+      },
+      plotOptions: {
+        radialBar: {
+          dataLabels: {
+            name: {
+              fontSize: "22px",
+            },
+            value: {
+              fontSize: "16px",
+            },
+            total: {
+              show: true,
+              label: "Total",
+              formatter: function (w) {
+                // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
+                return 249;
+              },
+            },
+          },
+        },
+      },
+      labels: ["기능성", "효율성", "가독성"],
+    },
+  };
 
   return (
     <OverallContainer>

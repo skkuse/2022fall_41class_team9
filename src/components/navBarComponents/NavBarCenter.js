@@ -62,7 +62,7 @@ function NavBarCenter() {
   const setCurrentProblemInfo = useSetRecoilState(currentProblemInfoState);
   const { data: userCourses } = useQuery(
     "getUserCourses",
-    () => getUserCourses("kang"),
+    () => getUserCourses("nickel"),
     {
       onSuccess: (data) => {
         console.log(data);
