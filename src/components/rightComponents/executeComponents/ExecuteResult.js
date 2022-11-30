@@ -68,6 +68,9 @@ function ExecuteResult({ editorCode }) {
           code = code + separator + element;
         }
       });
+      // setTest(code);
+      console.log(code);
+      // editorCode.current.setValue(code);
       return (
         <div>{executeResult.linePos} 번째 줄에 에러가 있습니다 수정하세요</div>
       );
