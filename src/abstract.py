@@ -1,13 +1,18 @@
-from .analysis import efficiency, readability, plagiarism
-from .inspection import execution, grading
-from .util.auditor import AuditCode
-from .util import wrapper, iterator
-from .memory_profile import memory_profile
+from .utils.auditor import AuditCode
+from .utils.util import flatten_list
+from .memory_profile import get_memory_profile
+from .efficiency import MultiMetric
+from .execution import Runner
+from .grading import Tester
+from .plagiarism import Detector
+from .readability import Auditor
 import io
 import sys
 import os
 import json
+import re
 import traceback
+import tempfile
 
 LOCAL_TIMEOUT = 10
 
@@ -29,11 +34,21 @@ def get_execution_result(user_code, encoding='utf-8', **kwargs):
     ------------------------------------------------------
     e.g.
     """
-    output = None
-    error_line = None
+    runner = Runner(user_code)
+    output = runner.run_script()
+    error_line = -1
 
-    runner = execution.Runner(user_code, encoding=encoding)
-    output, error_line = runner.run_script()
+    if output.startswith("Traceback"):
+        if "raise ret\nTimeoutError" in output:
+            output = "TimeoutError: script exceeds timeout 10 seconds\n"
+            error_line = -1
+        else:
+            expression = r'File .+, line (?P<line>\d+)'
+            regex = re.compile(expression)
+            parsed_result = regex.findall(output)
+            error_line = int(parsed_result[0])
+            output = output.replace(str(error_line), str(error_line-6), 1)
+            error_line -= 6
 
     return output, error_line
     
@@ -53,23 +68,21 @@ def get_grading_result(user_code, tc_open_input, tc_open_output, tc_close_input,
     ------------------------------------------------------
     e.g.
     """
-    tester_open = grading.Tester(user_code, tc_open_input, tc_open_output, True, 1)
-    tester_close = grading.Tester(user_code, tc_close_input, tc_close_output, False, len(tc_open_input)+1)
-    
+    tester_open = Tester(user_code, tc_open_input, tc_open_output, True, 1)
+    tester_close = Tester(user_code, tc_close_input, tc_close_output, False, len(tc_open_input)+1)
     report_open = tester_open.run()
     report_close = tester_close.run()
     output = report_open + report_close
 
-    return json.dumps(output)
+    return output
     
-@wrapper.temp_py_handler_error(file="temp_efficiency.py")
-@wrapper.timeout(LOCAL_TIMEOUT)
 def get_efficiency_analysis(user_code, tc_open_input, encoding='utf-8', **kwargs):
     """
     제출 코드에 대한 efficiency 분석 결과
     ------------------------------------------------------
     input=
         user_code(string): 유저가 제출한 코드
+        tc_open_input(list): memory profiler에 쓸 open test case
         encoding(string): 가끔 encoding에 의한 오류가 생기는데 이때 encoding을 cp949로 변경
     ------------------------------------------------------
     output=
@@ -77,30 +90,28 @@ def get_efficiency_analysis(user_code, tc_open_input, encoding='utf-8', **kwargs
     ------------------------------------------------------
     e.g.
     """
-    #write temp file
-    fd = kwargs['fd']
-    target_file = kwargs['file']
-    fd.write(user_code)
-    os.fsync(fd)
-    fd.flush()
 
     output = {}
-    """multi_metric = efficiency.MultiMetric([target_file], encoding).overall()"""
-    #LOC
-    output['LOC'] = user_code.count("\n")
-    #halstead
-    """output['halstead'] = {aitem:multi_metric[aitem] for aitem in multi_metric.keys() if aitem.startswith("halstead")}
-    #control flow complexity(CFC)
-    output['CFC'] = multi_metric['cyclomatic_complexity']
-    #data flow complexity(DFC)
-    #mean"""
-    memory_profile_array = memory_profile.get_memory_profile(user_code, tc_open_input[0])
-    maximum_memory_usage = max(memory_profile_array)
-    output['DFC'] = maximum_memory_usage
-    return json.dumps(output)
+    with tempfile.NamedTemporaryFile(mode='w+t', suffix='.py', delete=False) as temp_file:
+        temp_file.write(user_code)
+        temp_file.seek(0)
 
-@wrapper.temp_py_handler_error(file="C:/Users/rnwkg/Desktop/2022_software_engineering/2022fall_41class_team9/backend/temp_readability.py")
-@wrapper.timeout(LOCAL_TIMEOUT)
+        multi_metric = MultiMetric([temp_file.name], encoding).overall()
+        #LOC
+        output['LOC'] = user_code.count("\n")
+        #Halstead
+        output['halstead'] = {aitem:multi_metric[aitem] for aitem in multi_metric.keys() if aitem.startswith("halstead")}
+        #control flow complexity(CFC)
+        output['CFC'] = multi_metric['cyclomatic_complexity']
+        #data flow complexity(DFC) / refactor:mean
+        memory_profile_array = get_memory_profile(user_code, tc_open_input[0])
+        maximum_memory_usage = max(memory_profile_array)
+        output['DFC'] = maximum_memory_usage
+
+    os.remove(temp_file.name)
+    #json.dumps(output)
+    return output
+
 def get_readability_analysis(user_code, encoding='utf-8', **kwargs):
     """
     제출 코드에 대한 readability 분석 결과
@@ -114,33 +125,18 @@ def get_readability_analysis(user_code, encoding='utf-8', **kwargs):
     ------------------------------------------------------
     e.g.
     """
-    #write temp file
-    fd = kwargs['fd']
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@=")
-    print(kwargs['file'])
-    new_path = os.getcwd
-    new_path = os.path.join(os.getcwd,'temp_readability.py')
-    print(new_path)
-    print("*******************************************************")
-    print(type(kwargs['file']))
-    print(fd)
-    print("#####################################")
-    target_file = kwargs['file']
-    fd.write(user_code)
-    os.fsync(fd)
-    fd.flush()
-    print("-------------------------------------------------")
-    print(target_file,fd)
-    print("-------------------------------------------------")
     output = {}
-    auditor = readability.Auditor([target_file], encoding)
-    output = auditor.audit_report
-    output = output[target_file]
+    with tempfile.NamedTemporaryFile(mode='w+t', suffix='.py', delete=False) as temp_file:
+        temp_file.write(user_code)
+        temp_file.seek(0)
+        auditor = Auditor([temp_file.name], encoding)
+        output = auditor.audit_report
+        output = list(output.values())[0]
 
-    return json.dumps(output)
+    os.remove(temp_file.name)
 
-@wrapper.comp_temp_py_handler(file="temp_plagiarism.py", comp_code_header="past")
-@wrapper.timeout(LOCAL_TIMEOUT)
+    return output
+
 def get_plagiarism_score(user_code, past_codes, **kwargs):
     """
     제출 코드에 대한 plagiarism 분석 결과
@@ -155,18 +151,32 @@ def get_plagiarism_score(user_code, past_codes, **kwargs):
     ------------------------------------------------------
     e.g.
     """
-    #write temp file
-    target_file = kwargs['file']
-    past_files = kwargs['comp_files']
+    ref_temp_files = []
+    ref_temp_names = []
+    for ref_code in past_codes:
+        tf = tempfile.NamedTemporaryFile(mode='w+t', suffix='.py', delete=False)
+        tf.write(ref_code)
+        tf.seek(0)
 
-    checker = plagiarism.Detector([target_file])
-    _, similarity = checker.similarity(past_files)
+        ref_temp_files.append(tf)
+        ref_temp_names.append(tf.name)
+    
+    with tempfile.NamedTemporaryFile(mode='w+t', suffix='.py', delete=False) as test_temp_file:
+        test_temp_file.write(user_code)
+        test_temp_file.seek(0)
 
-    flat_similarity = iterator.flatten_list(similarity)
-    plagiarism_score = max(flat_similarity)
+        detector = Detector([test_temp_file.name])
+        _, similarity = detector.similarity(ref_temp_names)
+        flat_similarity = flatten_list(similarity)
+
+        plagiarism_score = max(flat_similarity)
+
+    os.remove(test_temp_file.name)
+    for name in ref_temp_names:
+        os.remove(name)
 
     return plagiarism_score
-    
+
 """
     buffer = io.StringIO()
     original_buffer = sys.stdout
