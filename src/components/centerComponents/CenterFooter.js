@@ -127,7 +127,7 @@ function CenterFooter({ editorCode }) {
         output: 5,
         answer: 5,
         status: "pass",
-        isopen: "true",
+        userOutput: "true",
       },
       {
         id: 2,
@@ -135,7 +135,7 @@ function CenterFooter({ editorCode }) {
         output: 5,
         answer: 5,
         status: "pass",
-        isopen: "true",
+        userOutput: "true",
       },
       {
         id: 3,
@@ -143,7 +143,7 @@ function CenterFooter({ editorCode }) {
         output: 5,
         answer: 5,
         status: "pass",
-        isopen: "true",
+        userOutput: "true",
       },
       {
         id: 4,
@@ -151,7 +151,7 @@ function CenterFooter({ editorCode }) {
         output: 5,
         answer: 5,
         status: "fail",
-        isopen: "false",
+        userOutput: "hidden",
       },
       {
         id: 5,
@@ -159,7 +159,7 @@ function CenterFooter({ editorCode }) {
         output: 5,
         answer: 5,
         status: "pass",
-        isopen: "false",
+        userOutput: "hidden",
       },
     ];
     setGradingResult(data);

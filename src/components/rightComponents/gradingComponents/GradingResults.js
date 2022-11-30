@@ -47,14 +47,12 @@ function GradingResults() {
 
     const resultLen = gradingResult.length;
 
-    // let passCount = 0;
-
     for (let i = 0; i < resultLen; i++) {
       let str1 = "";
       let str2 = "";
-      if (gradingResult[i].isopen === "true") {
+      if (gradingResult[i].userOutput === "true") {
         str1 = openTestCase;
-      } else if (gradingResult[i].isopen === "false") {
+      } else if (gradingResult[i].userOutput === "hidden") {
         str1 = hiddenTestCase;
       }
       if (gradingResult[i].status === "pass") {
