@@ -108,6 +108,9 @@ function Center() {
   // if (executeFinish === true) {
   //   editorCode.current.setValue(test);
   // }
+  setInterval(() => {
+    localStorage.setItem(savePart, test);
+  }, 10000);
   return (
     <CenterContainer>
       <CenterHeader editor={editorCode} />
