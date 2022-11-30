@@ -13,12 +13,24 @@ import {
   ListItemText,
   ListSubheader,
 } from "@mui/material";
+import { submitResultState } from "../../atoms";
+import { useRecoilValue } from "recoil";
 
 function FunctionalityDashboard() {
-  const [resize, setResize] = useState({ width: 350, height: 350 });
+  const submitResult = useRecoilValue(submitResultState);
   const [openedIdx, setOpenedIdx] = useState(0);
   const functionalityChart = {
-    series: [70],
+    series: [
+      submitResult.functionality
+        ? submitResult.functionality.reduce((sum, curr) => {
+            if (curr.status === "pass") {
+              return sum + 1;
+            } else {
+              return sum;
+            }
+          }, 0) * 20
+        : 70,
+    ],
     options: {
       chart: {
         height: 350,
@@ -65,23 +77,34 @@ function FunctionalityDashboard() {
             </ListSubheader>
           }
         >
-          {[...Array(7).keys()].map((num, idx) => (
+          {(submitResult.functionality
+            ? submitResult.functionality
+            : [...Array(7).keys()]
+          ).map((item, idx) => (
             <div key={idx}>
               <ListItemButton onClick={() => handleTestcaseClick(idx)}>
                 <ListItemText primary={idx} />
-                <Button variant="contained">Pass</Button>
+                <Button
+                  variant="contained"
+                  color={item.status === "pass" ? "primary" : "error"}
+                  sx={{ marginRight: "20px" }}
+                >
+                  {item.status === "pass" ? "Pass" : "Fail"}
+                </Button>
                 {openedIdx === idx ? <MdExpandLess /> : <MdExpandMore />}
               </ListItemButton>
               <Collapse in={openedIdx === idx} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Input : " />
+                    <ListItemText primary={`Input : ${item.input}`} />
                   </ListItemButton>
                   <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Output : " />
+                    <ListItemText primary={`Output : ${item.output}`} />
                   </ListItemButton>
                   <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="User Output :" />
+                    <ListItemText
+                      primary={`User Output : ${item.userOutput}`}
+                    />
                   </ListItemButton>
                 </List>
               </Collapse>

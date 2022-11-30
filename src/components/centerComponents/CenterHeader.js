@@ -66,7 +66,7 @@ function CenterHeader(props) {
     <CenterHeaderContainer>
       <CenterHeaderBtnContainer>
         <CenterHeaderBtn
-          className="btn1"
+          disabled={action === "submit"}
           style={{
             backgroundColor: savePart === 1 ? "rgba(0,0,0,0.3)" : "grey",
           }}
@@ -81,7 +81,7 @@ function CenterHeader(props) {
           1
         </CenterHeaderBtn>
         <CenterHeaderBtn
-          className="btn2"
+          disabled={action === "submit"}
           style={{
             backgroundColor: savePart === 2 ? "rgba(0,0,0,0.3)" : "grey",
           }}
@@ -96,7 +96,7 @@ function CenterHeader(props) {
           2
         </CenterHeaderBtn>
         <CenterHeaderBtn
-          className="btn3"
+          disabled={action === "submit"}
           style={{
             backgroundColor: savePart === 3 ? "rgba(0,0,0,0.3)" : "grey",
           }}

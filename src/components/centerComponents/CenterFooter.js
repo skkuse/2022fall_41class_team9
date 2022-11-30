@@ -34,6 +34,7 @@ import {
 import { FiUpload } from "react-icons/fi";
 import { MdRefresh, MdContentCopy } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
+
 const CenterFooterContainer = styled.div`
   height: 50px;
   display: flex;
@@ -100,7 +101,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
     }
   );
   const { isLoading, mutate: submitMutate } = useMutation(
-    () =>
+    (_) =>
       submitCode({
         user_id: userInfo.user_id,
         prob_id: currentProblemInfo.prob_id,
@@ -108,9 +109,6 @@ function CenterFooter({ editorCode, resize, setResize }) {
           "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
       }),
     {
-      // onSuccess: (data) => {
-      //   console.log(data);
-      // },
       onError: (error) => console.log(error),
     }
   );
@@ -122,7 +120,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
       // console.log(response.data.efficiency);
       // console.log(JSON.parse(response.data.efficiency));
       setIsDataLoading(false);
-      // setSubmitResult(response.data);
+      setSubmitResult(response.data);
       // console.log(JSON.parse(response.data));
     } catch (error) {
       console.log(error);
@@ -173,17 +171,16 @@ function CenterFooter({ editorCode, resize, setResize }) {
 
   const handleSubmitBtnClick = async () => {
     setLoaderOpen(true);
+
+    submitMutate("", {
+      onSuccess: async (data) => {
+        console.log(data);
+        await getSubmissionResult(data.submit_id);
+      },
+    });
     setAction("submit");
-    // submitMutate({
-    //   onSuccess: async (data) => {
-    //     console.log(data);
-    //     await getSubmissionResult();
-    //   },
-    // });
 
-    await getSubmissionResult(2);
-
-    // setDialogOpen(true);
+    // await getSubmissionResult(18);
   };
   // const { data: pastData } = useQuery(
   //   "getPastSubmitResult",
