@@ -74,12 +74,6 @@ function ExecuteResult() {
         {executeResult && executeResult.status === "success"
           ? showExecuteSuccess()
           : showExecuteFail()}
-        {/* {showExecuteResult()}
-
-        {showErrorBefore()}
-        {showError()}
-        
-        {showErrorAfter()} */}
       </ExecuteText>
     </ExecuteResultContainer>
   );
