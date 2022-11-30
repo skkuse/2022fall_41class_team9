@@ -1,5 +1,5 @@
 import { alertTitleClasses } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import styled from "styled-components";
 import {
@@ -31,9 +31,11 @@ function ExecuteResult() {
   const action = useRecoilValue(actionState);
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
   let code = "";
+
   const errorLine = executeResult.linePos;
   const errorMessage = executeResult.result;
   const userCode = executeResult.code;
+  // console.log(userCode);
 
   let codeLst = userCode.split("\n");
   let errorBefore = codeLst.slice(0, errorLine);
@@ -41,6 +43,7 @@ function ExecuteResult() {
 
   const showErrorBefore = () => {
     let lst = [];
+
     errorBefore.forEach((element, index) => {
       if (index + 1 === Number(errorLine)) {
         lst.push(<div style={{ color: "green" }}>{element}</div>);
