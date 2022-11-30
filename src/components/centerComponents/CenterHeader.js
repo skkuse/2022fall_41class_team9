@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { saveState, savePartState, testState } from "../../atoms";
+import { saveState, savePartState, testState, actionState } from "../../atoms";
+import { act } from "react-dom/test-utils";
 
 const CenterHeaderContainer = styled.div`
   height: 40px;
@@ -35,6 +36,7 @@ const CenterHeaderBtn = styled.button`
 function CenterHeader(props) {
   const [savePart, setSavePart] = useRecoilState(savePartState);
   const [test, setTest] = useRecoilState(testState);
+  const [action, setAction] = useRecoilState(actionState);
   if (savePart[1] === 1) {
     const tmp = savePart[0];
     localStorage.setItem(tmp, test);
@@ -51,7 +53,15 @@ function CenterHeader(props) {
     console.log(savePart);
     // editorCode.current.setValue(localStorage.getItem(savePart[1]));
   }
-
+  if (action === "submit") {
+    document.querySelector(".btn1").disabled = true;
+    document.querySelector(".btn2").disabled = true;
+    document.querySelector(".btn3").disabled = true;
+  } else {
+    document.querySelector(".btn1").disabled = false;
+    document.querySelector(".btn2").disabled = false;
+    document.querySelector(".btn3").disabled = false;
+  }
   return (
     <CenterHeaderContainer>
       <CenterHeaderBtnContainer>
@@ -65,6 +75,7 @@ function CenterHeader(props) {
             localStorage.setItem(tmp, test);
             setSavePart(1);
             props.editor.current.setValue(localStorage.getItem(1));
+            // setAction("false");
           }}
         >
           1
@@ -79,6 +90,7 @@ function CenterHeader(props) {
             localStorage.setItem(tmp, test);
             setSavePart(2);
             props.editor.current.setValue(localStorage.getItem(2));
+            // setAction("false");
           }}
         >
           2
@@ -93,6 +105,7 @@ function CenterHeader(props) {
             localStorage.setItem(tmp, test);
             setSavePart(3);
             props.editor.current.setValue(localStorage.getItem(3));
+            // setAction("false");
           }}
         >
           3

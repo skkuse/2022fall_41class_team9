@@ -132,8 +132,7 @@ function Center() {
               height="90vh"
               language="python"
               original={test}
-              modified="aaaaa 
-          qqqqq"
+              modified={submitResult.codeDiff.answerCoder}
               onMount={handleEditorDidMount}
             />
           </div>
