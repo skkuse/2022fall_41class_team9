@@ -396,5 +396,5 @@ class SearchAPIView(APIView):
 
 
 
-        #return Response(items,status=status.HTTP_200_OK)
-        return Response({"items":json(response.get('items'))},status=status.HTTP_200_OK)
+        return Response(items,status=status.HTTP_200_OK)
+        #return Response({"items":json(response.get('items'))},status=status.HTTP_200_OK)
