@@ -173,7 +173,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
 
   const handleSubmitBtnClick = async () => {
     setLoaderOpen(true);
-
+    setAction("submit");
     // submitMutate({
     //   onSuccess: async (data) => {
     //     console.log(data);

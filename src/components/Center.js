@@ -23,6 +23,7 @@ import { useMutation, useQuery } from "react-query";
 import { executeCode, getUserInfo, searchRelated } from "../fetch";
 import { act } from "react-dom/test-utils";
 
+import { DiffEditor } from "@monaco-editor/react";
 const CenterContainer = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.bgColor};
@@ -58,6 +59,19 @@ const Terminal = styled.div`
 `;
 
 function Center() {
+  const diffEditorRef = useRef(null);
+
+  function handleEditorDidMount(editor, monaco) {
+    diffEditorRef.current = editor;
+  }
+
+  function showOriginalValue() {
+    alert(diffEditorRef.current.getOriginalEditor().getValue());
+  }
+
+  function showModifiedValue() {
+    alert(diffEditorRef.current.getModifiedEditor().getValue());
+  }
   const editorWrapper = useRef();
   const editorCode = useRef("");
 
@@ -66,7 +80,6 @@ function Center() {
     editorCode.current.setValue(localStorage.getItem(1));
     setTest(localStorage.getItem(1));
   };
-  const [executeFinish, setExecuteFinish] = useRecoilState(executefinishState);
 
   const [test, setTest] = useRecoilState(testState);
   const savePart = useRecoilValue(savePartState);
@@ -88,7 +101,7 @@ function Center() {
   const monaco = useMonaco();
 
   const [resize, setResize] = useState({ height: 51 });
-
+  const data = "asdasjdnajsndjasndjandjsn";
   useEffect(() => {
     if (!monaco) {
       return;
@@ -112,18 +125,31 @@ function Center() {
   return (
     <CenterContainer>
       <CenterHeader editor={editorCode} />
-
       <CenterEditor
         ref={editorWrapper}
         // onResizeStop={() => console.log("hello")}
       >
-        <Editor
-          width="100%"
-          defaultLanguage="python"
-          defaultValue="base code"
-          onChange={handleEditorChange}
-          onMount={handleEditor}
-        ></Editor>
+        {action === "submit" ? (
+          <div>
+            {/* <button onClick={showOriginalValue}>show original value</button>
+            <button onClick={showModifiedValue}>show modified value</button> */}
+            <DiffEditor
+              height="90vh"
+              language="python"
+              original={test}
+              modified={submitResult.codeDiff.answerCoder}
+              onMount={handleEditorDidMount}
+            />
+          </div>
+        ) : (
+          <Editor
+            width="100%"
+            defaultLanguage="python"
+            defaultValue="base code"
+            onChange={handleEditorChange}
+            onMount={handleEditor}
+          ></Editor>
+        )}
       </CenterEditor>
 
       {/* <BottomContainer> */}
