@@ -36,6 +36,44 @@ function ExecuteResult({ editorCode }) {
   const errorLine = executeResult.linePos;
   const errorMessage = executeResult.result;
 
+  const userCode = editorCode.current.getValue();
+  // console.log(errorLine);
+  console.log(userCode);
+  // console.log(userCode[10]);
+  let codeLst = userCode.split("\n");
+  let errorBefore = codeLst.slice(0, errorLine);
+  let errorAfter = codeLst.slice(errorLine);
+
+  const a = () => {
+    let lst = [];
+    errorBefore.forEach((element) => {
+      lst.push(<div>{element}</div>);
+    });
+    return lst;
+  };
+  const error = () => {
+    return <div style={{ color: "red" }}>errorMessage</div>;
+  };
+  const b = () => {
+    let lst = [];
+    errorAfter.forEach((element) => {
+      lst.push(<div>{element}</div>);
+    });
+    return lst;
+  };
+
+  code = code + "\r" + errorMessage;
+  errorAfter.forEach((element) => {
+    const separator = "\n";
+    if (code.length === 0) {
+      code = code + element;
+    } else {
+      code = code + separator + element;
+    }
+  });
+  // setTest(code);
+  console.log(code);
+
   // editorCode.current.setValue(code);
   const showExecuteResult = () => {
     if (executeResult.status === "success") {
@@ -43,33 +81,33 @@ function ExecuteResult({ editorCode }) {
     } else if (executeResult.status === "fail") {
       // setExecuteFinish(true);
       console.log(code);
-      const userCode = editorCode.current.getValue();
-      // console.log(errorLine);
-      console.log(userCode);
-      // console.log(userCode[10]);
-      let codeLst = userCode.split("\n");
-      let errorBefore = codeLst.slice(0, errorLine);
-      let errorAfter = codeLst.slice(errorLine);
+      // const userCode = editorCode.current.getValue();
+      // // console.log(errorLine);
+      // console.log(userCode);
+      // // console.log(userCode[10]);
+      // let codeLst = userCode.split("\n");
+      // let errorBefore = codeLst.slice(0, errorLine);
+      // let errorAfter = codeLst.slice(errorLine);
 
-      errorBefore.forEach((element) => {
-        const separator = "\n";
-        if (code.length === 0) {
-          code = code + element;
-        } else {
-          code = code + separator + element;
-        }
-      });
-      code = code + "\r" + errorMessage;
-      errorAfter.forEach((element) => {
-        const separator = "\n";
-        if (code.length === 0) {
-          code = code + element;
-        } else {
-          code = code + separator + element;
-        }
-      });
-      // setTest(code);
-      console.log(code);
+      // errorBefore.forEach((element) => {
+      //   const separator = "\n";
+      //   if (code.length === 0) {
+      //     code = code + element;
+      //   } else {
+      //     code = code + separator + element;
+      //   }
+      // });
+      // code = code + "\r" + errorMessage;
+      // errorAfter.forEach((element) => {
+      //   const separator = "\n";
+      //   if (code.length === 0) {
+      //     code = code + element;
+      //   } else {
+      //     code = code + separator + element;
+      //   }
+      // });
+      // // setTest(code);
+      // console.log(code);
       // editorCode.current.setValue(code);
       return (
         <div>{executeResult.linePos} 번째 줄에 에러가 있습니다 수정하세요</div>
@@ -84,7 +122,9 @@ function ExecuteResult({ editorCode }) {
         Jser@Terminal ~ %
         <br />
         {showExecuteResult()}
-        {code}
+        {a()}
+        {error()}
+        {b()}
       </ExecuteText>
     </ExecuteResultContainer>
   );
