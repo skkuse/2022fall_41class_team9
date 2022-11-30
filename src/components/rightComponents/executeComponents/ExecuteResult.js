@@ -1,5 +1,5 @@
 import { alertTitleClasses } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import styled from "styled-components";
 import {
@@ -8,6 +8,7 @@ import {
   testState,
   executefinishState,
 } from "../../../atoms";
+import ReactDOM from "react-dom";
 
 const ExecuteResultContainer = styled.div`
   height: 100%;
@@ -128,6 +129,7 @@ function ExecuteResult() {
         {/* {showExecuteResult()}
         {showErrorBefore()}
         {showError()}
+        
         {showErrorAfter()} */}
       </ExecuteText>
     </ExecuteResultContainer>
