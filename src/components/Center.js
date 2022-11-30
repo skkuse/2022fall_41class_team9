@@ -205,8 +205,6 @@ function Center() {
         </Terminal>
       </Rnd>
       {/* </BottomContainer> */}
-
-      {}
     </CenterContainer>
   );
 }
