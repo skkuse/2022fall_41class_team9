@@ -49,6 +49,7 @@ const Item = styled.div`
   font-size: 10px;
   text-align: center;
   border: none;
+  margin-left: 24px;
 `;
 const FooterBtns = styled.div`
   display: flex;

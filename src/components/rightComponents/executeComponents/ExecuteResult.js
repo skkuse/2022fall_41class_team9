@@ -1,4 +1,5 @@
 import { alertTitleClasses } from "@mui/material";
+import { useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import styled from "styled-components";
 import {
@@ -26,17 +27,22 @@ const ExecuteText = styled.div`
   margin: 8px;
 `;
 function ExecuteResult({ editorCode }) {
-  let code = "";
+  const [code1, setCode1] = useState("");
   const action = useRecoilValue(actionState);
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
   const [test, setTest] = useRecoilState(testState);
   const [executeFinish, setExecuteFinish] = useRecoilState(executefinishState);
+  let code = "";
+  const errorLine = executeResult.linePos;
+  const errorMessage = executeResult.result;
+
+  // editorCode.current.setValue(code);
   const showExecuteResult = () => {
     if (executeResult.status === "success") {
       return <div>{executeResult.result}</div>;
     } else if (executeResult.status === "fail") {
-      const errorLine = executeResult.linePos;
-      const errorMessage = executeResult.result;
+      // setExecuteFinish(true);
+      console.log(code);
       const userCode = editorCode.current.getValue();
       // console.log(errorLine);
       console.log(userCode);
@@ -62,15 +68,12 @@ function ExecuteResult({ editorCode }) {
           code = code + separator + element;
         }
       });
-      setTest(code);
-      // setExecuteFinish(true);
-      console.log(code);
-
       return (
         <div>{executeResult.linePos} 번째 줄에 에러가 있습니다 수정하세요</div>
       );
     }
   };
+
   return (
     <ExecuteResultContainer action={action}>
       <ExecuteNavbar>실행결과</ExecuteNavbar>
