@@ -20,7 +20,7 @@ import {
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
-import { executeCode, getUserInfo } from "../fetch";
+import { executeCode, getUserInfo, searchRelated } from "../fetch";
 import { act } from "react-dom/test-utils";
 
 import { DiffEditor } from "@monaco-editor/react";
@@ -88,6 +88,11 @@ function Center() {
     setTest(value);
     // setCode(editorCode.current.getValue());
   };
+
+  // const { data } = useQuery("searchRelated", searchRelated, {
+  //   onSuccess: (data) => console.log(data),
+  //   onError: (error) => console.log(error),
+  // });
 
   const action = useRecoilValue(actionState);
   const theme = useRecoilValue(themeState);

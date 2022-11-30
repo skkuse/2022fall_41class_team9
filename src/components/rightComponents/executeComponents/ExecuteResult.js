@@ -77,6 +77,7 @@ function ExecuteResult() {
   const showExecuteResult = () => {
     if (executeResult) {
       if (executeResult.status === "success") {
+        // console.log("success");
         return <div>{executeResult.result}</div>;
       } else if (executeResult.status === "fail") {
         return (
@@ -123,10 +124,12 @@ function ExecuteResult() {
       <ExecuteText>
         Jser@Terminal ~ %
         <br />
+
         {executeResult && executeResult.status === "success"
           ? showExecuteSuccess()
           : showExecuteFail()}
         {/* {showExecuteResult()}
+
         {showErrorBefore()}
         {showError()}
         

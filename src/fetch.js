@@ -10,6 +10,9 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 export const getUserInfo = (userName) =>
   axios.get(`/codes/user?user_name=${userName}`).then((res) => res.data);
 
+export const putUserUI = (UIInfo) =>
+  axios.put(`/codes/user/ui/`, UIInfo).then((res) => res.data);
+
 export const getUserCourses = (userName) =>
   axios.get(`/codes/userCourse?user_name=${userName}`).then((res) => res.data);
 
@@ -54,3 +57,6 @@ export const submitCode = (submitData) =>
 
 export const getAnalysis = (submitId) =>
   axios.get(`/onlinejudge/analysis2/${submitId}`).then((res) => res.data);
+
+export const searchRelated = () =>
+  axios.get(`codes/search?tag=binarysearch`).then((res) => res.data);

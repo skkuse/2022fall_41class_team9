@@ -9,6 +9,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { currentProblemInfoState, themeState } from "../../atoms";
+import { useMutation } from "react-query";
+import { putUserUI } from "../../fetch";
 // import styled from "styled-components";
 
 const NavBarRightContainer = styled.div`
@@ -142,9 +144,18 @@ function NavBarRight() {
       return "light";
     }
   };
+  const { mutate: UIMutate } = useMutation(
+    () => putUserUI({ user_id: 1, setting_font: "C", setting_theme: "Dark" }),
+    {
+      onSuccess: (data) => console.log(data),
+      onError: (error) => console.log(error),
+    }
+  );
   const handleModeToggle = () => {
     setTheme((prev) => !prev);
+    UIMutate();
   };
+
   return (
     <NavBarRightContainer>
       <ShowDue>{currentProblemInfo.deadline}</ShowDue>

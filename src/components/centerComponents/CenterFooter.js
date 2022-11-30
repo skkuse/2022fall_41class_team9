@@ -108,9 +108,9 @@ function CenterFooter({ editorCode, resize, setResize }) {
           "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
       }),
     {
-      // onSuccess: (data) => {
-      //   console.log(data);
-      // },
+      onSuccess: (data) => {
+        console.log(data);
+      },
       onError: (error) => console.log(error),
     }
   );
