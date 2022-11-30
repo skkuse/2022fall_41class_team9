@@ -4,8 +4,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 1024px;
   margin: 0 auto;
-  background-color: bisque;
-  height: 500px;
+
   margin-bottom: 100px;
 `;
 

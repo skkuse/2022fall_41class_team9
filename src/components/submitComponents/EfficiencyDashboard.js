@@ -21,7 +21,9 @@ function EfficiencyDashboard() {
     series: [
       {
         name: "Series 1",
-        data: [80, 50, 30, 40],
+        data: submitResult.efficiency
+          ? submitResult.efficiency.map((item) => item.score)
+          : [80, 50, 30, 40],
       },
     ],
     options: {
@@ -100,7 +102,7 @@ function EfficiencyDashboard() {
               </ListItemButton>
               <Collapse in={openedIdx === idx} timeout="auto" unmountOnExit>
                 {item.moreInfo.map((info) => (
-                  <List component="div" disablePadding>
+                  <List key={info.label} component="div" disablePadding>
                     <ListItemButton sx={{ pl: 4 }}>
                       <ListItemText primary={info.label} />
                     </ListItemButton>
