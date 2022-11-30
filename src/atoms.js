@@ -79,6 +79,8 @@ export const submitResultState = atom({
     codeDiff: {
       answerCoder: "skadnjsandjasndjn ",
     },
+    codeExplanation:
+      "1. a,b = 1,1\n2. a,b = 1,2\n3. a,b = 2,3\n4. a,b = 3,5\n5. a,b = 5,8\n6. a,b = 8,13\n7. a,",
   },
 });
 

@@ -103,9 +103,12 @@ function Center() {
   const [resize, setResize] = useState({ height: 51 });
   const data = "asdasjdnajsndjasndjandjsn";
   useEffect(() => {
+    console.log(3);
     if (!monaco) {
+      console.log(2);
       return;
     } else {
+      console.log(1);
       monaco.editor.defineTheme("cobalt", cobaltTheme);
       monaco.editor.defineTheme("idle", idleTheme);
       if (theme) {
@@ -114,7 +117,7 @@ function Center() {
         monaco.editor.setTheme("idle");
       }
     }
-  }, [monaco, theme]);
+  }, [monaco, theme, action]);
 
   // if (executeFinish === true) {
   //   editorCode.current.setValue(test);
