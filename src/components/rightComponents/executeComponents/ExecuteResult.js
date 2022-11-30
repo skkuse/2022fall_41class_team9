@@ -88,16 +88,47 @@ function ExecuteResult() {
     return;
   };
 
+  const showExecuteSuccess = () => {
+    if (executeResult) {
+      return <div>{executeResult.result}</div>;
+    }
+  };
+  const showExecuteFail = () => {
+    if (executeResult) {
+      const userCode = executeResult.code;
+      const codeLst = userCode.split("\n");
+      const errorLine = executeResult.linePos;
+      const errorMessage = executeResult.result;
+      const errorBefore = codeLst.slice(0, errorLine);
+      const errorAfter = codeLst.slice(errorLine);
+      let lst = [];
+      errorBefore.forEach((element, index) => {
+        if (index + 1 === Number(errorLine)) {
+          lst.push(<div style={{ color: "green" }}>{element}</div>);
+        } else {
+          lst.push(<div>{element}</div>);
+        }
+      });
+      lst.push(<div style={{ color: "red" }}>errorMessage</div>);
+      errorAfter.forEach((element) => {
+        lst.push(<div>{element}</div>);
+      });
+      return lst;
+    }
+  };
   return (
     <ExecuteResultContainer action={action}>
       <ExecuteNavbar>실행결과</ExecuteNavbar>
       <ExecuteText>
         Jser@Terminal ~ %
         <br />
-        {showExecuteResult()}
+        {executeResult && executeResult.status === "success"
+          ? showExecuteSuccess()
+          : showExecuteFail()}
+        {/* {showExecuteResult()}
         {showErrorBefore()}
         {showError()}
-        {showErrorAfter()}
+        {showErrorAfter()} */}
       </ExecuteText>
     </ExecuteResultContainer>
   );
