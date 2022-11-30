@@ -28,39 +28,32 @@ const ExecuteText = styled.div`
   margin: 8px;
 `;
 function ExecuteResult() {
-  const [code1, setCode1] = useState("");
   const action = useRecoilValue(actionState);
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
-  const [test, setTest] = useRecoilState(testState);
-  const [executeFinish, setExecuteFinish] = useRecoilState(executefinishState);
-  const executeCode = "";
   let code = "";
   const errorLine = executeResult.linePos;
   const errorMessage = executeResult.result;
   const userCode = executeResult.code;
-  // console.log(errorLine);
-  // console.log(userCode);
-  // console.log(userCode[10]);
+
   let codeLst = userCode.split("\n");
   let errorBefore = codeLst.slice(0, errorLine);
   let errorAfter = codeLst.slice(errorLine);
 
-  const a = () => {
+  const showErrorBefore = () => {
     let lst = [];
     errorBefore.forEach((element, index) => {
       if (index + 1 === Number(errorLine)) {
         lst.push(<div style={{ color: "green" }}>{element}</div>);
       } else {
-        console.log(index);
         lst.push(<div>{element}</div>);
       }
     });
     return lst;
   };
-  const error = () => {
+  const showError = () => {
     return <div style={{ color: "red" }}>errorMessage</div>;
   };
-  const b = () => {
+  const showErrorAfter = () => {
     let lst = [];
     errorAfter.forEach((element) => {
       lst.push(<div>{element}</div>);
@@ -77,10 +70,6 @@ function ExecuteResult() {
       code = code + separator + element;
     }
   });
-  // setTest(code);
-  // console.log(code);
-
-  // editorCode.current.setValue(code);
   const showExecuteResult = () => {
     console.log(executeResult);
     if (executeResult.status === "success") {
@@ -99,9 +88,9 @@ function ExecuteResult() {
         Jser@Terminal ~ %
         <br />
         {showExecuteResult()}
-        {a()}
-        {error()}
-        {b()}
+        {showErrorBefore()}
+        {showError()}
+        {showErrorAfter()}
       </ExecuteText>
     </ExecuteResultContainer>
   );
