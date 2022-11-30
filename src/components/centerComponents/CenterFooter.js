@@ -99,7 +99,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
       onError: (error) => console.log(error),
     }
   );
-  const getExecutionResult = async () => {
+  const getExecutionResult = () => {
     const code = editorCode.current.getValue();
     // console.log(code);
     //axios 코드
@@ -112,6 +112,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
       status: "fail",
       result: "message error\n메세지 오류",
       linePos: 4,
+      code: code,
     };
     setExecuteResult(data2);
   };
@@ -213,12 +214,12 @@ function CenterFooter({ editorCode, resize, setResize }) {
   const handleExecuteBtnClick = () => {
     setAction("execute");
     executeMutate();
+    getExecutionResult();
   };
   const handleGradingClick = () => {
     setAction("grading");
     getGradeResult();
     gradingMutate();
-    getExecutionResult();
   };
 
   const handleSubmitBtnClick = async () => {

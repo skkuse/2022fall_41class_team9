@@ -162,7 +162,7 @@ function Center() {
         />
         <Terminal>
           {action === "execute" ? (
-            <ExecuteResult editorCode={editorCode}></ExecuteResult>
+            <ExecuteResult></ExecuteResult>
           ) : (
             <GradingResults></GradingResults>
           )}
