@@ -64,7 +64,9 @@ function NavBarCenter() {
     "getUserCourses",
     () => getUserCourses("kang"),
     {
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        console.log(data);
+      },
       onError: (error) => console.log(error),
       enabled: user.courses.length > 0,
       refetchOnWindowFocus: false,
