@@ -131,6 +131,7 @@ class ProblemsAPIView(APIView):
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
 
 class ProblemAPIView(APIView):
+ 
     def get(self,request):
         problemid=request.GET['problem_id']
         prob=get_object_or_404(Problem,prob_id=problemid)
@@ -155,6 +156,85 @@ class SubmissionsAPIView(APIView):
             
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.error,status=status.HTTP_400_BAD_REQUEST)
+class UIDesignAPIView(APIView):
+    def get(self,request):
+        uid=request.GET['user_id']
+        print(uid)
+        user=get_object_or_404(User,user_id=uid)
+        serializer=UserSerializer(user)
+        ret={}
+        if user:
+            ret['setting_font']=user.setting_font
+            ret['setting_theme']=user.setting_theme
+            return Response(data=ret,status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+    # def post(self,request):
+    #     uid=request.data['user_id']
+    #     print("change UI of %d"%uid)
+    #     user=get_object_or_404(User,user_id=uid)
+    #     print(user)
+    #     sfont=request.data['setting_font']
+    #     stheme=request.data['setting_theme']
+    #     print(user,sfont,stheme)
+    #     if user:
+
+    #         udata=UserSerializer(user).data
+    #         udata['setting_font']=sfont
+    #         udata['setting_theme']=stheme
+
+    #         print(serializer.data)
+    #         return Response({})
+    #         # #user['setting_font']=sfont
+    #         # #user['setting_theme']=stheme
+    #         # userdata=UserSerializer(user).data
+    #         # userdata['setting_font']=sfont
+    #         # userdata['setting_theme']=stheme
+    #         # print(type(userdata))
+    #         # print("Data::\n",userdata)
+    #         # serializer=UserSerializer(data=userdata)
+            
+    #         # if serializer.is_valid():
+    #         #     print("hello")
+                
+                
+    #         # #print(serializer.is_valid())
+    #         # #print(serializer.data)
+            
+    #         # #serializer.data['setting_font']=sfont
+    #         # #serializer.data['setting_theme']=stheme
+    #         # print(serializer.data)
+    #         # #serializer.save()
+    #         # serializer.save()
+    #         # return Response(serializer.data,status=status.HTTP_200_OK)
+    #         # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+
+    #     else:
+    #         serializer=UserSerializer(user)
+    #         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+    def put(self,request):
+        # serializer=UserSerializer(data=request.data)
+        # if(serializer.is_valid()):
+        #     return Response(serializer.data,status=status.HTTP_200_OK)
+        # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+        uid=request.data['user_id']
+        sfont=request.data['setting_font']
+        stheme=request.data['setting_theme']
+
+        user=get_object_or_404(User,user_id=uid)
+        serializer=UserSerializer(user)
+        new_data=serializer.data
+        new_data['setting_font']=sfont
+        new_data['setting_theme']=stheme
+
+        serializer=UserSerializer(user,data=new_data)
+        if(serializer.is_valid()):
+            #print(serializer.data)
+            #print("valid")
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.data,status=status.HTTP_400_OK)
+
 
 class SubmissionAPIView(APIView):
     def get(self,request):
