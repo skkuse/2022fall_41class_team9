@@ -181,7 +181,7 @@ function CenterHeader(props) {
               <InputLabel id="demo-simple-select-label">
                 과거 제출 결과
               </InputLabel>
-              <Select
+              {/* <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={submitId}
@@ -200,7 +200,7 @@ function CenterHeader(props) {
                     제출 이력이 없습니다
                   </MenuItem>
                 )}
-              </Select>
+              </Select> */}
             </FormControl>
           </Box>
         </DialogContent>
