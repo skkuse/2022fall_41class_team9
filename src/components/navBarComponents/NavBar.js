@@ -27,7 +27,7 @@ function NavBar() {
       onSuccess: (data) => {
         setUser(data);
 
-        console.log(data);
+        // console.log(data);
       },
       onError: (error) => console.log(error),
       refetchOnWindowFocus: false,

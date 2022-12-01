@@ -38,7 +38,7 @@ export const getSubmitTrial = (userId, problemId) =>
     .then((res) => res.data);
 
 export const validateTestCase = (user_code, prob_id, tc_num) => {
-  console.log({ user_code, prob_id, tc_num });
+  // console.log({ user_code, prob_id, tc_num });
   return axios
     .post(`/onlinejudge/validate/`, { user_code, prob_id, tc_num })
     .then((res) => res.data);

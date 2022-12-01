@@ -56,7 +56,15 @@ const Terminal = styled.div`
   flex: 1;
   background-color: ${({ theme }) => theme.terminal};
   bottom: 0;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
 `;
 
 function Center() {
