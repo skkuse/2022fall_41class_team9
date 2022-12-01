@@ -17,6 +17,7 @@ import {
   submitResultState,
   testState,
   executefinishState,
+  currentProblemInfoState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
@@ -60,6 +61,16 @@ const Terminal = styled.div`
 
 function Center() {
   const diffEditorRef = useRef(null);
+  const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+  // console.log(currentProblemInfo.skeleton);
+  // console.log(
+  //   JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
+  // );
+  // console.log(
+  //   JSON.parse(
+  //     JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
+  //   )
+  // );
 
   function handleEditorDidMount(editor, monaco) {
     diffEditorRef.current = editor;
@@ -77,6 +88,19 @@ function Center() {
 
   const handleEditor = (editor) => {
     editorCode.current = editor;
+    if (!localStorage.getItem(1)) {
+      editorCode.current.setValue(
+        JSON.parse(
+          JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
+        )
+      );
+      setTest(
+        JSON.parse(
+          JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
+        )
+      );
+      return;
+    }
     editorCode.current.setValue(localStorage.getItem(1));
     setTest(localStorage.getItem(1));
   };
@@ -103,12 +127,9 @@ function Center() {
   const [resize, setResize] = useState({ height: 51 });
   const data = "asdasjdnajsndjasndjandjsn";
   useEffect(() => {
-    console.log(3);
     if (!monaco) {
-      console.log(2);
       return;
     } else {
-      console.log(1);
       monaco.editor.defineTheme("cobalt", cobaltTheme);
       monaco.editor.defineTheme("idle", idleTheme);
       if (theme) {

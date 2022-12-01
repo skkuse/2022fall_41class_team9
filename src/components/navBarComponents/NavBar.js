@@ -4,18 +4,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { userState } from "../../atoms";
 
-import {
-  executeCode,
-  getAnalysis,
-  getCourseQuestions,
-  getPastSubmitResult,
-  getQuestionInfo,
-  getSkeletonCode,
-  getSubmitTrial,
-  getUserCourses,
-  getUserInfo,
-  submitCode,
-} from "../../fetch";
+import { getUserInfo } from "../../fetch";
 import NavBarCenter from "./NavBarCenter";
 import NavBarLeft from "./NavBarLeft";
 import NavBarRight from "./NavBarRight";

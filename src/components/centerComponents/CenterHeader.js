@@ -89,7 +89,7 @@ function CenterHeader(props) {
     "getPastSubmitResult",
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
-      onSuccess: (data) => console.log(data),
+      onSuccess: (data) => {},
       onError: (error) => console.log(error),
     }
   );
@@ -188,7 +188,7 @@ function CenterHeader(props) {
                 label="Age"
                 onChange={handelSelectChange}
               >
-                {pastSubmitData.length > 0 ? (
+                {pastSubmitData && pastSubmitData.length > 0 ? (
                   pastSubmitData.map((item) => (
                     <MenuItem
                       key={item.submit_id}

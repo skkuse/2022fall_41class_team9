@@ -32,7 +32,7 @@ function ExplanationDashboard() {
     </Box>
   );
   const getSubmitResult = () => {
-    if (submitResult) {
+    if (submitResult.codeExplanation) {
       const lst = submitResult.codeExplanation.split("\n");
       return (
         <>
