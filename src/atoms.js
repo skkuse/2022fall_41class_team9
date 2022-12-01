@@ -92,3 +92,8 @@ export const executefinishState = atom({
   key: "executefinishState",
   default: false,
 });
+
+export const fontSizeState = atom({
+  key: "fontSizeState",
+  default: 16,
+});
