@@ -105,6 +105,8 @@ function CenterHeader(props) {
     setSubmitId(event.target.value);
   };
 
+  const handleRecallBtnClcik = () => {};
+
   return (
     <CenterHeaderContainer>
       <CenterHeaderBtnContainer>
@@ -185,9 +187,10 @@ function CenterHeader(props) {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={submitId}
-                label="Age"
+                label="pastResult"
                 onChange={handelSelectChange}
               >
+                <MenuItem value={0}>{`기록을 선택해주세요`}</MenuItem>
                 {pastSubmitData && pastSubmitData.length > 0 ? (
                   pastSubmitData.map((item) => (
                     <MenuItem

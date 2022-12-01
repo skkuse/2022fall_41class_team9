@@ -159,16 +159,15 @@ function TestCaseInfo() {
             </ValidateContainer>
           </MiniNavBar>
           <MainContent>
-            {validateResult[0].show ? (
-              <>
-                <InputContent>{`input:
+            <InputContent>{`input:
           ${validateResult[0].input}`}</InputContent>
-                <OutputContent>{`output:
+            <OutputContent>{`output:
           ${validateResult[0].output}`}</OutputContent>
-                <InputContent>{`코드 결과:
+            {validateResult[0].show ? (
+              <InputContent>{`코드 결과:
           ${validateResult[0].userOutput}`}</InputContent>
-              </>
             ) : null}
+
             <ValidateLoader isLoading={isLoading}>
               <CircularProgress color="inherit" />
             </ValidateLoader>
@@ -191,15 +190,13 @@ function TestCaseInfo() {
             </ValidateContainer>
           </MiniNavBar>
           <MainContent>
-            {validateResult[1].show ? (
-              <>
-                <InputContent>{`input:
+            <InputContent>{`input:
           ${validateResult[1].input}`}</InputContent>
-                <OutputContent>{`output:
+            <OutputContent>{`output:
           ${validateResult[1].output}`}</OutputContent>
-                <InputContent>{`코드 결과:
+            {validateResult[1].show ? (
+              <InputContent>{`코드 결과:
           ${validateResult[1].userOutput}`}</InputContent>
-              </>
             ) : null}
             <ValidateLoader isLoading={isLoading}>
               <CircularProgress color="inherit" />

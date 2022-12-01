@@ -69,6 +69,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
   const setAction = useSetRecoilState(actionState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
   const [userCode, setUserCode] = useRecoilState(testState);
+  console.log(userCode);
   const userInfo = useRecoilValue(userState);
 
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
@@ -105,8 +106,8 @@ function CenterFooter({ editorCode, resize, setResize }) {
       submitCode({
         user_id: userInfo.user_id,
         prob_id: currentProblemInfo.prob_id,
-        user_code:
-          "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
+        user_code: userCode,
+        // "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
       }),
     {
       onError: (error) => console.log(error),
@@ -124,6 +125,9 @@ function CenterFooter({ editorCode, resize, setResize }) {
       // console.log(JSON.parse(response.data));
     } catch (error) {
       console.log(error);
+      setIsDataLoading(false);
+      alert("제출코드에 에러가 있습니다");
+      setLoaderOpen(false);
     }
   };
 
@@ -139,7 +143,12 @@ function CenterFooter({ editorCode, resize, setResize }) {
   };
 
   const handleRefreshBtnClick = () => {
-    editorCode.current.setValue("base code");
+    editorCode.current.setValue(
+      JSON.parse(
+        JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
+      )
+    );
+    // editorCode.current.setValue();
   };
 
   const handleCopyBtnClick = () => {

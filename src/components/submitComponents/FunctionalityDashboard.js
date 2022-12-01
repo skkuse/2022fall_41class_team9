@@ -40,10 +40,34 @@ function FunctionalityDashboard() {
         radialBar: {
           hollow: {
             size: "70%",
+            margin: 0,
+
+            background: "#293450",
+          },
+          track: {
+            dropShadow: {
+              enabled: true,
+              top: 2,
+              left: 0,
+              blur: 4,
+              opacity: 0.15,
+            },
+          },
+          dataLabels: {
+            name: {
+              offsetY: -10,
+              color: "#fff",
+              fontSize: "20px",
+            },
+            value: {
+              color: "#fff",
+              fontSize: "30px",
+              show: true,
+            },
           },
         },
       },
-      labels: ["Cricket"],
+      labels: ["기능성"],
     },
   };
 

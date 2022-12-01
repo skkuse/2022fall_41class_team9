@@ -31,6 +31,7 @@ const ExecuteText = styled.div`
 function ExecuteResult() {
   const action = useRecoilValue(actionState);
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
+  console.log(executeResult);
 
   const showExecuteSuccess = () => {
     if (executeResult) {

@@ -102,7 +102,7 @@ function ReadabilityDashboard() {
                 <ListItemText primary={item.id} />
                 <ListItemText primary={item.score} />
 
-                {item.moreInfo.length > 0 ? (
+                {item.moreInfo && item.moreInfo.length > 0 ? (
                   openedIdx === idx ? (
                     <MdExpandLess />
                   ) : (
