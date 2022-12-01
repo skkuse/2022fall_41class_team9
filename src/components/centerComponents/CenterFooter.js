@@ -170,6 +170,12 @@ function CenterFooter({ editorCode, resize, setResize }) {
     setAction("execute");
     executeMutate();
     // getExecutionResult();
+    // setExecuteResult({
+    //   status: "fail",
+    //   result: "8번째 줄에서 에러가 발생하였습니다\n 에러를 수정하세요",
+    //   linePos: 8,
+    //   code: "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
+    // });
   };
   const handleGradingClick = () => {
     setAction("grading");

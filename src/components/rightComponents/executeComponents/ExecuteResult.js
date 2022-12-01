@@ -42,23 +42,25 @@ function ExecuteResult() {
     if (executeResult) {
       const userCode = executeResult.code;
       const codeLst = userCode.split("\n");
+      console.log(codeLst);
       const errorLine = executeResult.linePos;
       const errorMessage = executeResult.result;
       const errorBefore = codeLst.slice(0, errorLine);
       const errorAfter = codeLst.slice(errorLine);
-
       return (
         <>
-          {errorBefore.map((element, index) => {
-            if (index + 1 === Number(errorLine)) {
-              <div key={index} style={{ color: "green" }}>
-                {element}
-              </div>;
-            } else {
-              <div key={index}>{element}</div>;
-            }
-          })}
-          <div style={{ color: "red" }}>errorMessage</div>
+          {errorBefore.map((element, index) => (
+            <div
+              key={index}
+              style={{
+                backgroundColor:
+                  index + 1 === Number(errorLine) ? "#E67BA4" : "black",
+              }}
+            >
+              {element}
+            </div>
+          ))}
+          <div style={{ backgroundColor: "#72CC82" }}>{errorMessage}</div>
           {errorAfter.map((element, index) => (
             <div key={index}>{element}</div>
           ))}
