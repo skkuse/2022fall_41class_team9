@@ -17,6 +17,7 @@ import {
   submitResultState,
   testState,
   executefinishState,
+  fontSizeState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
@@ -44,7 +45,6 @@ const BottomContainer = styled.div`
   position: relative;
   width: 100%;
   height: 450px;
-
   bottom: 0;
   left: 0;
 `;
@@ -59,6 +59,7 @@ const Terminal = styled.div`
 `;
 
 function Center() {
+  const [fontSize, setFontSize] = useRecoilState(fontSizeState);
   const diffEditorRef = useRef(null);
 
   function handleEditorDidMount(editor, monaco) {
@@ -143,6 +144,7 @@ function Center() {
               modified={submitResult.codeDiff.answerCoder}
               onMount={handleEditorDidMount}
               theme={theme ? "cobalt" : "idle"}
+              options={{ fontSize: fontSize }}
             />
           </div>
         ) : (
@@ -153,6 +155,7 @@ function Center() {
             onChange={handleEditorChange}
             onMount={handleEditor}
             theme={theme ? "cobalt" : "idle"}
+            options={{ fontSize: fontSize }}
           ></Editor>
         )}
       </CenterEditor>

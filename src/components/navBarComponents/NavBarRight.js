@@ -8,9 +8,16 @@ import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { currentProblemInfoState, themeState } from "../../atoms";
+import {
+  currentProblemInfoState,
+  themeState,
+  fontSizeState,
+} from "../../atoms";
 import { useMutation } from "react-query";
 import { putUserUI } from "../../fetch";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
 // import styled from "styled-components";
 
 const NavBarRightContainer = styled.div`
@@ -132,6 +139,10 @@ const MaterialUISwitch = styled(Switch)({
 });
 
 function NavBarRight() {
+  const [fontSize, setFontSize] = useRecoilState(fontSizeState);
+  function valuetext(value) {
+    return `${value}°C`;
+  }
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   const [theme, setTheme] = useRecoilState(themeState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
@@ -175,7 +186,6 @@ function NavBarRight() {
         >
           <AiOutlineClose size="1.8rem" />
         </CloseBtn>
-
         <FormGroup>
           <FormControlLabel
             control={
@@ -188,6 +198,28 @@ function NavBarRight() {
             label="MUI switch"
           />
         </FormGroup>
+
+        <Box sx={{ width: 300 }}>
+          <div style={{ display: "flex", alignItems: "center", margin: "4px" }}>
+            <Slider
+              aria-label="FontSize"
+              defaultValue={fontSize}
+              getAriaValueText={valuetext}
+              valueLabelDisplay="auto"
+              step={5}
+              marks
+              min={10}
+              max={50}
+              sx={{ width: "100px", height: "15px" }}
+              onChange={(e) => {
+                setFontSize(e.target.value);
+              }}
+            />
+            <div style={{ display: "inline-block", marginLeft: "24px" }}>
+              FontSize
+            </div>
+          </div>
+        </Box>
       </SettingSideBar>
     </NavBarRightContainer>
   );
