@@ -11,7 +11,7 @@ export const lightTheme = {
   bgColor: "#F7F9FA",
   color: "#323232",
   boldColor: "#323232",
-  primary: "#F1F4F7",
+  primary: "#0C151C",
   borderColor: "#A5A5A4",
   terminal: "#848484",
 };

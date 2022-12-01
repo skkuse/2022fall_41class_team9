@@ -38,7 +38,7 @@ export const getSubmitTrial = (userId, problemId) =>
     .then((res) => res.data);
 
 export const validateTestCase = (user_code, prob_id, tc_num) => {
-  console.log({ user_code, prob_id, tc_num });
+  // console.log({ user_code, prob_id, tc_num });
   return axios
     .post(`/onlinejudge/validate/`, { user_code, prob_id, tc_num })
     .then((res) => res.data);
@@ -58,5 +58,5 @@ export const submitCode = (submitData) =>
 export const getAnalysis = (submitId) =>
   axios.get(`/onlinejudge/analysis2/${submitId}`).then((res) => res.data);
 
-export const searchRelated = () =>
+export const searchRelated = (tag) =>
   axios.get(`codes/search?tag=binarysearch`).then((res) => res.data);

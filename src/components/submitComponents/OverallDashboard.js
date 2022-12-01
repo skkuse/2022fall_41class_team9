@@ -182,100 +182,8 @@ const Label = styled.div`
   font-weight: 500;
 `;
 
-const functionalityComparisionChart = {
-  series: [
-    {
-      name: "Desktops",
-      data: [10, 41, 35],
-    },
-  ],
-  options: {
-    chart: {
-      height: 200,
-      type: "line",
-      zoom: {
-        enabled: false,
-      },
-      toolbar: {
-        show: false,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "straight",
-    },
-    xaxis: {
-      categories: ["1", "2", "3"],
-    },
-  },
-};
-
-const functionalitySummaryChart = {
-  series: [70],
-  options: {
-    chart: {
-      height: 350,
-      type: "radialBar",
-    },
-    plotOptions: {
-      radialBar: {
-        hollow: {
-          size: "70%",
-        },
-      },
-    },
-    labels: ["Cricket"],
-  },
-};
-
-const efficencySummaryChart = {
-  series: [
-    {
-      name: "Series 1",
-      data: [80, 50, 30, 40, 100, 20],
-    },
-  ],
-  options: {
-    chart: {
-      // height: 350,
-      type: "radar",
-      toolbar: {
-        show: false,
-      },
-    },
-
-    xaxis: {
-      categories: ["January", "February", "March", "April", "May", "June"],
-    },
-  },
-};
-
 function OverallDashboard() {
   const submitResult = useRecoilValue(submitResultState);
-  // useEffect(() => {
-  // console.log([
-  //   submitResult.functionality.reduce((sum, curr) => {
-  //     if (curr.status === "pass") {
-  //       return sum + 1;
-  //     } else {
-  //       return sum;
-  //     }
-  //   }, 0),
-  //   submitResult.efficiency.reduce((sum, curr) => {
-  //     return sum + curr.score;
-  //   }, 0),
-  //   submitResult.readability.reduce((sum, curr) => {
-  //     return sum + curr.score;
-  //   }, 0),
-  // ]);
-  // console.log(
-  //   submitResult.efficiency.reduce((sum, curr) => {
-  //     return sum + curr.score;
-  //   }, 0) / 40
-  // );
-  // }, [submitResult]);
 
   const overallScoreChart = {
     series:
@@ -324,6 +232,140 @@ function OverallDashboard() {
         },
       },
       labels: ["기능성", "효율성", "가독성"],
+    },
+  };
+
+  const functionalitySummaryChart = {
+    series: [
+      submitResult.functionality
+        ? submitResult.functionality.reduce((sum, curr) => {
+            if (curr.status === "pass") {
+              return sum + 1;
+            } else {
+              return sum;
+            }
+          }, 0) * 20
+        : 70,
+    ],
+    options: {
+      chart: {
+        height: 350,
+        type: "radialBar",
+      },
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            size: "70%",
+          },
+          hollow: {
+            size: "70%",
+            margin: 0,
+
+            background: "#293450",
+          },
+          track: {
+            dropShadow: {
+              enabled: true,
+              top: 2,
+              left: 0,
+              blur: 4,
+              opacity: 0.15,
+            },
+          },
+          dataLabels: {
+            name: {
+              offsetY: -10,
+              color: "#fff",
+              fontSize: "20px",
+            },
+            value: {
+              color: "#fff",
+              fontSize: "30px",
+              show: true,
+            },
+          },
+        },
+      },
+      labels: ["기능성"],
+    },
+  };
+
+  const efficencySummaryChart = {
+    series: [
+      {
+        name: "Series 1",
+        data: submitResult.efficiency
+          ? submitResult.efficiency.map((item) => item.score)
+          : [80, 50, 30, 40],
+      },
+    ],
+    options: {
+      chart: {
+        // height: 350,
+        type: "radar",
+        toolbar: {
+          show: false,
+        },
+      },
+      plotOptions: {
+        radar: {
+          polygons: {
+            strokeColor: "black",
+            fill: {
+              colors: ["#a5dbf0"],
+            },
+          },
+        },
+      },
+
+      xaxis: {
+        categories: ["LOC", "Halstead", "CFC", "DFC"],
+      },
+      yaxis: { max: 100, min: 0 },
+    },
+  };
+
+  const readabilitySummaryChart = {
+    series: [
+      {
+        name: "Series 1",
+        data: submitResult.readabilityType
+          ? submitResult.readabilityType.map((item) => item.score)
+          : [80, 50, 30, 40, 100, 20, 100, 100],
+      },
+    ],
+    options: {
+      chart: {
+        // height: 350,
+        type: "radar",
+        toolbar: {
+          show: false,
+        },
+      },
+      plotOptions: {
+        radar: {
+          polygons: {
+            strokeColor: "black",
+            fill: {
+              colors: ["#a5dbf0"],
+            },
+          },
+        },
+      },
+
+      xaxis: {
+        categories: [
+          "eradicate",
+          "mccabe",
+          "mypy",
+          "pycodestyle",
+          "pydocstyle",
+          "pyflakes",
+          "pylint",
+          "isort",
+        ],
+      },
+      yaxis: { max: 100, min: 0 },
     },
   };
 
@@ -383,7 +425,7 @@ function OverallDashboard() {
                 options={functionalitySummaryChart.options}
                 series={functionalitySummaryChart.series}
                 type="radialBar"
-                height={450}
+                height={420}
               />
             </SummaryContainer>
           </Item>
@@ -405,6 +447,12 @@ function OverallDashboard() {
           <Item sx={{ height: "500px !important" }}>
             <SummaryContainer>
               <Label>가독성 점수 요약</Label>
+              <ReactApexChart
+                options={readabilitySummaryChart.options}
+                series={readabilitySummaryChart.series}
+                type="radar"
+                height={500}
+              />
             </SummaryContainer>
           </Item>
         </Grid>

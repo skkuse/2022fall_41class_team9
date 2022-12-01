@@ -45,11 +45,11 @@ export const currentProblemInfoState = atom({
     max_submission: 3,
     prob_id: 1,
     skeleton: "def solution(arr): \\n    answer = \\n\\n    return answer",
-    tag: "none",
     tc_close: "{'input' : [7, 15, 43], 'output' : [13,610,433494437]}",
+    tag: "none",
     tc_open: "{'input' : [5, 10], 'output' : [5,55]}",
     title: "fibonnachi",
-    writer: "adf",
+    writer: "asf",
   },
 });
 
@@ -79,8 +79,7 @@ export const submitResultState = atom({
     codeDiff: {
       answerCoder: "skadnjsandjasndjn ",
     },
-    codeExplanation:
-      "1. a,b = 1,1\n2. a,b = 1,2\n3. a,b = 2,3\n4. a,b = 3,5\n5. a,b = 5,8\n6. a,b = 8,13\n7. a,",
+    codeExplanation: "no explanation for this problem",
   },
 });
 

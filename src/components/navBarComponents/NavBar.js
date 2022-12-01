@@ -4,18 +4,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { userState } from "../../atoms";
 
-import {
-  executeCode,
-  getAnalysis,
-  getCourseQuestions,
-  getPastSubmitResult,
-  getQuestionInfo,
-  getSkeletonCode,
-  getSubmitTrial,
-  getUserCourses,
-  getUserInfo,
-  submitCode,
-} from "../../fetch";
+import { getUserInfo } from "../../fetch";
 import NavBarCenter from "./NavBarCenter";
 import NavBarLeft from "./NavBarLeft";
 import NavBarRight from "./NavBarRight";
@@ -25,7 +14,6 @@ const NavBarContainer = styled.header`
   height: 50px;
   background-color: ${({ theme }) => theme.primary};
   display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
 `;
 
 function NavBar() {
@@ -37,8 +25,6 @@ function NavBar() {
     {
       onSuccess: (data) => {
         setUser(data);
-
-        console.log(data);
       },
       onError: (error) => console.log(error),
       refetchOnWindowFocus: false,
@@ -47,13 +33,6 @@ function NavBar() {
 
   return (
     <NavBarContainer>
-      {/* <button
-      // onClick={() => {
-      //   mutate();
-      // }}
-      >
-        제발
-      </button> */}
       <NavBarLeft />
       <NavBarCenter />
       <NavBarRight />

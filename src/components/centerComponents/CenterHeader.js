@@ -7,12 +7,15 @@ import {
   actionState,
   userState,
   currentProblemInfoState,
+  submitResultState,
+  dialogOpenState,
 } from "../../atoms";
 import { act } from "react-dom/test-utils";
 import {
   Box,
   Button,
   FormControl,
+  CircularProgress,
   InputLabel,
   MenuItem,
   Select,
@@ -23,8 +26,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useQuery } from "react-query";
-import { getPastSubmitResult } from "../../fetch";
+import { useMutation, useQuery } from "react-query";
+import { getPastSubmitResult, submitCode } from "../../fetch";
+import axios from "axios";
 
 const CenterHeaderContainer = styled.div`
   height: 40px;
@@ -54,7 +58,7 @@ const SaveBtnContainer = styled.div`
   align-items: flex-end;
 `;
 const CenterHeaderBtn = styled.button`
-  width: 70px;
+  width: 90px;
   height: 30px;
   background-color: black;
   color: white;
@@ -72,24 +76,32 @@ function CenterHeader(props) {
   const problemInfo = useRecoilValue(currentProblemInfoState);
   const [open, setOpen] = useState(false);
   const [submitId, setSubmitId] = useState(0);
-  if (savePart[1] === 1) {
-    const tmp = savePart[0];
-    localStorage.setItem(tmp, test);
-    console.log(savePart);
-  } else if (savePart[1] === 2) {
-    const tmp = savePart[0];
-    localStorage.setItem(tmp, test);
-    console.log(savePart);
-  } else if (savePart[1] === 3) {
-    const tmp = savePart[0];
-    localStorage.setItem(tmp, test);
-    console.log(savePart);
-  }
-  const { data: pastSubmitData } = useQuery(
+  const [loaderOpen, setLoaderOpen] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
+  const setDialogOpen = useSetRecoilState(dialogOpenState);
+  const setSubmitResult = useSetRecoilState(submitResultState);
+
+  const getSubmissionResult = async (submitId) => {
+    try {
+      const response = await axios.get(`/onlinejudge/analysis2/${submitId}`);
+      console.log(response.data);
+      setIsDataLoading(false);
+      setSubmitResult(response.data);
+    } catch (error) {
+      console.log(error);
+      setIsDataLoading(false);
+      alert("제출코드에 에러가 있습니다");
+      setLoaderOpen(false);
+    }
+  };
+
+  const { isLoading: pastDataLoading, data: pastSubmitData } = useQuery(
     "getPastSubmitResult",
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
-      onSuccess: (data) => console.log(data),
+      onSuccess: (data) => {
+        // console.log(data);
+      },
       onError: (error) => console.log(error),
     }
   );
@@ -105,6 +117,21 @@ function CenterHeader(props) {
     setSubmitId(event.target.value);
   };
 
+  const handleRecallBtnClcik = () => {
+    setOpen(false);
+    if (submitId > 0) {
+      getSubmissionResult(submitId);
+      setLoaderOpen(true);
+    } else {
+      alert("선택한 과거 기록이 없습니다");
+    }
+  };
+
+  const handleMoveBtnClick = () => {
+    setLoaderOpen(false);
+    setDialogOpen(true);
+  };
+
   return (
     <CenterHeaderContainer>
       <CenterHeaderBtnContainer>
@@ -112,14 +139,13 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 1 ? "rgba(0,0,0,0.3)" : "grey",
+              backgroundColor: savePart === 1 ? "#1a2736" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
               localStorage.setItem(tmp, test);
               setSavePart(1);
               props.editor.current.setValue(localStorage.getItem(1));
-              // setAction("false");
             }}
           >
             1
@@ -127,14 +153,13 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 2 ? "rgba(0,0,0,0.3)" : "grey",
+              backgroundColor: savePart === 2 ? "#1a2736" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
               localStorage.setItem(tmp, test);
               setSavePart(2);
               props.editor.current.setValue(localStorage.getItem(2));
-              // setAction("false");
             }}
           >
             2
@@ -142,14 +167,13 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 3 ? "rgba(0,0,0,0.3)" : "grey",
+              backgroundColor: savePart === 3 ? "#1a2736" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
               localStorage.setItem(tmp, test);
               setSavePart(3);
               props.editor.current.setValue(localStorage.getItem(3));
-              // setAction("false");
             }}
           >
             3
@@ -177,38 +201,76 @@ function CenterHeader(props) {
         </DialogTitle>
         <DialogContent sx={{ paddingTop: "24px !important" }}>
           <Box sx={{ minWidth: 120 }}>
-            <FormControl sx={{}} fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                과거 제출 결과
-              </InputLabel>
-              {/* <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={submitId}
-                label="Age"
-                onChange={handelSelectChange}
-              >
-                {pastSubmitData.length > 0 ? (
-                  pastSubmitData.map((item) => (
-                    <MenuItem
-                      key={item.submit_id}
-                      value={item.submit_id}
-                    >{`${item.counter}번째 제출 기록`}</MenuItem>
-                  ))
-                ) : (
-                  <MenuItem value={0} disabled>
-                    제출 이력이 없습니다
-                  </MenuItem>
-                )}
-              </Select> */}
-            </FormControl>
+            {pastDataLoading ? (
+              <div>과거 제출 이력을 불러오는 중입니다...</div>
+            ) : (
+              <FormControl sx={{}} fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  과거 제출 결과
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={submitId}
+                  label="pastResult"
+                  onChange={handelSelectChange}
+                >
+                  <MenuItem value={0}>{`기록을 선택해주세요`}</MenuItem>
+                  {pastSubmitData && pastSubmitData.length > 0 ? (
+                    pastSubmitData.map((item) => (
+                      <MenuItem
+                        key={item.submit_id}
+                        value={item.submit_id}
+                      >{`${item.counter}번째 제출 기록`}</MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem value={0} disabled>
+                      제출 이력이 없습니다
+                    </MenuItem>
+                  )}
+                </Select>
+              </FormControl>
+            )}
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>취소</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleRecallBtnClcik} autoFocus>
             불러오기
           </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={loaderOpen}
+        // onClose={() => setLoaderOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle sx={{ width: "500px" }} id="alert-dialog-title">
+          {"과거 기록을 불러오는 중입니다..."}
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {isDataLoading ? (
+            <CircularProgress color="inherit" />
+          ) : (
+            <div>결과를 보러 가시겠습니까?</div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          {isDataLoading ? null : (
+            <>
+              <Button onClick={() => setLoaderOpen(false)}>아니요</Button>
+              <Button onClick={handleMoveBtnClick} autoFocus>
+                네
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </CenterHeaderContainer>

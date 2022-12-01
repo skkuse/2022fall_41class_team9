@@ -167,9 +167,32 @@ function NavBarRight() {
     UIMutate();
   };
 
+  const calculateDDay = (due) => {
+    const today = new Date();
+    const dueDay = new Date(due);
+    const timeDiff = dueDay.getTime() - today.getTime();
+    const dayDiff = Math.floor(timeDiff / (24 * 60 * 60 * 1000));
+    const hourDiff = Math.floor(
+      (timeDiff - dayDiff * (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)
+    );
+
+    const minDiff = Math.floor(
+      (timeDiff -
+        dayDiff * (24 * 60 * 60 * 1000) -
+        hourDiff * (60 * 60 * 1000)) /
+        (60 * 1000)
+    );
+
+    return `${dayDiff}일 ${hourDiff}시간 ${minDiff}분 남았습니다`;
+  };
+
   return (
     <NavBarRightContainer>
-      <ShowDue>{currentProblemInfo.deadline}</ShowDue>
+      <ShowDue>
+        {currentProblemInfo
+          ? calculateDDay(currentProblemInfo.deadline)
+          : "365일 남았습니다."}
+      </ShowDue>
       <SettingBtn onClick={() => setIsSettingOpen(true)}>
         <AiTwotoneSetting size="1.8rem" />
       </SettingBtn>
@@ -181,7 +204,6 @@ function NavBarRight() {
         <CloseBtn
           onClick={() => {
             setIsSettingOpen(false);
-            console.log(isSettingOpen);
           }}
         >
           <AiOutlineClose size="1.8rem" />

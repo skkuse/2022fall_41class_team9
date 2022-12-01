@@ -29,7 +29,7 @@ const MiniNavBar = styled.div`
   display: flex;
   align-items: center;
   padding-left: 15px;
-  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
+  border-bottom: 0.7px solid ${({ theme }) => theme.borderColor};
   color: ${({ theme }) => theme.boldColor};
   font-weight: 600;
 `;
@@ -38,19 +38,13 @@ const MainContent = styled.div`
   background-color: ${({ theme }) => theme.bgColor};
   flex: 1;
   color: ${({ theme }) => theme.color};
-  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
+  border-bottom: 0.7px solid ${({ theme }) => theme.borderColor};
   padding: 20px;
 `;
 
 function QuestionInfo() {
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
-  // console.log(currentProblemInfo);
-  // console.log(
-  //   JSON.parse('{"input" : [7, 15, 43], "output" : [13,610,433494437]}')
-  // );
-  // console.log(
-  //   JSON.stringify({ input: [7, 15, 43], output: [13, 610, 433494437] })
-  // );
+
   return (
     <QuestionInfoContainer>
       <Question>

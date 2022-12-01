@@ -29,20 +29,6 @@ const InfoContainer = styled.div`
   color: ${({ theme }) => theme.boldColor};
 `;
 
-const LeftArrowBtn = styled.button`
-  border: none;
-  background-color: transparent;
-  position: absolute;
-  left: 0;
-`;
-
-const RightArrowBtn = styled.button`
-  border: none;
-  background-color: transparent;
-  position: absolute;
-  right: 0;
-`;
-
 const ProblemSelect = styled.select`
   width: 100%;
   height: 100%;
@@ -58,14 +44,19 @@ function NavBarCenter() {
     courseId: 1,
     probId: 1,
   });
+  const [courses, setCourses] = useState([]);
   const [courseQuestions, setCourseQuestions] = useState([]);
   const setCurrentProblemInfo = useSetRecoilState(currentProblemInfoState);
+
   const { data: userCourses } = useQuery(
     "getUserCourses",
     () => getUserCourses("nickel"),
     {
       onSuccess: (data) => {
-        console.log(data);
+        // if (data.length > 0) {
+        //   setCourses(data.keys());
+        //   fetchQuestionInfo(data[courses[0]]);
+        // }
       },
       onError: (error) => console.log(error),
       enabled: user.courses.length > 0,
@@ -76,6 +67,7 @@ function NavBarCenter() {
   useEffect(() => {
     if (user.courses.length > 0) {
       fetchQuestionInfo(user.courses[0]);
+      // console.log(user);
     }
   }, [user]);
 
@@ -84,13 +76,15 @@ function NavBarCenter() {
       const response = await axios.get(`/codes/problems?course_id=${courseId}`);
 
       if (response.data.length > 0) {
+        // console.log(courseId);
         // console.log(response.data);
         // console.log(JSON.parse(response.data[0].tc_close));
         setCourseQuestions(response.data);
         setCurrentQuestionIdx({
-          course_id: courseId,
+          courseId: courseId,
           probId: response.data[0].prob_id,
         });
+        setCurrentProblemInfo(response.data[0]);
       } else {
         alert("해당과목에 문제가 없습니다.");
       }
@@ -100,12 +94,14 @@ function NavBarCenter() {
   };
 
   const handleCourseSelect = async (event) => {
-    await fetchQuestionInfo(event.targt.value);
+    await fetchQuestionInfo(event.target.value);
   };
 
   const handleProblemSelect = (event) => {
     setCurrentProblemInfo(courseQuestions[event.targt.value]);
   };
+
+  // console.log(currentQuestionIdx);
   return (
     <NavBarCenterContainer>
       <InfoContainer>
@@ -130,20 +126,16 @@ function NavBarCenter() {
         </ProblemSelect>
       </InfoContainer>
       <InfoContainer>
-        <ProblemSelect onChange={handleProblemSelect}>
+        <ProblemSelect
+          value={currentQuestionIdx.probId}
+          onChange={handleProblemSelect}
+        >
           {courseQuestions.map((question, index) => (
-            <option key={index} value={index}>{`${index + 1}번째 문제`}</option>
+            <option key={index} value={question.prob_id}>{`${
+              index + 1
+            }번째 문제`}</option>
           ))}
-          {/* <option value="1">Dog</option>
-          <option value="2">cat</option> */}
         </ProblemSelect>
-        {/* 문제 1번
-        <LeftArrowBtn>
-          <MdOutlineArrowBackIosNew size="1rem" />
-        </LeftArrowBtn>
-        <RightArrowBtn>
-          <MdOutlineArrowForwardIos size="1rem" />
-        </RightArrowBtn> */}
       </InfoContainer>
     </NavBarCenterContainer>
   );
