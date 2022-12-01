@@ -22,7 +22,7 @@ const TestCaseNavBar = styled.div`
   display: flex;
   align-items: center;
   padding-left: 15px;
-  border-top: 1px solid ${({ theme }) => theme.borderColor};
+  border-top: 0.7px solid ${({ theme }) => theme.borderColor};
   color: ${({ theme }) => theme.boldColor};
   font-weight: 600;
   justify-content: space-between;
@@ -48,8 +48,8 @@ const MiniNavBar = styled.div`
   padding-left: 15px;
   justify-content: space-between;
   padding-right: 15px;
-  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
-  border-top: 1px solid ${({ theme }) => theme.primary};
+  border-bottom: 0.7px solid ${({ theme }) => theme.borderColor};
+  border-top: 0.7px solid ${({ theme }) => theme.primary};
 `;
 
 const MiniNavBarTitle = styled.div``;
@@ -63,7 +63,10 @@ const ValidateContainer = styled.div`
 
 const ValidateResult = styled.div`
   flex: 1;
-  color: ${(props) => (props.status === "pass" ? "blue" : "red")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => (props.status === "pass" ? "#03b6fc" : "#e34b67")};
 `;
 
 const MainContent = styled.div`
@@ -203,7 +206,7 @@ function TestCaseInfo() {
           <MiniNavBar>
             <MiniNavBarTitle>테스트케이스 2</MiniNavBarTitle>
             <ValidateContainer>
-              <ValidateResult status={validateResult[0].status}>
+              <ValidateResult status={validateResult[1].status}>
                 {validateResult[1].show ? validateResult[1].status : ""}
               </ValidateResult>
 

@@ -40,7 +40,7 @@ function Left() {
           bottomLeft: false,
           bottomRight: false,
           left: false,
-          right: true,
+          right: false,
           top: false,
           topLeft: false,
           topRight: false,

@@ -14,7 +14,6 @@ const NavBarContainer = styled.header`
   height: 50px;
   background-color: ${({ theme }) => theme.primary};
   display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
 `;
 
 function NavBar() {
@@ -26,8 +25,6 @@ function NavBar() {
     {
       onSuccess: (data) => {
         setUser(data);
-
-        // console.log(data);
       },
       onError: (error) => console.log(error),
       refetchOnWindowFocus: false,
@@ -36,13 +33,6 @@ function NavBar() {
 
   return (
     <NavBarContainer>
-      {/* <button
-      // onClick={() => {
-      //   mutate();
-      // }}
-      >
-        제발
-      </button> */}
       <NavBarLeft />
       <NavBarCenter />
       <NavBarRight />

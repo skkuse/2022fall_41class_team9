@@ -10,12 +10,15 @@ const GradingResutlsContainer = styled.div`
   display: ${(props) => (props.action === "grading" ? "flex" : "none")};
   flex-direction: column;
   color: white;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 const GradingHeader = styled.div`
   width: 100%;
   height: 30px;
   border-bottom: 1px solid;
+  border-top: 1px solid;
   color: ${({ theme }) => theme.color};
   padding-left: 15px;
   display: flex;
@@ -31,7 +34,6 @@ const CasesContainer = styled.div`
 `;
 
 const GradeTitle = styled.div`
-  width: 100%;
   border-bottom: 1px solid ${({ theme }) => theme.color};
   font-size: 30px;
   padding: 10px;

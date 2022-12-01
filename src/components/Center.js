@@ -71,7 +71,6 @@ function Center() {
   const [fontSize, setFontSize] = useRecoilState(fontSizeState);
   const diffEditorRef = useRef(null);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
-  // console.log(currentProblemInfo);
 
   function handleEditorDidMount(editor, monaco) {
     diffEditorRef.current = editor;
@@ -87,7 +86,37 @@ function Center() {
   const editorWrapper = useRef();
   const editorCode = useRef("");
 
-  const handleEditor = (editor) => {
+  const [test, setTest] = useRecoilState(testState);
+  const savePart = useRecoilValue(savePartState);
+  const handleEditorChange = (value, event) => {
+    setTest(value);
+    if (!monacoObjects.current) return;
+    console.log("called");
+    const { monaco, editor } = monacoObjects.current;
+    const r = new monaco.Range(1, 0, 2, 0);
+
+    // editor.deltaDecorations(
+    //   editor.getModel().getAllDecorations(),
+    //   editor.setModel().getAllDecorations()
+    // );
+  };
+
+  const action = useRecoilValue(actionState);
+  const theme = useRecoilValue(themeState);
+  const submitResult = useRecoilValue(submitResultState);
+
+  // const monaco = useMonaco();
+
+  const [resize, setResize] = useState({ height: 51 });
+
+  const monacoObjects = useRef(null);
+
+  const handleEditor = (editor, monaco) => {
+    monacoObjects.current = {
+      editor,
+      monaco,
+    };
+
     editorCode.current = editor;
     if (!localStorage.getItem(1)) {
       editorCode.current.setValue(
@@ -105,34 +134,43 @@ function Center() {
     editorCode.current.setValue(localStorage.getItem(1));
     setTest(localStorage.getItem(1));
   };
-
-  const [test, setTest] = useRecoilState(testState);
-  const savePart = useRecoilValue(savePartState);
-  const handleEditorChange = (value, event) => {
-    setTest(value);
-  };
-
-  const action = useRecoilValue(actionState);
-  const theme = useRecoilValue(themeState);
-  const submitResult = useRecoilValue(submitResultState);
-
-  const monaco = useMonaco();
-
-  const [resize, setResize] = useState({ height: 51 });
-  const data = "asdasjdnajsndjasndjandjsn";
   useEffect(() => {
-    if (!monaco) {
-      return;
+    if (!monacoObjects.current) return;
+    const { monaco, editor } = monacoObjects.current;
+
+    monaco.editor.defineTheme("cobalt", cobaltTheme);
+    monaco.editor.defineTheme("idle", idleTheme);
+    console.log(theme);
+    if (theme) {
+      monaco.editor.setTheme("cobalt");
     } else {
-      monaco.editor.defineTheme("cobalt", cobaltTheme);
-      monaco.editor.defineTheme("idle", idleTheme);
-      if (theme) {
-        monaco.editor.setTheme("cobalt");
-      } else {
-        monaco.editor.setTheme("idle");
-      }
+      monaco.editor.setTheme("idle");
     }
-  }, [monaco, theme, action]);
+    // const r = new monaco.Range(1, 0, 2, 0);
+    // editor.deltaDecorations(
+    //   [],
+    //   [
+    //     {
+    //       range: r,
+    //       options: {
+    //         inlineClassName: "a",
+    //       },
+    //     },
+    //   ]
+    // );
+
+    // if (!monaco) {
+    //   return;
+    // } else {
+    //   monaco.editor.defineTheme("cobalt", cobaltTheme);
+    //   monaco.editor.defineTheme("idle", idleTheme);
+    //   if (theme) {
+    //     monaco.editor.setTheme("cobalt");
+    //   } else {
+    //     monaco.editor.setTheme("idle");
+    //   }
+    // }
+  }, [monacoObjects.current, theme, action]);
 
   return (
     <CenterContainer>
@@ -156,6 +194,8 @@ function Center() {
               onMount={handleEditorDidMount}
               theme={theme ? "cobalt" : "idle"}
               options={{ fontSize: fontSize }}
+
+              // editorDidMount={handleEditorDidMount}
             />
           </div>
         ) : (
@@ -166,7 +206,7 @@ function Center() {
             onChange={handleEditorChange}
             onMount={handleEditor}
             theme={theme ? "cobalt" : "idle"}
-            options={{ fontSize: fontSize }}
+            options={{ fontSize: fontSize, renderLineHighlight: "3" }}
           ></Editor>
         )}
       </CenterEditor>

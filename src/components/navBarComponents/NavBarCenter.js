@@ -29,20 +29,6 @@ const InfoContainer = styled.div`
   color: ${({ theme }) => theme.boldColor};
 `;
 
-const LeftArrowBtn = styled.button`
-  border: none;
-  background-color: transparent;
-  position: absolute;
-  left: 0;
-`;
-
-const RightArrowBtn = styled.button`
-  border: none;
-  background-color: transparent;
-  position: absolute;
-  right: 0;
-`;
-
 const ProblemSelect = styled.select`
   width: 100%;
   height: 100%;

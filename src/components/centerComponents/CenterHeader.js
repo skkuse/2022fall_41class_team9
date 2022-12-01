@@ -100,7 +100,7 @@ function CenterHeader(props) {
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
       onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
       },
       onError: (error) => console.log(error),
     }
@@ -139,7 +139,7 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 1 ? "rgba(0,0,0,0.3)" : "#b5b3b4",
+              backgroundColor: savePart === 1 ? "#1a2736" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
@@ -153,7 +153,7 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 2 ? "rgba(0,0,0,0.3)" : "#b5b3b4",
+              backgroundColor: savePart === 2 ? "#1a2736" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
@@ -167,7 +167,7 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 3 ? "rgba(0,0,0,0.3)" : "#b5b3b4",
+              backgroundColor: savePart === 3 ? "#1a2736" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
