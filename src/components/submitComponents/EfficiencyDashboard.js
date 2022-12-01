@@ -79,7 +79,7 @@ function EfficiencyDashboard() {
           aria-labelledby="nested-list-subheader"
           subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-              Nested List Items
+              효율성 분석 항목
             </ListSubheader>
           }
         >
@@ -88,9 +88,16 @@ function EfficiencyDashboard() {
             : [...Array(4).keys()]
           ).map((item, idx) => (
             <div key={idx}>
-              <ListItemButton onClick={() => handleTestcaseClick(idx)}>
-                <ListItemText primary={item.id} />
-                <ListItemText primary={item.score} />
+              <ListItemButton
+                onClick={() => handleTestcaseClick(idx)}
+                sx={{ display: "flex" }}
+              >
+                <ListItemText
+                  disableTypography
+                  primary={item.id}
+                  sx={{ fontWeight: 800, flex: 1 }}
+                />
+                <ListItemText primary={`${item.score}점`} sx={{ flex: 1 }} />
 
                 {item.moreInfo && item.moreInfo.length > 0 ? (
                   openedIdx === idx ? (
@@ -101,13 +108,23 @@ function EfficiencyDashboard() {
                 ) : null}
               </ListItemButton>
               <Collapse in={openedIdx === idx} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton sx={{ pl: 2 }}>
+                    <ListItemText
+                      disableTypography
+                      primary={"상세 내용"}
+                      sx={{ fontWeight: 600 }}
+                    />
+                  </ListItemButton>
+                </List>
                 {item.moreInfo.map((info) => (
                   <List key={info.label} component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
-                      <ListItemText primary={info.label} />
-                    </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
-                      <ListItemText primary={info.result.toFixed(2)} />
+                    <ListItemButton sx={{ pl: 4, display: "flex" }}>
+                      <ListItemText sx={{ flex: 1 }} primary={info.label} />
+                      <ListItemText
+                        sx={{ flex: 1 }}
+                        primary={`${info.result.toFixed(2)}점`}
+                      />
                     </ListItemButton>
                   </List>
                 ))}

@@ -95,7 +95,7 @@ function CenterHeader(props) {
     }
   };
 
-  const { data: pastSubmitData } = useQuery(
+  const { isLoading: pastDataLoading, data: pastSubmitData } = useQuery(
     "getPastSubmitResult",
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
@@ -201,32 +201,36 @@ function CenterHeader(props) {
         </DialogTitle>
         <DialogContent sx={{ paddingTop: "24px !important" }}>
           <Box sx={{ minWidth: 120 }}>
-            <FormControl sx={{}} fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                과거 제출 결과
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={submitId}
-                label="pastResult"
-                onChange={handelSelectChange}
-              >
-                <MenuItem value={0}>{`기록을 선택해주세요`}</MenuItem>
-                {pastSubmitData && pastSubmitData.length > 0 ? (
-                  pastSubmitData.map((item) => (
-                    <MenuItem
-                      key={item.submit_id}
-                      value={item.submit_id}
-                    >{`${item.counter}번째 제출 기록`}</MenuItem>
-                  ))
-                ) : (
-                  <MenuItem value={0} disabled>
-                    제출 이력이 없습니다
-                  </MenuItem>
-                )}
-              </Select>
-            </FormControl>
+            {pastDataLoading ? (
+              <div>과거 제출 이력을 불러오는 중입니다...</div>
+            ) : (
+              <FormControl sx={{}} fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  과거 제출 결과
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={submitId}
+                  label="pastResult"
+                  onChange={handelSelectChange}
+                >
+                  <MenuItem value={0}>{`기록을 선택해주세요`}</MenuItem>
+                  {pastSubmitData && pastSubmitData.length > 0 ? (
+                    pastSubmitData.map((item) => (
+                      <MenuItem
+                        key={item.submit_id}
+                        value={item.submit_id}
+                      >{`${item.counter}번째 제출 기록`}</MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem value={0} disabled>
+                      제출 이력이 없습니다
+                    </MenuItem>
+                  )}
+                </Select>
+              </FormControl>
+            )}
           </Box>
         </DialogContent>
         <DialogActions>

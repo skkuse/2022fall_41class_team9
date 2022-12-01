@@ -120,15 +120,13 @@ function FunctionalityDashboard() {
               <Collapse in={openedIdx === idx} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary={`Input : ${item.input}`} />
+                    <ListItemText primary={`입력값 : ${item.input}`} />
                   </ListItemButton>
                   <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary={`Output : ${item.output}`} />
+                    <ListItemText primary={`기댓값 : ${item.output}`} />
                   </ListItemButton>
                   <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText
-                      primary={`User Output : ${item.userOutput}`}
-                    />
+                    <ListItemText primary={`출력값 : ${item.userOutput}`} />
                   </ListItemButton>
                 </List>
               </Collapse>

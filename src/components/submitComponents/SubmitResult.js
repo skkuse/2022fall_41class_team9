@@ -31,7 +31,7 @@ const FunctionalityContent = styled.div`
   flex: 1;
   padding: 40px;
   overflow: auto;
-  padding-top: 70px;
+  padding-top: 60px;
   display: ${(props) =>
     props.openedContent === "functionality" ? "block" : "none"};
 `;
@@ -39,7 +39,7 @@ const EfficiencyContent = styled.div`
   flex: 1;
   padding: 40px;
   overflow: auto;
-  padding-top: 70px;
+  padding-top: 60px;
   display: ${(props) =>
     props.openedContent === "efficiency" ? "block" : "none"};
 `;
@@ -47,7 +47,7 @@ const ReadabilityContent = styled.div`
   flex: 1;
   padding: 40px;
   overflow: auto;
-  padding-top: 70px;
+  padding-top: 60px;
   display: ${(props) =>
     props.openedContent === "readability" ? "block" : "none"};
 `;
@@ -56,7 +56,7 @@ const ExplanationContent = styled.div`
   flex: 1;
   padding: 40px;
   overflow: auto;
-  padding-top: 70px;
+  padding-top: 60px;
   display: ${(props) =>
     props.openedContent === "explanation" ? "block" : "none"};
 `;
@@ -64,7 +64,7 @@ const RelatedContent = styled.div`
   flex: 1;
   padding: 40px;
   overflow: auto;
-  padding-top: 70px;
+  padding-top: 60px;
   display: ${(props) => (props.openedContent === "related" ? "block" : "none")};
 `;
 

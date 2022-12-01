@@ -13,12 +13,17 @@ const HomeBtn = styled.button`
   border: none;
   margin-left: 18px;
   color: ${({ theme }) => theme.color};
+  cursor: pointer;
 `;
+
+const handleHomeBtnClick = () => {
+  window.location.reload();
+};
 
 function NavBarLeft() {
   return (
     <NavBarLeftContainer>
-      <HomeBtn>
+      <HomeBtn onClick={handleHomeBtnClick}>
         <IoHomeSharp size="1.8rem" />
       </HomeBtn>
     </NavBarLeftContainer>

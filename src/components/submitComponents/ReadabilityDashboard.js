@@ -89,7 +89,7 @@ function ReadabilityDashboard() {
           aria-labelledby="nested-list-subheader"
           subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-              Nested List Items
+              가독성 분석 항목
             </ListSubheader>
           }
         >
@@ -98,9 +98,16 @@ function ReadabilityDashboard() {
             : [...Array(4).keys()]
           ).map((item, idx) => (
             <div key={idx}>
-              <ListItemButton onClick={() => handleTestcaseClick(idx)}>
-                <ListItemText primary={item.id} />
-                <ListItemText primary={item.score} />
+              <ListItemButton
+                onClick={() => handleTestcaseClick(idx)}
+                sx={{ display: "flex" }}
+              >
+                <ListItemText
+                  primary={item.id}
+                  disableTypography
+                  sx={{ flex: 1, fontWeight: 800 }}
+                />
+                <ListItemText primary={`${item.score}점`} sx={{ flex: 1 }} />
 
                 {item.moreInfo && item.moreInfo.length > 0 ? (
                   openedIdx === idx ? (
@@ -116,9 +123,9 @@ function ReadabilityDashboard() {
                     <ListItemButton sx={{ pl: 4 }}>
                       <ListItemText primary={info.label} />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    {/* <ListItemButton sx={{ pl: 4 }}>
                       <ListItemText primary={info.result} />
-                    </ListItemButton>
+                    </ListItemButton> */}
                   </List>
                 ))}
               </Collapse>
