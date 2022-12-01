@@ -7,12 +7,15 @@ import {
   actionState,
   userState,
   currentProblemInfoState,
+  submitResultState,
+  dialogOpenState,
 } from "../../atoms";
 import { act } from "react-dom/test-utils";
 import {
   Box,
   Button,
   FormControl,
+  CircularProgress,
   InputLabel,
   MenuItem,
   Select,
@@ -23,8 +26,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useQuery } from "react-query";
-import { getPastSubmitResult } from "../../fetch";
+import { useMutation, useQuery } from "react-query";
+import { getPastSubmitResult, submitCode } from "../../fetch";
+import axios from "axios";
 
 const CenterHeaderContainer = styled.div`
   height: 40px;
@@ -72,11 +76,32 @@ function CenterHeader(props) {
   const problemInfo = useRecoilValue(currentProblemInfoState);
   const [open, setOpen] = useState(false);
   const [submitId, setSubmitId] = useState(0);
+  const [loaderOpen, setLoaderOpen] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
+  const setDialogOpen = useSetRecoilState(dialogOpenState);
+  const setSubmitResult = useSetRecoilState(submitResultState);
+
+  const getSubmissionResult = async (submitId) => {
+    try {
+      const response = await axios.get(`/onlinejudge/analysis2/${submitId}`);
+      console.log(response.data);
+      setIsDataLoading(false);
+      setSubmitResult(response.data);
+    } catch (error) {
+      console.log(error);
+      setIsDataLoading(false);
+      alert("제출코드에 에러가 있습니다");
+      setLoaderOpen(false);
+    }
+  };
+
   const { data: pastSubmitData } = useQuery(
     "getPastSubmitResult",
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        console.log(data);
+      },
       onError: (error) => console.log(error),
     }
   );
@@ -94,6 +119,17 @@ function CenterHeader(props) {
 
   const handleRecallBtnClcik = () => {
     setOpen(false);
+    if (submitId > 0) {
+      getSubmissionResult(submitId);
+      setLoaderOpen(true);
+    } else {
+      alert("선택한 과거 기록이 없습니다");
+    }
+  };
+
+  const handleMoveBtnClick = () => {
+    setLoaderOpen(false);
+    setDialogOpen(true);
   };
 
   return (
@@ -195,19 +231,19 @@ function CenterHeader(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>취소</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleRecallBtnClcik} autoFocus>
             불러오기
           </Button>
         </DialogActions>
       </Dialog>
-      {/* <Dialog
+      <Dialog
         open={loaderOpen}
         // onClose={() => setLoaderOpen(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle sx={{ width: "500px" }} id="alert-dialog-title">
-          {"제출 결과를 기다리는 중입니다"}
+          {"과거 기록을 불러오는 중입니다..."}
         </DialogTitle>
         <DialogContent
           sx={{
@@ -232,7 +268,7 @@ function CenterHeader(props) {
             </>
           )}
         </DialogActions>
-      </Dialog> */}
+      </Dialog>
     </CenterHeaderContainer>
   );
 }
