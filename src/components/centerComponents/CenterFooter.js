@@ -69,13 +69,14 @@ function CenterFooter({ editorCode, resize, setResize }) {
   const setAction = useSetRecoilState(actionState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
   const [userCode, setUserCode] = useRecoilState(testState);
-  console.log(userCode);
+  // console.log(userCode);
   const userInfo = useRecoilValue(userState);
 
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
 
   const [loaderOpen, setLoaderOpen] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
+  const [doneSubmit, setDoneSubmit] = useState(false);
 
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
   const [gradingResult, setGradingResult] = useRecoilState(gradingResultState);
@@ -118,11 +119,9 @@ function CenterFooter({ editorCode, resize, setResize }) {
     try {
       const response = await axios.get(`/onlinejudge/analysis2/${submitId}`);
       console.log(response.data);
-      // console.log(response.data.efficiency);
-      // console.log(JSON.parse(response.data.efficiency));
       setIsDataLoading(false);
       setSubmitResult(response.data);
-      // console.log(JSON.parse(response.data));
+      setDoneSubmit(true);
     } catch (error) {
       console.log(error);
       setIsDataLoading(false);
@@ -180,7 +179,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
 
   const handleSubmitBtnClick = async () => {
     setLoaderOpen(true);
-
+    setIsDataLoading(true);
     submitMutate("", {
       onSuccess: async (data) => {
         console.log(data);
@@ -188,22 +187,17 @@ function CenterFooter({ editorCode, resize, setResize }) {
       },
     });
     setAction("submit");
-
-    // await getSubmissionResult(18);
   };
-  // const { data: pastData } = useQuery(
-  //   "getPastSubmitResult",
-  //   () => getPastSubmitResult(1, 1),
-  //   {
-  //     onSuccess: (data) => console.log(data),
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
+
   const handleMoveBtnClick = () => {
     setLoaderOpen(false);
     setDialogOpen(true);
   };
 
+  const handleRestartBtnClick = () => {
+    setAction("false");
+    setDoneSubmit(false);
+  };
   return (
     <CenterFooterContainer>
       <FooterItems>
@@ -242,23 +236,48 @@ function CenterFooter({ editorCode, resize, setResize }) {
         </Item>
       </FooterItems>
       <FooterBtns>
-        <Button
-          color="inherit"
-          variant="outlined"
-          onClick={handleExecuteBtnClick}
-        >
-          실행
-        </Button>
-        <Button color="inherit" variant="outlined" onClick={handleGradingClick}>
-          채점
-        </Button>
-        <Button
-          color="inherit"
-          onClick={handleSubmitBtnClick}
-          variant="outlined"
-        >
-          제출
-        </Button>
+        {doneSubmit ? (
+          <>
+            <Button
+              color="inherit"
+              variant="outlined"
+              onClick={handleRestartBtnClick}
+            >
+              다시 풀어보기
+            </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              onClick={handleMoveBtnClick}
+            >
+              제출결과 보기
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              color="inherit"
+              variant="outlined"
+              onClick={handleExecuteBtnClick}
+            >
+              실행
+            </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              onClick={handleGradingClick}
+            >
+              채점
+            </Button>
+            <Button
+              color="inherit"
+              onClick={handleSubmitBtnClick}
+              variant="outlined"
+            >
+              제출
+            </Button>
+          </>
+        )}
       </FooterBtns>
       <Dialog
         open={loaderOpen}
@@ -283,10 +302,14 @@ function CenterFooter({ editorCode, resize, setResize }) {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setLoaderOpen(false)}>아니요</Button>
-          <Button onClick={handleMoveBtnClick} autoFocus>
-            네
-          </Button>
+          {isDataLoading ? null : (
+            <>
+              <Button onClick={() => setLoaderOpen(false)}>아니요</Button>
+              <Button onClick={handleMoveBtnClick} autoFocus>
+                네
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </CenterFooterContainer>

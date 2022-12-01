@@ -1,11 +1,10 @@
 import { Button, CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { currentProblemInfoState, testState } from "../../atoms";
-import { DUMMY_DATA } from "../../constants/DummyData";
 import { validateTestCase } from "../../fetch";
 
 const TestCaseContainer = styled(motion.div)`
@@ -43,7 +42,7 @@ const TestCase = styled.div`
 
 const MiniNavBar = styled.div`
   background-color: ${({ theme }) => theme.bgColor};
-  height: 20px;
+  height: 30px;
   display: flex;
   align-items: center;
   padding-left: 15px;
@@ -71,10 +70,15 @@ const MainContent = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.bgColor};
   flex: 1;
-  display: flex;
+
   white-space: pre-line;
 `;
 
+const BasicContent = styled.div`
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
 const InputContent = styled.div`
   flex: 1;
   padding-left: 20px;
@@ -109,10 +113,35 @@ const testCaseVariants = {
 function TestCaseInfo() {
   const userCode = useRecoilValue(testState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+
   const [validateResult, setValidateResult] = useState({
     0: { show: false, status: "fail", input: 0, output: 0, userOutput: "" },
     1: { show: false, status: "fail", input: 0, output: 0, userOutput: "" },
   });
+
+  useEffect(() => {
+    if (currentProblemInfo) {
+      const tcOpen = JSON.parse(
+        currentProblemInfo.tc_open.replaceAll("'", '"')
+      );
+      setValidateResult({
+        0: {
+          show: false,
+          status: "fail",
+          input: tcOpen.input[0],
+          output: tcOpen.output[0],
+          userOutput: "",
+        },
+        1: {
+          show: false,
+          status: "fail",
+          input: tcOpen.input[1],
+          output: tcOpen.output[1],
+          userOutput: "",
+        },
+      });
+    }
+  }, [currentProblemInfo]);
   const [isOpen, setIsOpen] = useState(true);
   const { isLoading, mutate } = useMutation(
     (tcNum) => validateTestCase(userCode, currentProblemInfo.prob_id, tcNum),
@@ -137,9 +166,7 @@ function TestCaseInfo() {
   };
   return (
     <TestCaseContainer initial={true} animate={isOpen ? "open" : "closed"}>
-      <TestCaseNavBar>
-        테스트케이스 <button onClick={handleToggleBtnclick}>힝</button>
-      </TestCaseNavBar>
+      <TestCaseNavBar>테스트케이스</TestCaseNavBar>
 
       <CasesWrapper variants={testCaseVariants}>
         <TestCase>
@@ -159,13 +186,12 @@ function TestCaseInfo() {
             </ValidateContainer>
           </MiniNavBar>
           <MainContent>
-            <InputContent>{`input:
-          ${validateResult[0].input}`}</InputContent>
-            <OutputContent>{`output:
-          ${validateResult[0].output}`}</OutputContent>
+            <BasicContent>
+              <InputContent>{`입력값:  ${validateResult[0].input}`}</InputContent>
+              <OutputContent>{`기댓값:  ${validateResult[0].output}`}</OutputContent>
+            </BasicContent>
             {validateResult[0].show ? (
-              <InputContent>{`코드 결과:
-          ${validateResult[0].userOutput}`}</InputContent>
+              <InputContent>{`코드 결과: ${validateResult[0].userOutput}`}</InputContent>
             ) : null}
 
             <ValidateLoader isLoading={isLoading}>
@@ -190,13 +216,12 @@ function TestCaseInfo() {
             </ValidateContainer>
           </MiniNavBar>
           <MainContent>
-            <InputContent>{`input:
-          ${validateResult[1].input}`}</InputContent>
-            <OutputContent>{`output:
-          ${validateResult[1].output}`}</OutputContent>
+            <BasicContent>
+              <InputContent>{`입력값:  ${validateResult[1].input}`}</InputContent>
+              <OutputContent>{`기댓값:  ${validateResult[1].output}`}</OutputContent>
+            </BasicContent>
             {validateResult[1].show ? (
-              <InputContent>{`코드 결과:
-          ${validateResult[1].userOutput}`}</InputContent>
+              <InputContent>{`코드 결과: ${validateResult[1].userOutput}`}</InputContent>
             ) : null}
             <ValidateLoader isLoading={isLoading}>
               <CircularProgress color="inherit" />

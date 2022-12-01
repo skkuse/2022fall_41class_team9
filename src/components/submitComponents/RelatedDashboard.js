@@ -14,23 +14,24 @@ import Sunkyun from "../../assets/images/sunkyun.png";
 
 function RelatedDashboard() {
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
-  console.log(currentProblemInfo);
-  const { data: relatedData } = useQuery(
-    "searchRelated",
-    () =>
-      searchRelated(
-        currentProblemInfo && currentProblemInfo.tag
-          ? currentProblemInfo.tag
-          : "binarysearch"
-      ),
-    {
-      onSuccess: (data) => console.log(data),
-      onError: (error) => console.log(error),
-    }
-  );
+  // console.log(currentProblemInfo);
+  const relatedData = [];
+  // const { data: relatedData } = useQuery(
+  //   "searchRelated",
+  //   () =>
+  //     searchRelated(
+  //       currentProblemInfo && currentProblemInfo.tag
+  //         ? currentProblemInfo.tag
+  //         : "binarysearch"
+  //     ),
+  //   {
+  //     onSuccess: (data) => console.log(data),
+  //     onError: (error) => console.log(error),
+  //   }
+  // );
   return (
     <Grid container spacing={3}>
-      {relatedData
+      {relatedData && relatedData.length > 0
         ? relatedData.map((relatedItem) => (
             <Grid key={relatedItem.title} item xs={12} md={12}>
               <Card sx={{ height: "200px", display: "flex" }}>

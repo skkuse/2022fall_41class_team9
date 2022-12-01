@@ -22,9 +22,48 @@ const GradingHeader = styled.div`
   align-items: center;
 `;
 
+const CasesContainer = styled.div`
+  width: 95%;
+  background-color: ${({ theme }) => theme.primary};
+  margin: 0 auto;
+  margin-top: 20px;
+  border-radius: 10px;
+`;
+
+const GradeTitle = styled.div`
+  width: 100%;
+  border-bottom: 1px solid ${({ theme }) => theme.color};
+  font-size: 30px;
+  padding: 10px;
+`;
+const GradeInfoContainer = styled.div`
+  width: 100%;
+  border-bottom: 1px solid ${({ theme }) => theme.bgColor};
+  padding: 10px;
+`;
+
+const MiniTitle = styled.div`
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 10px;
+`;
+
+const MiniStatus = styled.span`
+  font-size: 17px;
+  font-weight: 500;
+  margin-left: 20px;
+`;
+
+const MiniInfo = styled.div`
+  font-size: 15px;
+  margin-left: 30px;
+  margin-bottom: 5px;
+`;
+
 function GradingResults() {
   const action = useRecoilValue(actionState);
   const [gradingResult, setGradingResult] = useRecoilState(gradingResultState);
+  // console.log(gradingResult);
 
   const showScore = () => {
     let passCount = 0;
@@ -36,7 +75,9 @@ function GradingResults() {
       }
     }
     let score = (passCount / resultLen) * 100;
-    return <h2 style={{ margin: "8px" }}>총점은 {score}점 입니다.</h2>;
+    return (
+      <GradeTitle>{`5개중 ${passCount}개의 테스트를 통과했습니다`}</GradeTitle>
+    );
   };
   const showGradeResult = () => {
     let array = [];
@@ -57,9 +98,6 @@ function GradingResults() {
       }
       if (gradingResult[i].status === "pass") {
         str2 = pass;
-        // let tmp = passCount;
-        // setPassCount(tmp);
-        // passCount = passCount + 1
       } else if (gradingResult[i].status === "fail") {
         str2 = fail;
       }
@@ -75,8 +113,33 @@ function GradingResults() {
   return (
     <GradingResutlsContainer action={action}>
       <GradingHeader>채점 결과</GradingHeader>
-      {showScore()}
-      {showGradeResult()}
+      <CasesContainer>
+        {showScore()}
+        {/* {showGradeResult()} */}
+        {gradingResult && gradingResult.length > 0
+          ? gradingResult.map((result, idx) => (
+              <GradeInfoContainer key={result.id}>
+                <MiniTitle>
+                  {`${result.id}번 테스트`}
+                  {result.status === "pass" ? (
+                    <MiniStatus style={{ color: "#03b6fc" }}>통과</MiniStatus>
+                  ) : (
+                    <MiniStatus style={{ color: "#e34b67" }}>실패</MiniStatus>
+                  )}
+                </MiniTitle>
+                {idx < 2 ? (
+                  <MiniInfo>{`입력값: ${result.input}`}</MiniInfo>
+                ) : null}
+                {idx < 2 ? (
+                  <MiniInfo>{`기댓값: ${result.output}`}</MiniInfo>
+                ) : null}
+                {idx < 2 ? (
+                  <MiniInfo>{`출력값: ${result.userOutput}`}</MiniInfo>
+                ) : null}
+              </GradeInfoContainer>
+            ))
+          : null}
+      </CasesContainer>
     </GradingResutlsContainer>
   );
 }

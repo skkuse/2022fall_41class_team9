@@ -54,7 +54,7 @@ const SaveBtnContainer = styled.div`
   align-items: flex-end;
 `;
 const CenterHeaderBtn = styled.button`
-  width: 70px;
+  width: 90px;
   height: 30px;
   background-color: black;
   color: white;
@@ -72,19 +72,6 @@ function CenterHeader(props) {
   const problemInfo = useRecoilValue(currentProblemInfoState);
   const [open, setOpen] = useState(false);
   const [submitId, setSubmitId] = useState(0);
-  if (savePart[1] === 1) {
-    const tmp = savePart[0];
-    localStorage.setItem(tmp, test);
-    console.log(savePart);
-  } else if (savePart[1] === 2) {
-    const tmp = savePart[0];
-    localStorage.setItem(tmp, test);
-    console.log(savePart);
-  } else if (savePart[1] === 3) {
-    const tmp = savePart[0];
-    localStorage.setItem(tmp, test);
-    console.log(savePart);
-  }
   const { data: pastSubmitData } = useQuery(
     "getPastSubmitResult",
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
@@ -105,7 +92,9 @@ function CenterHeader(props) {
     setSubmitId(event.target.value);
   };
 
-  const handleRecallBtnClcik = () => {};
+  const handleRecallBtnClcik = () => {
+    setOpen(false);
+  };
 
   return (
     <CenterHeaderContainer>
@@ -114,14 +103,13 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 1 ? "rgba(0,0,0,0.3)" : "grey",
+              backgroundColor: savePart === 1 ? "rgba(0,0,0,0.3)" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
               localStorage.setItem(tmp, test);
               setSavePart(1);
               props.editor.current.setValue(localStorage.getItem(1));
-              // setAction("false");
             }}
           >
             1
@@ -129,14 +117,13 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 2 ? "rgba(0,0,0,0.3)" : "grey",
+              backgroundColor: savePart === 2 ? "rgba(0,0,0,0.3)" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
               localStorage.setItem(tmp, test);
               setSavePart(2);
               props.editor.current.setValue(localStorage.getItem(2));
-              // setAction("false");
             }}
           >
             2
@@ -144,14 +131,13 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 3 ? "rgba(0,0,0,0.3)" : "grey",
+              backgroundColor: savePart === 3 ? "rgba(0,0,0,0.3)" : "#b5b3b4",
             }}
             onClick={() => {
               const tmp = savePart;
               localStorage.setItem(tmp, test);
               setSavePart(3);
               props.editor.current.setValue(localStorage.getItem(3));
-              // setAction("false");
             }}
           >
             3
@@ -214,6 +200,39 @@ function CenterHeader(props) {
           </Button>
         </DialogActions>
       </Dialog>
+      {/* <Dialog
+        open={loaderOpen}
+        // onClose={() => setLoaderOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle sx={{ width: "500px" }} id="alert-dialog-title">
+          {"제출 결과를 기다리는 중입니다"}
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {isDataLoading ? (
+            <CircularProgress color="inherit" />
+          ) : (
+            <div>결과를 보러 가시겠습니까?</div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          {isDataLoading ? null : (
+            <>
+              <Button onClick={() => setLoaderOpen(false)}>아니요</Button>
+              <Button onClick={handleMoveBtnClick} autoFocus>
+                네
+              </Button>
+            </>
+          )}
+        </DialogActions>
+      </Dialog> */}
     </CenterHeaderContainer>
   );
 }

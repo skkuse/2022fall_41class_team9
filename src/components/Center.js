@@ -71,15 +71,7 @@ function Center() {
   const [fontSize, setFontSize] = useRecoilState(fontSizeState);
   const diffEditorRef = useRef(null);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
-  // console.log(currentProblemInfo.skeleton);
-  // console.log(
-  //   JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
-  // );
-  // console.log(
-  //   JSON.parse(
-  //     JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
-  //   )
-  // );
+  // console.log(currentProblemInfo);
 
   function handleEditorDidMount(editor, monaco) {
     diffEditorRef.current = editor;
@@ -117,15 +109,8 @@ function Center() {
   const [test, setTest] = useRecoilState(testState);
   const savePart = useRecoilValue(savePartState);
   const handleEditorChange = (value, event) => {
-    // console.log(value);
     setTest(value);
-    // setCode(editorCode.current.getValue());
   };
-
-  // const { data } = useQuery("searchRelated", searchRelated, {
-  //   onSuccess: (data) => console.log(data),
-  //   onError: (error) => console.log(error),
-  // });
 
   const action = useRecoilValue(actionState);
   const theme = useRecoilValue(themeState);
@@ -149,12 +134,6 @@ function Center() {
     }
   }, [monaco, theme, action]);
 
-  // if (executeFinish === true) {
-  //   editorCode.current.setValue(test);
-  // }
-  // setInterval(() => {
-  //   localStorage.setItem(savePart, test);
-  // }, 10000);
   return (
     <CenterContainer>
       <CenterHeader editor={editorCode} />
@@ -164,13 +143,16 @@ function Center() {
       >
         {action === "submit" ? (
           <div>
-            {/* <button onClick={showOriginalValue}>show original value</button>
-            <button onClick={showModifiedValue}>show modified value</button> */}
             <DiffEditor
               height="90vh"
               language="python"
               original={test}
-              modified={submitResult.codeDiff.answerCoder}
+              modified={JSON.parse(
+                JSON.stringify(currentProblemInfo.answer_code).replaceAll(
+                  "\\\\",
+                  "\\"
+                )
+              )}
               onMount={handleEditorDidMount}
               theme={theme ? "cobalt" : "idle"}
               options={{ fontSize: fontSize }}

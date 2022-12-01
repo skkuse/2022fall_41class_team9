@@ -18,9 +18,9 @@ const ExecuteResultContainer = styled.div`
 
 const ExecuteNavbar = styled.div`
   width: 100%;
-  height: 20px;
+  height: 25px;
   background-color: black;
-  color: ${({ theme }) => theme.bgColor};
+  color: ${({ theme }) => theme.color};
 `;
 const ExecuteText = styled.div`
   width: 100%;
@@ -31,7 +31,7 @@ const ExecuteText = styled.div`
 function ExecuteResult() {
   const action = useRecoilValue(actionState);
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
-  console.log(executeResult);
+  // console.log(executeResult);
 
   const showExecuteSuccess = () => {
     if (executeResult) {
