@@ -97,7 +97,7 @@ function FunctionalityDashboard() {
           aria-labelledby="nested-list-subheader"
           subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-              Nested List Items
+              기능성 검사 결과
             </ListSubheader>
           }
         >
@@ -107,7 +107,7 @@ function FunctionalityDashboard() {
           ).map((item, idx) => (
             <div key={idx}>
               <ListItemButton onClick={() => handleTestcaseClick(idx)}>
-                <ListItemText primary={idx} />
+                <ListItemText primary={`${idx + 1}번 테스트`} />
                 <Button
                   variant="contained"
                   color={item.status === "pass" ? "primary" : "error"}

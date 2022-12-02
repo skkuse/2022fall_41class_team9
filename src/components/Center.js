@@ -91,7 +91,7 @@ function Center() {
   const handleEditorChange = (value, event) => {
     setTest(value);
     if (!monacoObjects.current) return;
-    console.log("called");
+    // console.log("called");
     const { monaco, editor } = monacoObjects.current;
     const r = new monaco.Range(1, 0, 2, 0);
 
@@ -140,7 +140,7 @@ function Center() {
 
     monaco.editor.defineTheme("cobalt", cobaltTheme);
     monaco.editor.defineTheme("idle", idleTheme);
-    console.log(theme);
+    // console.log(theme);
     if (theme) {
       monaco.editor.setTheme("cobalt");
     } else {

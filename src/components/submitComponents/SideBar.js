@@ -47,7 +47,7 @@ function SideBar() {
   const handleCollapseOpen = () => setCollapseOpen(!collapseOpen);
   return (
     <SideBarContainer>
-      <QuestionInfo>소공개 3번</QuestionInfo>
+      <QuestionInfo>검사 결과</QuestionInfo>
 
       <List>
         <ListItemButton

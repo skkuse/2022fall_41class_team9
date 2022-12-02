@@ -97,7 +97,10 @@ function EfficiencyDashboard() {
                   primary={item.id}
                   sx={{ fontWeight: 800, flex: 1 }}
                 />
-                <ListItemText primary={`${item.score}점`} sx={{ flex: 1 }} />
+                <ListItemText
+                  primary={`${item.score}/100점`}
+                  sx={{ flex: 1 }}
+                />
 
                 {item.moreInfo && item.moreInfo.length > 0 ? (
                   openedIdx === idx ? (
@@ -107,28 +110,30 @@ function EfficiencyDashboard() {
                   )
                 ) : null}
               </ListItemButton>
-              <Collapse in={openedIdx === idx} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton sx={{ pl: 2 }}>
-                    <ListItemText
-                      disableTypography
-                      primary={"상세 내용"}
-                      sx={{ fontWeight: 600 }}
-                    />
-                  </ListItemButton>
-                </List>
-                {item.moreInfo.map((info) => (
-                  <List key={info.label} component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4, display: "flex" }}>
-                      <ListItemText sx={{ flex: 1 }} primary={info.label} />
+              {item.moreInfo && item.moreInfo.length > 0 ? (
+                <Collapse in={openedIdx === idx} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 2 }}>
                       <ListItemText
-                        sx={{ flex: 1 }}
-                        primary={`${info.result.toFixed(2)}점`}
+                        disableTypography
+                        primary={"상세 내용"}
+                        sx={{ fontWeight: 600 }}
                       />
                     </ListItemButton>
                   </List>
-                ))}
-              </Collapse>
+                  {item.moreInfo.map((info) => (
+                    <List key={info.label} component="div" disablePadding>
+                      <ListItemButton sx={{ pl: 4, display: "flex" }}>
+                        <ListItemText sx={{ flex: 1 }} primary={info.label} />
+                        <ListItemText
+                          sx={{ flex: 1 }}
+                          primary={`${info.result.toFixed(2)}점`}
+                        />
+                      </ListItemButton>
+                    </List>
+                  ))}
+                </Collapse>
+              ) : null}
             </div>
           ))}
         </List>

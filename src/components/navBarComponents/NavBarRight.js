@@ -12,6 +12,7 @@ import {
   currentProblemInfoState,
   themeState,
   fontSizeState,
+  userState,
 } from "../../atoms";
 import { useMutation } from "react-query";
 import { putUserUI } from "../../fetch";
@@ -146,8 +147,9 @@ function NavBarRight() {
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   const [theme, setTheme] = useRecoilState(themeState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+  const userInfo = useRecoilValue(userState);
   // const navigate = useNavigate();
-  const [mode, setMode] = useState(true);
+
   const returnMode = (checked) => {
     if (checked) {
       return "dark";
@@ -156,7 +158,12 @@ function NavBarRight() {
     }
   };
   const { mutate: UIMutate } = useMutation(
-    () => putUserUI({ user_id: 1, setting_font: "C", setting_theme: "Dark" }),
+    () =>
+      putUserUI({
+        user_id: userInfo.user_id,
+        setting_font: "C",
+        setting_theme: theme ? "Light" : "Dark",
+      }),
     {
       onSuccess: (data) => console.log(data),
       onError: (error) => console.log(error),
@@ -164,6 +171,7 @@ function NavBarRight() {
   );
   const handleModeToggle = () => {
     setTheme((prev) => !prev);
+    // console.log(theme);
     UIMutate();
   };
 

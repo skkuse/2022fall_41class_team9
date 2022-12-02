@@ -107,7 +107,10 @@ function ReadabilityDashboard() {
                   disableTypography
                   sx={{ flex: 1, fontWeight: 800 }}
                 />
-                <ListItemText primary={`${item.score}점`} sx={{ flex: 1 }} />
+                <ListItemText
+                  primary={`${item.score}/100점`}
+                  sx={{ flex: 1 }}
+                />
 
                 {item.moreInfo && item.moreInfo.length > 0 ? (
                   openedIdx === idx ? (

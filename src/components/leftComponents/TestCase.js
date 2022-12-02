@@ -184,7 +184,7 @@ function TestCaseInfo() {
                 variant="contained"
                 onClick={() => handleValidateBtnClick(0)}
               >
-                검증
+                테스트
               </Button>
             </ValidateContainer>
           </MiniNavBar>
@@ -214,7 +214,7 @@ function TestCaseInfo() {
                 variant="contained"
                 onClick={() => handleValidateBtnClick(1)}
               >
-                검증
+                테스트
               </Button>
             </ValidateContainer>
           </MiniNavBar>

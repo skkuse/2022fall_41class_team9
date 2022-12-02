@@ -1,10 +1,5 @@
-import axios from "axios";
-import { lazy, Suspense, useEffect } from "react";
-
 import styled from "styled-components";
-import { getCourseInfo, getQuestionInfo, getTest, getUserInfo } from "../fetch";
 import Center from "./Center";
-
 import Left from "./Left";
 import SubmitResult from "./submitComponents/SubmitResult";
 

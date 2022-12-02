@@ -245,15 +245,15 @@ function CenterFooter({ editorCode, resize, setResize }) {
         {doneSubmit ? (
           <>
             <Button
-              color="inherit"
-              variant="outlined"
+              color="primary"
+              variant="contained"
               onClick={handleRestartBtnClick}
             >
               다시 풀어보기
             </Button>
             <Button
-              color="inherit"
-              variant="outlined"
+              color="primary"
+              variant="contained"
               onClick={handleMoveBtnClick}
             >
               제출결과 보기
@@ -262,23 +262,23 @@ function CenterFooter({ editorCode, resize, setResize }) {
         ) : (
           <>
             <Button
-              color="inherit"
-              variant="outlined"
+              color="primary"
+              variant="contained"
               onClick={handleExecuteBtnClick}
             >
               실행
             </Button>
             <Button
-              color="inherit"
-              variant="outlined"
+              color="primary"
+              variant="contained"
               onClick={handleGradingClick}
             >
               채점
             </Button>
             <Button
-              color="inherit"
+              color="primary"
               onClick={handleSubmitBtnClick}
-              variant="outlined"
+              variant="contained"
             >
               제출
             </Button>

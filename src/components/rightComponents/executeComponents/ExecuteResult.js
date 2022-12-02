@@ -31,7 +31,8 @@ const ExecuteText = styled.div`
 function ExecuteResult() {
   const action = useRecoilValue(actionState);
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
-  // console.log(executeResult);
+  console.log(executeResult);
+  const a = "    wer    ";
 
   const showExecuteSuccess = () => {
     if (executeResult) {
@@ -55,6 +56,7 @@ function ExecuteResult() {
               style={{
                 backgroundColor:
                   index + 1 === Number(errorLine) ? "#E67BA4" : "black",
+                whiteSpace: "pre-wrap",
               }}
             >
               {element}
@@ -62,7 +64,9 @@ function ExecuteResult() {
           ))}
           <div style={{ backgroundColor: "#72CC82" }}>{errorMessage}</div>
           {errorAfter.map((element, index) => (
-            <div key={index}>{element}</div>
+            <div style={{ whiteSpace: "pre-wrap" }} key={index}>
+              {element}
+            </div>
           ))}
         </>
       );

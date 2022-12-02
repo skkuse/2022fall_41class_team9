@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { userState } from "../../atoms";
+import { themeState, userState } from "../../atoms";
 
 import { getUserInfo } from "../../fetch";
 import NavBarCenter from "./NavBarCenter";
@@ -18,6 +18,7 @@ const NavBarContainer = styled.header`
 
 function NavBar() {
   const setUser = useSetRecoilState(userState);
+  const setTheme = useSetRecoilState(themeState);
 
   const { data: userInfoData } = useQuery(
     "getUserInfo",
@@ -25,6 +26,7 @@ function NavBar() {
     {
       onSuccess: (data) => {
         setUser(data);
+        setTheme(data.setting_theme === "Dark" ? true : false);
       },
       onError: (error) => console.log(error),
       refetchOnWindowFocus: false,
