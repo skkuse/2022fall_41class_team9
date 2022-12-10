@@ -8,7 +8,7 @@ const BodyContainer = styled.div`
   /* height: 100vh;
   max-height: 100vh; */
   flex: 1;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
 `;
 // const Center = lazy(() => import("./Center"));

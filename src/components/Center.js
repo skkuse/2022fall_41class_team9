@@ -19,6 +19,7 @@ import {
   executefinishState,
   currentProblemInfoState,
   fontSizeState,
+  editorAtomState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
@@ -93,7 +94,7 @@ function Center() {
     if (!monacoObjects.current) return;
     // console.log("called");
     const { monaco, editor } = monacoObjects.current;
-    const r = new monaco.Range(1, 0, 2, 0);
+    // const r = new monaco.Range(1, 0, 2, 0);
 
     // editor.deltaDecorations(
     //   editor.getModel().getAllDecorations(),
@@ -110,6 +111,8 @@ function Center() {
   const [resize, setResize] = useState({ height: 51 });
 
   const monacoObjects = useRef(null);
+
+  const setEditorAtom = useSetRecoilState(editorAtomState);
 
   const handleEditor = (editor, monaco) => {
     monacoObjects.current = {
@@ -137,6 +140,8 @@ function Center() {
   useEffect(() => {
     if (!monacoObjects.current) return;
     const { monaco, editor } = monacoObjects.current;
+    // setEditorAtom(editor);
+    // console.log(editor);
 
     monaco.editor.defineTheme("cobalt", cobaltTheme);
     monaco.editor.defineTheme("idle", idleTheme);
@@ -146,6 +151,13 @@ function Center() {
     } else {
       monaco.editor.setTheme("idle");
     }
+    window.addEventListener("resize", () => {
+      editor.layout({});
+    });
+    window.addEventListener("dragResize", () => {
+      console.log("resize");
+      editor.layout({});
+    });
     // const r = new monaco.Range(1, 0, 2, 0);
     // editor.deltaDecorations(
     //   [],
@@ -206,7 +218,10 @@ function Center() {
             onChange={handleEditorChange}
             onMount={handleEditor}
             theme={theme ? "cobalt" : "idle"}
-            options={{ fontSize: fontSize, renderLineHighlight: "3" }}
+            options={{
+              fontSize: fontSize,
+              renderLineHighlight: "3",
+            }}
           ></Editor>
         )}
       </CenterEditor>

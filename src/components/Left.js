@@ -6,61 +6,48 @@ import QuestionInfo from "./leftComponents/QuestionInfo";
 
 import TestCaseInfo from "./leftComponents/TestCase";
 
+const event = new Event("dragResize");
+
+const LeftContCont = styled.div`
+  position: relative;
+  height: 100%;
+`;
 const LeftContainer = styled.div`
   position: relative;
   /* width: 450px; */
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   border-right: 1px solid ${({ theme }) => theme.borderColor};
   height: 100%;
+  width: 400px;
+  /* width: ${(props) => (props.isOpen ? "400px" : "0px")}; */
+  display: ${(props) => (props.isOpen ? "flex" : "none")};
+`;
+
+const ResizeBtn = styled.button`
+  position: absolute;
+  z-index: 5;
+  height: 30px;
+  width: 10px;
+  background-color: beige;
+  top: 50%;
+  right: -20px;
 `;
 
 function Left() {
-  const [resize, setResize] = useState({ width: "450px" });
+  const [isLeftOpen, setIsLeftOpen] = useState(true);
+  const handleResizeBtnClick = () => {
+    setIsLeftOpen(!isLeftOpen);
+    dispatchEvent(event);
+  };
   return (
-    <LeftContainer>
-      <Rnd
-        // default={{
-        //   x: 0,
-        //   y: 0,
-        //   width: 320,
-        //   height: 200,
-        // }}
-        style={{
-          position: "relative",
-          // top: "100%",
-          // bottom: 0,
-          // left: 0,
-          display: "flex",
-          flexDirection: "column",
-        }}
-        disableDragging
-        enableResizing={{
-          bottom: false,
-          bottomLeft: false,
-          bottomRight: false,
-          left: false,
-          right: false,
-          top: false,
-          topLeft: false,
-          topRight: false,
-        }}
-        size={{
-          width: resize.width,
-        }}
-        minHeight="100%"
-        minWidth="300px"
-        maxWidth="1500px"
-        onResizeStop={(e, direction, ref, delta, position) => {
-          setResize({
-            width: ref.style.width,
-          });
-        }}
-      >
+    <LeftContCont>
+      <LeftContainer isOpen={isLeftOpen}>
         <QuestionInfo></QuestionInfo>
         <TestCaseInfo></TestCaseInfo>
-      </Rnd>
-    </LeftContainer>
+      </LeftContainer>
+      <ResizeBtn onClick={handleResizeBtnClick} />
+    </LeftContCont>
   );
 }
 

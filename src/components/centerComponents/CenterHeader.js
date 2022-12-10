@@ -84,7 +84,7 @@ function CenterHeader(props) {
   const getSubmissionResult = async (submitId) => {
     try {
       const response = await axios.get(`/onlinejudge/analysis2/${submitId}`);
-      console.log(response.data);
+      // console.log(response.data);
       setIsDataLoading(false);
       setSubmitResult(response.data);
     } catch (error) {
@@ -100,7 +100,7 @@ function CenterHeader(props) {
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
       onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
       },
       onError: (error) => console.log(error),
     }

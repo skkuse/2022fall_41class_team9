@@ -97,3 +97,8 @@ export const fontSizeState = atom({
   key: "fontSizeState",
   default: 16,
 });
+
+export const editorAtomState = atom({
+  key: "editorAtomState",
+  default: null,
+});
