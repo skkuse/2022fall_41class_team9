@@ -23,6 +23,7 @@ import {
   executeResultState,
   gradingResultState,
   submitResultState,
+  savePartState,
 } from "../../atoms";
 import {
   executeCode,
@@ -80,6 +81,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
 
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
   const [gradingResult, setGradingResult] = useRecoilState(gradingResultState);
+  const savePart = useRecoilValue(savePartState);
   const setSubmitResult = useSetRecoilState(submitResultState);
 
   const { mutate: executeMutate } = useMutation(
@@ -122,6 +124,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
       setIsDataLoading(false);
       setSubmitResult(response.data);
       setDoneSubmit(true);
+      setAction("submit");
     } catch (error) {
       console.log(error);
       setIsDataLoading(false);
@@ -147,14 +150,22 @@ function CenterFooter({ editorCode, resize, setResize }) {
         JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
       )
     );
+    localStorage.setItem(
+      savePart,
+      JSON.parse(
+        JSON.stringify(currentProblemInfo.skeleton).replaceAll("\\\\", "\\")
+      )
+    );
     // editorCode.current.setValue();
   };
 
   const handleCopyBtnClick = () => {
     navigator.clipboard.writeText(userCode);
+    localStorage.setItem(savePart, userCode);
   };
 
   const handleDownloadBtnClick = () => {
+    localStorage.setItem(savePart, userCode);
     const downloadTag = document.createElement("a");
     const fileName = "code.py";
     const code = new Blob([userCode], {
@@ -167,19 +178,14 @@ function CenterFooter({ editorCode, resize, setResize }) {
   };
 
   const handleExecuteBtnClick = () => {
+    localStorage.setItem(savePart, userCode);
     setAction("execute");
     executeMutate();
-    // getExecutionResult();
-    // setExecuteResult({
-    //   status: "fail",
-    //   result: "8번째 줄에서 에러가 발생하였습니다\n 에러를 수정하세요",
-    //   linePos: 8,
-    //   code: "def solution(n):\n\n    a,b = 1,1\n    if n==1 or n==2:\n        return 1\n\n    for i in range(1,n):\n        a,b = b, a+b\n\n    print(a)\n    return a\nprint(solution(10))",
-    // });
   };
   const handleGradingClick = () => {
+    localStorage.setItem(savePart, userCode);
     setAction("grading");
-    // getGradeResult();
+
     gradingMutate();
   };
 
@@ -192,7 +198,6 @@ function CenterFooter({ editorCode, resize, setResize }) {
         await getSubmissionResult(data.submit_id);
       },
     });
-    setAction("submit");
   };
 
   const handleMoveBtnClick = () => {
@@ -217,6 +222,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
           />
           <FiUpload
             onClick={() => {
+              localStorage.setItem(savePart, userCode);
               document.querySelector(".fileUpload").click();
             }}
             style={{ cursor: "pointer", width: "100%", height: "100%" }}
@@ -292,7 +298,9 @@ function CenterFooter({ editorCode, resize, setResize }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle sx={{ width: "500px" }} id="alert-dialog-title">
-          {"제출 결과를 기다리는 중입니다"}
+          {isDataLoading
+            ? "제출 결과를 기다리는 중입니다"
+            : "검사가 완료되었습니다"}
         </DialogTitle>
         <DialogContent
           sx={{

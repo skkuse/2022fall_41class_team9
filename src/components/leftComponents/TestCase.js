@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { currentProblemInfoState, testState } from "../../atoms";
+import { currentProblemInfoState, savePartState, testState } from "../../atoms";
 import { validateTestCase } from "../../fetch";
 
 const TestCaseContainer = styled(motion.div)`
@@ -115,6 +115,7 @@ const testCaseVariants = {
 
 function TestCaseInfo() {
   const userCode = useRecoilValue(testState);
+  const savePart = useRecoilValue(savePartState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
 
   const [validateResult, setValidateResult] = useState({
@@ -164,6 +165,7 @@ function TestCaseInfo() {
   const handleToggleBtnclick = () => setIsOpen(!isOpen);
 
   const handleValidateBtnClick = (tcNum) => {
+    localStorage.setItem(savePart, userCode);
     mutate(tcNum);
     // console.log(userCode);
   };
