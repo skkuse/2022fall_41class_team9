@@ -3,6 +3,7 @@ import styled from "styled-components";
 import QuestionInfo from "./leftComponents/QuestionInfo";
 import TestCaseInfo from "./leftComponents/TestCase";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
+import { motion } from "framer-motion";
 
 const LeftContCont = styled.div`
   position: relative;
@@ -26,12 +27,15 @@ const ResizeBtn = styled.button`
   height: 40px;
   /* width: 10px; */
   font-size: 20px;
-  background-color: beige;
+
   top: 50%;
   right: -21px;
   padding: 0;
-  background-color: #b5b3b4;
+  background-color: transparent;
   border: 1px solid black;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 `;
 
 function Left({ event }) {

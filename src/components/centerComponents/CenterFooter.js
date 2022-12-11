@@ -49,19 +49,27 @@ const CenterFooterContainer = styled.div`
 `;
 const FooterItems = styled.div`
   display: flex;
-  gap: 15px;
+  height: 100%;
+  gap: 30px;
+  align-items: center;
 `;
 
 const Item = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 90%;
   background-color: transparent;
   color: ${({ theme }) => theme.color};
   cursor: pointer;
-  font-size: 10px;
+  font-size: 34px;
   text-align: center;
   border: none;
-  margin-left: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 `;
 const FooterBtns = styled.div`
   display: flex;
@@ -254,7 +262,7 @@ function CenterFooter({ editorCode }) {
   return (
     <CenterFooterContainer>
       <FooterItems>
-        <Item>
+        <Item title="코드 불러오기">
           <input
             type="file"
             onChange={handleFileUploadBtnClick}
@@ -267,25 +275,25 @@ function CenterFooter({ editorCode }) {
               localStorage.setItem(savePart, userCode);
               document.querySelector(".fileUpload").click();
             }}
-            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+            style={{ cursor: "pointer" }}
           ></FiUpload>
         </Item>
-        <Item>
+        <Item title="코드 초기화">
           <MdRefresh
             onClick={handleRefreshBtnClick}
-            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+            style={{ cursor: "pointer" }}
           ></MdRefresh>
         </Item>
-        <Item>
+        <Item title="코드 복사">
           <MdContentCopy
             onClick={handleCopyBtnClick}
-            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+            style={{ cursor: "pointer" }}
           ></MdContentCopy>
         </Item>
-        <Item>
+        <Item title="코드 다운로드">
           <BsDownload
             onClick={handleDownloadBtnClick}
-            style={{ cursor: "pointer", width: "100%", height: "100%" }}
+            style={{ cursor: "pointer" }}
           ></BsDownload>
         </Item>
       </FooterItems>

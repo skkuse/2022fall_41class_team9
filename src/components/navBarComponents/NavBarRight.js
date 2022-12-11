@@ -37,6 +37,11 @@ const ShowDue = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 15px;
+
+  @media screen and (max-width: 1100px) {
+    font-size: 12px;
+  }
 `;
 const SettingBtn = styled.button`
   width: 50px;
@@ -70,16 +75,6 @@ const SettingSideBar = styled.div`
   height: 100vh;
   width: 300px;
   z-index: 10;
-`;
-
-const SettingMenu = styled.button`
-  height: 40px;
-  width: 100%;
-  background-color: bisque;
-  display: flex;
-  padding-left: 20px;
-  align-items: center;
-  border: none;
 `;
 
 const CloseBtn = styled.button`

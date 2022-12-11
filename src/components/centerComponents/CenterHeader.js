@@ -71,6 +71,7 @@ function CenterHeader(props) {
   const [savePart, setSavePart] = useRecoilState(savePartState);
   const [test, setTest] = useRecoilState(testState);
   const [action, setAction] = useRecoilState(actionState);
+  // const [pastSubmitData, setPastSubmitData] = useState([]);
 
   const userInfo = useRecoilValue(userState);
   const problemInfo = useRecoilValue(currentProblemInfoState);
@@ -100,6 +101,7 @@ function CenterHeader(props) {
     "getPastSubmitResult",
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
+      // enabled: open,
       onSuccess: (data) => {
         console.log(data);
       },

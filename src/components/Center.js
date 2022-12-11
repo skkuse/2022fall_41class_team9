@@ -75,13 +75,6 @@ function Center() {
     diffEditorRef.current = editor;
   }
 
-  function showOriginalValue() {
-    alert(diffEditorRef.current.getOriginalEditor().getValue());
-  }
-
-  function showModifiedValue() {
-    alert(diffEditorRef.current.getModifiedEditor().getValue());
-  }
   const editorWrapper = useRef();
   const editorCode = useRef("");
 
@@ -111,6 +104,12 @@ function Center() {
   const monacoObjects = useRef(null);
 
   const setEditorAtom = useSetRecoilState(editorAtomState);
+
+  const autoSave = () => {
+    localStorage.setItem(savePart, test);
+  };
+
+  setInterval(autoSave, 10000);
 
   const handleEditor = (editor, monaco) => {
     monacoObjects.current = {

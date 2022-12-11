@@ -33,8 +33,11 @@ const ResizeBtn = styled.button`
   top: 50%;
   left: -21px;
   padding: 0;
-  background-color: #b5b3b4;
+  background-color: transparent;
   border: 1px solid black;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 `;
 
 const InfoContainer = styled.div`

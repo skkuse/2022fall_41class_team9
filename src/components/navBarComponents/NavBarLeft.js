@@ -12,7 +12,7 @@ const HomeBtn = styled.button`
   background-color: transparent;
   border: none;
   margin-left: 18px;
-  color: ${({ theme }) => theme.bgColor};
+  color: #bcbcbb;
   cursor: pointer;
 `;
 
