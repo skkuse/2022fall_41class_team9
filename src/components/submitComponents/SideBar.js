@@ -10,12 +10,10 @@ import { motion } from "framer-motion";
 const SideBarContainer = styled.div`
   height: 100%;
   position: relative;
-
   width: 270px;
   background-color: #1976d2;
   box-shadow: 2px 1px 10px rgba(0, 0, 0, 0.5);
   color: white;
-  /* padding-left: 30px; */
 `;
 
 const QuestionInfo = styled.div`

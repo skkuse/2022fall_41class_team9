@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useSetRecoilState } from "recoil";
-import { dialogOpenState } from "../../atoms";
+import { dialogOpenState } from "../../../atoms";
 
 function SubmitDialog({ open, setOpen, isDataLoading }) {
   const setDialogOpen = useSetRecoilState(dialogOpenState);

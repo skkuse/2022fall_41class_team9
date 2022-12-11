@@ -13,9 +13,9 @@ import {
   submitResultState,
   testState,
   userState,
-} from "../../atoms";
-import { ERROR_CODE_RESULT } from "../../constants/DummyData";
-import { executeCode, gradeCode, submitCode } from "../../fetch";
+} from "../../../atoms";
+import { ERROR_CODE_RESULT } from "../../../constants/DummyData";
+import { executeCode, gradeCode, submitCode } from "../../../fetch";
 
 const FooterBtns = styled.div`
   display: flex;
@@ -28,15 +28,15 @@ function MainButtons({
   setResetDialogOpen,
   setIsDataLoading,
 }) {
-  const [doneSubmit, setDoneSubmit] = useRecoilState(doneSubmitState);
   const userCode = useRecoilValue(testState);
-  const setAction = useSetRecoilState(actionState);
   const userInfo = useRecoilValue(userState);
+  const savePart = useRecoilValue(savePartState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+  const setAction = useSetRecoilState(actionState);
   const setExecuteResult = useSetRecoilState(executeResultState);
   const setGradingResult = useSetRecoilState(gradingResultState);
-  const savePart = useRecoilValue(savePartState);
   const setSubmitResult = useSetRecoilState(submitResultState);
+  const [doneSubmit, setDoneSubmit] = useRecoilState(doneSubmitState);
 
   const { mutate: executeMutate } = useMutation(
     () => executeCode({ user_code: userCode }),

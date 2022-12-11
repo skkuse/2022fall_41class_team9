@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { actionState, savePartState, testState } from "../../atoms";
+import { actionState, savePartState, testState } from "../../../atoms";
 
 const TabBtn = styled.button`
   width: 90px;

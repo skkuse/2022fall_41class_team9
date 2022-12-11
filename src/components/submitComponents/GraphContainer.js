@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  /* background-color: bisque; */
   height: 450px;
   width: 450px;
   margin: 0 auto;

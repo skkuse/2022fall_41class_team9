@@ -3,7 +3,11 @@ import { MdRefresh, MdContentCopy } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { currentProblemInfoState, savePartState, testState } from "../../atoms";
+import {
+  currentProblemInfoState,
+  savePartState,
+  testState,
+} from "../../../atoms";
 
 const ButtonsContainer = styled.div`
   display: flex;

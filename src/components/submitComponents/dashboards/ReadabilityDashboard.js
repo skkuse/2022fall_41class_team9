@@ -1,7 +1,7 @@
 import ReactApexChart from "react-apexcharts";
-import GraphContainer from "./GraphContainer";
-import InfoContainer from "./InfoContainer";
-import Title from "./Title";
+import GraphContainer from "../GraphContainer";
+import InfoContainer from "../InfoContainer";
+import Title from "../Title";
 
 import {
   Button,
@@ -14,7 +14,8 @@ import {
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { submitResultState } from "../../atoms";
+import { submitResultState } from "../../../atoms";
+import { readabilityChartState } from "../../../chartStates/readabilityChartState";
 
 function ReadabilityDashboard() {
   const submitResult = useRecoilValue(submitResultState);
@@ -28,49 +29,7 @@ function ReadabilityDashboard() {
       setOpenedIdx(idx);
     }
   };
-  const readabilitySummaryChart = {
-    series: [
-      {
-        name: "Series 1",
-        data: submitResult.readabilityType
-          ? submitResult.readabilityType.map((item) => item.score)
-          : [80, 50, 30, 40, 100, 20, 100, 100],
-      },
-    ],
-    options: {
-      chart: {
-        // height: 350,
-        type: "radar",
-        toolbar: {
-          show: false,
-        },
-      },
-      plotOptions: {
-        radar: {
-          polygons: {
-            strokeColor: "black",
-            fill: {
-              colors: ["#a5dbf0"],
-            },
-          },
-        },
-      },
-
-      xaxis: {
-        categories: [
-          "eradicate",
-          "mccabe",
-          "mypy",
-          "pycodestyle",
-          "pydocstyle",
-          "pyflakes",
-          "pylint",
-          "isort",
-        ],
-      },
-      yaxis: { max: 100, min: 0 },
-    },
-  };
+  const readabilitySummaryChart = readabilityChartState(submitResult);
   return (
     <>
       <Title label={"가독성 검사"} />

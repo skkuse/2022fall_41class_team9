@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
-import { savePartState, testState } from "../../atoms";
+import { savePartState, testState } from "../../../atoms";
 import { Button } from "@mui/material";
 import { useState } from "react";
 

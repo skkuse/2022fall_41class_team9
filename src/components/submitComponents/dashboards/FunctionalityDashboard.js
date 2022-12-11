@@ -1,9 +1,9 @@
 import { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import styled from "styled-components";
-import GraphContainer from "./GraphContainer";
-import InfoContainer from "./InfoContainer";
-import Title from "./Title";
+import GraphContainer from "../GraphContainer";
+import InfoContainer from "../InfoContainer";
+import Title from "../Title";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import {
   Button,
@@ -13,63 +13,14 @@ import {
   ListItemText,
   ListSubheader,
 } from "@mui/material";
-import { submitResultState } from "../../atoms";
+import { submitResultState } from "../../../atoms";
 import { useRecoilValue } from "recoil";
+import { functionalityChartState } from "../../../chartStates/functionalitySummaryChartState";
 
 function FunctionalityDashboard() {
   const submitResult = useRecoilValue(submitResultState);
   const [openedIdx, setOpenedIdx] = useState(0);
-  const functionalityChart = {
-    series: [
-      submitResult.functionality
-        ? submitResult.functionality.reduce((sum, curr) => {
-            if (curr.status === "pass") {
-              return sum + 1;
-            } else {
-              return sum;
-            }
-          }, 0) * 20
-        : 70,
-    ],
-    options: {
-      chart: {
-        height: 350,
-        type: "radialBar",
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: "70%",
-            margin: 0,
-
-            background: "#293450",
-          },
-          track: {
-            dropShadow: {
-              enabled: true,
-              top: 2,
-              left: 0,
-              blur: 4,
-              opacity: 0.15,
-            },
-          },
-          dataLabels: {
-            name: {
-              offsetY: -10,
-              color: "#fff",
-              fontSize: "20px",
-            },
-            value: {
-              color: "#fff",
-              fontSize: "30px",
-              show: true,
-            },
-          },
-        },
-      },
-      labels: ["기능성"],
-    },
-  };
+  const functionalityChart = functionalityChartState(submitResult, 350);
 
   const handleTestcaseClick = (idx) => {
     if (idx === openedIdx) {

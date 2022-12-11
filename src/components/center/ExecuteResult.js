@@ -1,6 +1,6 @@
 import { useRecoilValue, useRecoilState } from "recoil";
 import styled from "styled-components";
-import { actionState, executeResultState } from "../../../atoms";
+import { actionState, executeResultState } from "../../atoms";
 
 const ExecuteResultContainer = styled.div`
   height: 100%;

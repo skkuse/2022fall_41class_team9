@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import styledEngine from "@mui/styled-engine";
-import { submitResultState } from "../../atoms";
+import { submitResultState } from "../../../atoms";
 import { useRecoilState } from "recoil";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";

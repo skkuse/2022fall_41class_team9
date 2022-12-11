@@ -1,10 +1,10 @@
 import Editor from "@monaco-editor/react";
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import CenterFooter from "./centerComponents/CenterFooter";
-import CenterHeader from "./centerComponents/CenterHeader";
-import ExecuteResult from "./rightComponents/executeComponents/ExecuteResult";
-import GradingResults from "./rightComponents/gradingComponents/GradingResults";
+import CenterFooter from "./centerFooter/CenterFooter";
+import CenterHeader from "./centerHeader/CenterHeader";
+import ExecuteResult from "./ExecuteResult";
+import GradingResults from "./GradingResults";
 import cobaltTheme from "monaco-themes/themes/Cobalt2.json";
 import idleTheme from "monaco-themes/themes/IDLE.json";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -15,7 +15,7 @@ import {
   testState,
   currentProblemInfoState,
   fontSizeState,
-} from "../atoms";
+} from "../../atoms";
 import { Rnd } from "react-rnd";
 import { DiffEditor } from "@monaco-editor/react";
 

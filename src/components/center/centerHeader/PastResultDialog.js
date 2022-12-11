@@ -23,9 +23,9 @@ import {
   submitResultState,
   testState,
   userState,
-} from "../../atoms";
-import { ERROR_CODE_RESULT } from "../../constants/DummyData";
-import { getPastSubmitResult } from "../../fetch";
+} from "../../../atoms";
+import { ERROR_CODE_RESULT } from "../../../constants/DummyData";
+import { getPastSubmitResult } from "../../../fetch";
 
 function PastResultDialog({ open, setOpen }) {
   const [submitId, setSubmitId] = useState(0);

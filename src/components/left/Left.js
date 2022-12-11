@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import QuestionInfo from "./leftComponents/QuestionInfo";
-import TestCaseInfo from "./leftComponents/TestCase";
+import QuestionInfo from "./QuestionInfo";
+import TestCaseInfo from "./TestCase";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";

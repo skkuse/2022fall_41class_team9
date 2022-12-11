@@ -1,9 +1,9 @@
 import ReactApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
-import { submitResultState } from "../../atoms";
-import GraphContainer from "./GraphContainer";
-import InfoContainer from "./InfoContainer";
-import Title from "./Title";
+import { submitResultState } from "../../../atoms";
+import GraphContainer from "../GraphContainer";
+import InfoContainer from "../InfoContainer";
+import Title from "../Title";
 import {
   Button,
   Collapse,
@@ -14,43 +14,11 @@ import {
 } from "@mui/material";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { useState } from "react";
+import { efficencyChartState } from "../../../chartStates/efficiencyChartState";
 
 function EfficiencyDashboard() {
   const submitResult = useRecoilValue(submitResultState);
-  const efficencySummaryChart = {
-    series: [
-      {
-        name: "Series 1",
-        data: submitResult.efficiency
-          ? submitResult.efficiency.map((item) => item.score)
-          : [80, 50, 30, 40],
-      },
-    ],
-    options: {
-      chart: {
-        // height: 350,
-        type: "radar",
-        toolbar: {
-          show: false,
-        },
-      },
-      plotOptions: {
-        radar: {
-          polygons: {
-            strokeColor: "black",
-            fill: {
-              colors: ["#a5dbf0"],
-            },
-          },
-        },
-      },
-
-      xaxis: {
-        categories: ["LOC", "Halstead", "CFC", "DFC"],
-      },
-      yaxis: { max: 100, min: 0 },
-    },
-  };
+  const efficencySummaryChart = efficencyChartState(submitResult);
 
   const [openedIdx, setOpenedIdx] = useState(0);
 

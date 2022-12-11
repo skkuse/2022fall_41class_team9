@@ -1,6 +1,6 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { actionState, gradingResultState } from "../../../atoms";
+import { actionState, gradingResultState } from "../../atoms";
 
 const GradingResutlsContainer = styled.div`
   height: 100%;

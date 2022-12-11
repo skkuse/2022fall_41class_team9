@@ -1,16 +1,16 @@
 import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { forwardRef } from "react";
 import styled from "@emotion/styled";
 import { dialogOpenState, openedContentState } from "../../atoms";
-import OverallDashboard from "./OverallDashboard";
+import OverallDashboard from "./dashboards/OverallDashboard";
 import SideBar from "./SideBar";
-import FunctionalityDashboard from "./FunctionalityDashboard";
-import ReadabilityDashboard from "./ReadabilityDashboard";
-import RelatedDashboard from "./RelatedDashboard";
-import EfficiencyDashboard from "./EfficiencyDashboard";
-import ExplanationDashboard from "./ExplanationDashboard";
+import FunctionalityDashboard from "./dashboards/FunctionalityDashboard";
+import ReadabilityDashboard from "./dashboards/ReadabilityDashboard";
+import RelatedDashboard from "./dashboards/RelatedDashboard";
+import EfficiencyDashboard from "./dashboards/EfficiencyDashboard";
+import ExplanationDashboard from "./dashboards/ExplanationDashboard";
 
 const DialogWrapper = styled.div`
   width: 100%;
@@ -60,6 +60,7 @@ const ExplanationContent = styled.div`
   display: ${(props) =>
     props.openedContent === "explanation" ? "block" : "none"};
 `;
+
 const RelatedContent = styled.div`
   flex: 1;
   padding: 40px;
@@ -74,9 +75,8 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 export default function SubmitResult() {
   const [open, setOpen] = useRecoilState(dialogOpenState);
+  const openedContent = useRecoilValue(openedContentState);
 
-  const [openedContent, setOpenedContent] = useRecoilState(openedContentState);
-  // console.log(openedContent);
   const handleClose = () => {
     setOpen(false);
   };

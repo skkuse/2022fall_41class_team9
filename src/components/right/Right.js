@@ -4,7 +4,7 @@ import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { actionState, submitResultState, dialogOpenState } from "../../atoms";
 import ReactApexChart from "react-apexcharts";
-import { Button, Paper } from "@mui/material";
+import { Button } from "@mui/material";
 
 const RightContainer = styled.div`
   position: relative;

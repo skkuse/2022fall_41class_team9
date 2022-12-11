@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Center from "./Center";
-import Left from "./Left";
-import Right from "./rightComponents/Right";
+import Center from "./center/Center";
+import Left from "./left/Left";
+import Right from "./right/Right";
 import SubmitResult from "./submitComponents/SubmitResult";
 
 const BodyContainer = styled.div`
