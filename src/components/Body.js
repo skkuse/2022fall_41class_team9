@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Center from "./center/Center";
 import Left from "./left/Left";
 import Right from "./right/Right";
-import SubmitResult from "./submitComponents/SubmitResult";
+import SubmitResult from "./submitResult/SubmitResult";
 
 const BodyContainer = styled.div`
   width: 100%;
@@ -19,7 +19,6 @@ function Body() {
       <Left event={event} />
       <Center />
       <Right event={event} />
-
       <SubmitResult />
     </BodyContainer>
   );
