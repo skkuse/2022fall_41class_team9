@@ -249,22 +249,13 @@ function CenterFooter({ editorCode, resize, setResize }) {
       </FooterItems>
       <FooterBtns>
         {doneSubmit ? (
-          <>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handleRestartBtnClick}
-            >
-              다시 풀어보기
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handleMoveBtnClick}
-            >
-              제출결과 보기
-            </Button>
-          </>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleRestartBtnClick}
+          >
+            다시 풀어보기
+          </Button>
         ) : (
           <>
             <Button

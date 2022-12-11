@@ -61,14 +61,20 @@ function OverallDashboard() {
             },
             value: {
               fontSize: "16px",
+              formatter: function (val) {
+                return val.slice(0, 5) + "점";
+              },
             },
             total: {
               show: true,
               label: "Total",
-              // formatter: function (w) {
-              //   // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-              //   return 249;
-              // },
+              formatter: function (w) {
+                const total =
+                  w.globals.seriesTotals.reduce((a, b) => {
+                    return a + b;
+                  }, 0) / w.globals.series.length;
+                return total.toFixed(2) + "점";
+              },
             },
           },
         },

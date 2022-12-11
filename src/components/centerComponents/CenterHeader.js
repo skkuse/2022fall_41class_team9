@@ -87,6 +87,7 @@ function CenterHeader(props) {
       // console.log(response.data);
       setIsDataLoading(false);
       setSubmitResult(response.data);
+      setAction("submit");
     } catch (error) {
       console.log(error);
       setIsDataLoading(false);

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Center from "./Center";
 import Left from "./Left";
+import Right from "./rightComponents/Right";
 import SubmitResult from "./submitComponents/SubmitResult";
 
 const BodyContainer = styled.div`
@@ -8,17 +9,18 @@ const BodyContainer = styled.div`
   /* height: 100vh;
   max-height: 100vh; */
   flex: 1;
-  /* overflow: hidden; */
+  overflow: hidden;
   display: flex;
 `;
-// const Center = lazy(() => import("./Center"));
+
+const event = new Event("dragResize");
+
 function Body() {
   return (
     <BodyContainer>
-      <Left />
-      {/* <Suspense fallback={<div>Loading... </div>}> */}
+      <Left event={event} />
       <Center />
-      {/* </Suspense> */}
+      <Right event={event} />
 
       <SubmitResult />
     </BodyContainer>

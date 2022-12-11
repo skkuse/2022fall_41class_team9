@@ -23,8 +23,6 @@ import {
 } from "../atoms";
 import { Rnd } from "react-rnd";
 import { useMutation, useQuery } from "react-query";
-import { executeCode, getUserInfo, searchRelated } from "../fetch";
-import { act } from "react-dom/test-utils";
 
 import { DiffEditor } from "@monaco-editor/react";
 const CenterContainer = styled.div`
@@ -205,7 +203,11 @@ function Center() {
               )}
               onMount={handleEditorDidMount}
               theme={theme ? "cobalt" : "idle"}
-              options={{ fontSize: fontSize }}
+              options={{
+                fontSize: fontSize,
+                minimap: { enabled: false },
+                renderOverviewRuler: false,
+              }}
 
               // editorDidMount={handleEditorDidMount}
             />
@@ -221,6 +223,7 @@ function Center() {
             options={{
               fontSize: fontSize,
               renderLineHighlight: "3",
+              minimap: { enabled: false },
             }}
           ></Editor>
         )}
