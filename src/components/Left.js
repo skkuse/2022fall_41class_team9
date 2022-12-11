@@ -4,6 +4,8 @@ import QuestionInfo from "./leftComponents/QuestionInfo";
 import TestCaseInfo from "./leftComponents/TestCase";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const LeftContCont = styled.div`
   position: relative;
@@ -23,7 +25,7 @@ const LeftContainer = styled.div`
 
 const ResizeBtn = styled.button`
   position: absolute;
-  z-index: 5;
+  z-index: 200;
   height: 40px;
   /* width: 10px; */
   font-size: 20px;
@@ -40,6 +42,16 @@ const ResizeBtn = styled.button`
 
 function Left({ event }) {
   const [isLeftOpen, setIsLeftOpen] = useState(true);
+  const isTablet = useMediaQuery({
+    query: "(max-width:1080px)",
+  });
+
+  useEffect(() => {
+    if (isTablet) {
+      setIsLeftOpen(false);
+    }
+  }, [isTablet]);
+
   const handleResizeBtnClick = () => {
     setIsLeftOpen(!isLeftOpen);
     dispatchEvent(event);

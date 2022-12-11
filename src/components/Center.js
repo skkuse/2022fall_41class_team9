@@ -100,6 +100,7 @@ function Center() {
   // const monaco = useMonaco();
 
   const [resize, setResize] = useState({ height: 251 });
+  const [editorY, setEditorY] = useState(window.innerHeight - 302);
 
   const monacoObjects = useRef(null);
 
@@ -150,6 +151,8 @@ function Center() {
     }
     window.addEventListener("resize", () => {
       editor.layout({});
+
+      setEditorY(window.innerHeight - 302);
     });
     window.addEventListener("dragResize", () => {
       editor.layout({});
@@ -178,6 +181,7 @@ function Center() {
     //     monaco.editor.setTheme("idle");
     //   }
     // }
+    // return ()=>{window.removeEventListener("resize")}
   }, [monacoObjects.current, theme, action]);
 
   return (
@@ -229,15 +233,14 @@ function Center() {
 
       {/* <BottomContainer> */}
       <Rnd
-        default={{ x: 0, y: window.innerHeight - 302 }}
+        default={{ x: 0, y: editorY }}
         style={{
           // position: "absolute",
-          // top: "100%",
-          // bottom: 0,
+          top: editorY,
+          // bottom: editorY,
           // left: 0,
           display: "flex",
           flexDirection: "column",
-          zIndex: 100,
         }}
         disableDragging
         enableResizing={{

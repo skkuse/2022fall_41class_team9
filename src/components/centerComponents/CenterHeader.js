@@ -157,7 +157,7 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 2 ? "#1a2736" : "#b5b3b4",
+              backgroundColor: savePart === 2 ? "#1a2736" : "#8f8c91",
             }}
             onClick={() => {
               const tmp = savePart;
@@ -171,7 +171,7 @@ function CenterHeader(props) {
           <CenterHeaderBtn
             disabled={action === "submit"}
             style={{
-              backgroundColor: savePart === 3 ? "#1a2736" : "#b5b3b4",
+              backgroundColor: savePart === 3 ? "#1a2736" : "#8f8c91",
             }}
             onClick={() => {
               const tmp = savePart;

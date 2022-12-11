@@ -1,5 +1,5 @@
-import { AiTwotoneSetting } from "react-icons/ai";
 import { useEffect, useState } from "react";
+import { AiTwotoneSetting } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { DUMMY_DATA } from "../../constants/DummyData";
 // import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import { putUserUI } from "../../fetch";
 
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+import { useMediaQuery } from "react-responsive";
 // import styled from "styled-components";
 
 const NavBarRightContainer = styled.div`
@@ -40,7 +41,7 @@ const ShowDue = styled.div`
   font-size: 15px;
 
   @media screen and (max-width: 1100px) {
-    font-size: 12px;
+    font-size: 15px;
   }
 `;
 const SettingBtn = styled.button`
@@ -144,6 +145,9 @@ function NavBarRight() {
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
   const userInfo = useRecoilValue(userState);
   const [DDay, setDDay] = useState("60일");
+  const isTablet = useMediaQuery({
+    query: "(max-width:1080px)",
+  });
   // const navigate = useNavigate();
 
   const returnMode = (checked) => {
@@ -171,8 +175,9 @@ function NavBarRight() {
     UIMutate();
   };
 
-  const calculateDDay = () => {
+  const calculateDDay = (currentProblemInfo) => {
     if (!currentProblemInfo.hasOwnProperty("deadline")) return;
+
     const today = new Date();
     const dueDay = new Date(currentProblemInfo.deadline);
     const timeDiff = dueDay.getTime() - today.getTime();
@@ -188,12 +193,18 @@ function NavBarRight() {
         (60 * 1000)
     );
 
-    setDDay(`${dayDiff}일 ${hourDiff}시간 ${minDiff}분 남았습니다`);
+    setDDay(
+      isTablet
+        ? `${dayDiff}D ${hourDiff}h ${minDiff}m`
+        : `${dayDiff}일 ${hourDiff}시간 ${minDiff}분 남았습니다`
+    );
   };
+
   useEffect(() => {
-    calculateDDay();
-    setInterval(calculateDDay, 60000);
-  }, [currentProblemInfo]);
+    calculateDDay(currentProblemInfo);
+    const timeInterval = setInterval(calculateDDay, 10000, currentProblemInfo);
+    return () => clearInterval(timeInterval);
+  }, [currentProblemInfo, isTablet]);
 
   return (
     <NavBarRightContainer>
