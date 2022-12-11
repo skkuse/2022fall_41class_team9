@@ -1,9 +1,5 @@
 import styled from "styled-components";
-import {
-  MdOutlineArrowBackIosNew,
-  MdOutlineArrowForwardIos,
-} from "react-icons/md";
-import { getCourseQuestions, getUserCourses } from "../../fetch";
+import { getUserCourses } from "../../fetch";
 import { useQuery } from "react-query";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentProblemInfoState, userState } from "../../atoms";
@@ -44,7 +40,7 @@ function NavBarCenter() {
     courseId: 1,
     probId: 1,
   });
-  const [courses, setCourses] = useState([]);
+
   const [courseQuestions, setCourseQuestions] = useState([]);
   const setCurrentProblemInfo = useSetRecoilState(currentProblemInfoState);
 
@@ -52,13 +48,11 @@ function NavBarCenter() {
     "getUserCourses",
     () => getUserCourses("nickel"),
     {
-      onSuccess: (data) => {
-        // if (data.length > 0) {
-        //   setCourses(data.keys());
-        //   fetchQuestionInfo(data[courses[0]]);
-        // }
+      onError: (error) => {
+        alert(
+          "데이터를 읽어오는 과정에서 문제가 생겼습니다. 프로그램을 다시 실행해주세요."
+        );
       },
-      onError: (error) => console.log(error),
       enabled: user.courses.length > 0,
       refetchOnWindowFocus: false,
     }
@@ -67,18 +61,13 @@ function NavBarCenter() {
   useEffect(() => {
     if (user.courses.length > 0) {
       fetchQuestionInfo(user.courses[0]);
-      // console.log(user);
     }
   }, [user]);
 
   const fetchQuestionInfo = async (courseId) => {
     try {
       const response = await axios.get(`/codes/problems?course_id=${courseId}`);
-
       if (response.data.length > 0) {
-        // console.log(courseId);
-        // console.log(response.data);
-        // console.log(JSON.parse(response.data[0].tc_close));
         setCourseQuestions(response.data);
         setCurrentQuestionIdx({
           courseId: courseId,
@@ -89,7 +78,9 @@ function NavBarCenter() {
         alert("해당과목에 문제가 없습니다.");
       }
     } catch (error) {
-      console.log(error);
+      alert(
+        "데이터를 읽어오는 과정에서 문제가 생겼습니다. 프로그램을 다시 실행해주세요."
+      );
     }
   };
 
@@ -101,7 +92,6 @@ function NavBarCenter() {
     setCurrentProblemInfo(courseQuestions[event.targt.value]);
   };
 
-  // console.log(currentQuestionIdx);
   return (
     <NavBarCenterContainer>
       <InfoContainer>

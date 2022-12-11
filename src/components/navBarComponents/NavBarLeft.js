@@ -16,11 +16,11 @@ const HomeBtn = styled.button`
   cursor: pointer;
 `;
 
-const handleHomeBtnClick = () => {
-  window.location.reload();
-};
-
 function NavBarLeft() {
+  const handleHomeBtnClick = () => {
+    window.location.reload();
+  };
+
   return (
     <NavBarLeftContainer>
       <HomeBtn onClick={handleHomeBtnClick}>
