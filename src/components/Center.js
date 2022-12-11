@@ -1,5 +1,5 @@
-import Editor, { useMonaco } from "@monaco-editor/react";
-import { useEffect, useState, useRef, Suspense } from "react";
+import Editor from "@monaco-editor/react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import CenterFooter from "./centerComponents/CenterFooter";
 import CenterHeader from "./centerComponents/CenterHeader";
@@ -8,23 +8,18 @@ import ExecuteResult from "./rightComponents/executeComponents/ExecuteResult";
 import GradingResults from "./rightComponents/gradingComponents/GradingResults";
 import cobaltTheme from "monaco-themes/themes/Cobalt2.json";
 import idleTheme from "monaco-themes/themes/IDLE.json";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   actionState,
   themeState,
   savePartState,
-  saveState,
-  submitResultState,
   testState,
-  executefinishState,
   currentProblemInfoState,
   fontSizeState,
-  editorAtomState,
 } from "../atoms";
 import { Rnd } from "react-rnd";
-import { useMutation, useQuery } from "react-query";
-
 import { DiffEditor } from "@monaco-editor/react";
+
 const CenterContainer = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.bgColor};
@@ -39,14 +34,6 @@ const CenterEditor = styled.div`
   width: 100%;
 
   flex: 1;
-`;
-
-const BottomContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 450px;
-  bottom: 0;
-  left: 0;
 `;
 
 const Terminal = styled.div`
@@ -67,19 +54,23 @@ const Terminal = styled.div`
 `;
 
 function Center() {
-  const [fontSize, setFontSize] = useRecoilState(fontSizeState);
-  const diffEditorRef = useRef(null);
+  const [resize, setResize] = useState({ height: 251 });
+  const [editorY, setEditorY] = useState(window.innerHeight - 302);
+  const fontSize = useRecoilValue(fontSizeState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+  const savePart = useRecoilValue(savePartState);
+  const action = useRecoilValue(actionState);
+  const theme = useRecoilValue(themeState);
+  const [test, setTest] = useRecoilState(testState);
+  const diffEditorRef = useRef(null);
+  const monacoObjects = useRef(null);
+  const editorWrapper = useRef();
+  const editorCode = useRef("");
 
   function handleEditorDidMount(editor, monaco) {
     diffEditorRef.current = editor;
   }
 
-  const editorWrapper = useRef();
-  const editorCode = useRef("");
-
-  const [test, setTest] = useRecoilState(testState);
-  const savePart = useRecoilValue(savePartState);
   const handleEditorChange = (value, event) => {
     setTest(value);
     if (!monacoObjects.current) return;
@@ -92,19 +83,6 @@ function Center() {
     //   editor.setModel().getAllDecorations()
     // );
   };
-
-  const action = useRecoilValue(actionState);
-  const theme = useRecoilValue(themeState);
-  const submitResult = useRecoilValue(submitResultState);
-
-  // const monaco = useMonaco();
-
-  const [resize, setResize] = useState({ height: 251 });
-  const [editorY, setEditorY] = useState(window.innerHeight - 302);
-
-  const monacoObjects = useRef(null);
-
-  const setEditorAtom = useSetRecoilState(editorAtomState);
 
   const autoSave = () => {
     localStorage.setItem(savePart, test);
@@ -135,28 +113,29 @@ function Center() {
     editorCode.current.setValue(localStorage.getItem(1));
     setTest(localStorage.getItem(1));
   };
+
   useEffect(() => {
     if (!monacoObjects.current) return;
     const { monaco, editor } = monacoObjects.current;
-    // setEditorAtom(editor);
-    // console.log(editor);
+
+    const handleWindowResize = () => {
+      editor.layout({});
+      setEditorY(window.innerHeight - 302);
+    };
+    const handleWindowDragResize = () => {
+      editor.layout({});
+    };
 
     monaco.editor.defineTheme("cobalt", cobaltTheme);
     monaco.editor.defineTheme("idle", idleTheme);
-    // console.log(theme);
+
     if (theme) {
       monaco.editor.setTheme("cobalt");
     } else {
       monaco.editor.setTheme("idle");
     }
-    window.addEventListener("resize", () => {
-      editor.layout({});
-
-      setEditorY(window.innerHeight - 302);
-    });
-    window.addEventListener("dragResize", () => {
-      editor.layout({});
-    });
+    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener("dragResize", handleWindowDragResize);
     // const r = new monaco.Range(1, 0, 2, 0);
     // editor.deltaDecorations(
     //   [],
@@ -181,7 +160,10 @@ function Center() {
     //     monaco.editor.setTheme("idle");
     //   }
     // }
-    // return ()=>{window.removeEventListener("resize")}
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener("dragResize", handleWindowDragResize);
+    };
   }, [monacoObjects.current, theme, action]);
 
   return (
@@ -235,10 +217,8 @@ function Center() {
       <Rnd
         default={{ x: 0, y: editorY }}
         style={{
-          // position: "absolute",
           top: editorY,
-          // bottom: editorY,
-          // left: 0,
+
           display: "flex",
           flexDirection: "column",
         }}
@@ -259,7 +239,6 @@ function Center() {
         bounds="parent"
         minWidth="100%"
         minHeight="45px"
-        // maxHeight="60%"
         onResizeStop={(e, direction, ref, delta, position) => {
           console.log("hi");
           setResize({

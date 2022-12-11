@@ -26,6 +26,7 @@ import {
   gradingResultState,
   submitResultState,
   savePartState,
+  doneSubmitState,
 } from "../../atoms";
 import {
   executeCode,
@@ -114,7 +115,7 @@ function CenterFooter({ editorCode }) {
 
   const [loaderOpen, setLoaderOpen] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
-  const [doneSubmit, setDoneSubmit] = useState(false);
+  const [doneSubmit, setDoneSubmit] = useRecoilState(doneSubmitState);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
 

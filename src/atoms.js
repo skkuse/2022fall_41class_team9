@@ -102,3 +102,5 @@ export const editorAtomState = atom({
   key: "editorAtomState",
   default: null,
 });
+
+export const doneSubmitState = atom({ key: "doneSubmit", default: false });
