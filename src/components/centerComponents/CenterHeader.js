@@ -101,7 +101,7 @@ function CenterHeader(props) {
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
       onSuccess: (data) => {
-        // console.log(data);
+        console.log(data);
       },
       onError: (error) => console.log(error),
     }

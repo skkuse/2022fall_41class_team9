@@ -153,7 +153,6 @@ function Center() {
       editor.layout({});
     });
     window.addEventListener("dragResize", () => {
-      console.log("resize");
       editor.layout({});
     });
     // const r = new monaco.Range(1, 0, 2, 0);

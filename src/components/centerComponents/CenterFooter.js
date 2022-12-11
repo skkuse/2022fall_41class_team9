@@ -68,7 +68,33 @@ const FooterBtns = styled.div`
   gap: 10px;
   color: ${({ theme }) => theme.color};
 `;
-
+const ERROR_CODE_RESULT = {
+  codeDiff: [],
+  codeExplanation: "코드에 에러가 존재합니다.",
+  efficiency: [
+    { id: "LOC", moreInfo: [], score: 0 },
+    { id: "halstead", moreInfo: [], score: 0 },
+    { id: "CFC", moreInfo: [], score: 0 },
+    { id: "DFC", moreInfo: [], score: 0 },
+  ],
+  functionality: [
+    { id: 1, status: "fail", input: 0, output: 0, userOutput: "error" },
+    { id: 2, status: "fail", input: 0, output: 0, userOutput: "error" },
+    { id: 3, status: "fail", input: 0, output: 0, userOutput: "error" },
+    { id: 4, status: "fail", input: 0, output: 0, userOutput: "error" },
+    { id: 5, status: "fail", input: 0, output: 0, userOutput: "error" },
+  ],
+  readabilityType: [
+    { id: "eradicate", score: 0, moreInfo: [] },
+    { id: "mccabe", score: 0, moreInfo: [] },
+    { id: "mypy", score: 0, moreInfo: [] },
+    { id: "pycodestyle", score: 0, moreInfo: [] },
+    { id: "pydocstyle", score: 0, moreInfo: [] },
+    { id: "pyflakes", score: 0, moreInfo: [] },
+    { id: "pylint", score: 0, moreInfo: [] },
+    { id: "isort", score: 0, moreInfo: [] },
+  ],
+};
 function CenterFooter({ editorCode }) {
   const setAction = useSetRecoilState(actionState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
@@ -133,8 +159,9 @@ function CenterFooter({ editorCode }) {
     } catch (error) {
       console.log(error);
       setIsDataLoading(false);
-      alert("제출코드에 에러가 있습니다");
-      setLoaderOpen(false);
+      setSubmitResult(ERROR_CODE_RESULT);
+      setDoneSubmit(true);
+      setAction("submit");
     }
   };
 

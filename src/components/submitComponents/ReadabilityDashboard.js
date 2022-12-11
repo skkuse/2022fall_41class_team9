@@ -121,16 +121,18 @@ function ReadabilityDashboard() {
                 ) : null}
               </ListItemButton>
               <Collapse in={openedIdx === idx} timeout="auto" unmountOnExit>
-                {item.moreInfo.map((info) => (
-                  <List key={info.label} component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
-                      <ListItemText primary={info.label} />
-                    </ListItemButton>
-                    {/* <ListItemButton sx={{ pl: 4 }}>
+                {item.length > 0
+                  ? item.moreInfo.map((info) => (
+                      <List key={info.label} component="div" disablePadding>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary={info.label} />
+                        </ListItemButton>
+                        {/* <ListItemButton sx={{ pl: 4 }}>
                       <ListItemText primary={info.result} />
                     </ListItemButton> */}
-                  </List>
-                ))}
+                      </List>
+                    ))
+                  : null}
               </Collapse>
             </div>
           ))}

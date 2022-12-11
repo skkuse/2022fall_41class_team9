@@ -85,7 +85,7 @@ function Right({ event }) {
               return sum + curr.score;
             }, 0) / 8,
           ]
-        : [44, 55, 67],
+        : [0, 0, 0],
     options: {
       chart: {
         height: 350,
