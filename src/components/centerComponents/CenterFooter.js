@@ -69,7 +69,7 @@ const FooterBtns = styled.div`
   color: ${({ theme }) => theme.color};
 `;
 
-function CenterFooter({ editorCode, resize, setResize }) {
+function CenterFooter({ editorCode }) {
   const setAction = useSetRecoilState(actionState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
   const [userCode, setUserCode] = useRecoilState(testState);

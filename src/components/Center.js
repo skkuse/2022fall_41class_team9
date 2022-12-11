@@ -37,7 +37,7 @@ const CenterContainer = styled.div`
 const CenterEditor = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+
   flex: 1;
 `;
 
@@ -106,7 +106,7 @@ function Center() {
 
   // const monaco = useMonaco();
 
-  const [resize, setResize] = useState({ height: 51 });
+  const [resize, setResize] = useState({ height: 251 });
 
   const monacoObjects = useRef(null);
 
@@ -231,14 +231,15 @@ function Center() {
 
       {/* <BottomContainer> */}
       <Rnd
-        default={{ x: 0, y: window.innerHeight - 102 }}
+        default={{ x: 0, y: window.innerHeight - 302 }}
         style={{
-          position: "absolute",
-          top: "100%",
-          bottom: 0,
-          left: 0,
+          // position: "absolute",
+          // top: "100%",
+          // bottom: 0,
+          // left: 0,
           display: "flex",
           flexDirection: "column",
+          zIndex: 100,
         }}
         disableDragging
         enableResizing={{
@@ -254,20 +255,18 @@ function Center() {
         size={{
           height: resize.height,
         }}
+        bounds="parent"
         minWidth="100%"
         minHeight="45px"
-        maxHeight="80%"
+        // maxHeight="60%"
         onResizeStop={(e, direction, ref, delta, position) => {
+          console.log("hi");
           setResize({
             height: ref.style.height,
           });
         }}
       >
-        <CenterFooter
-          editorCode={editorCode}
-          resize={resize}
-          setResize={setResize}
-        />
+        <CenterFooter editorCode={editorCode} />
         <Terminal>
           {action === "execute" ? (
             <ExecuteResult></ExecuteResult>
