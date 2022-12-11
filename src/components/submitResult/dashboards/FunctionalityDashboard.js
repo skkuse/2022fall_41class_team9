@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import styled from "styled-components";
 import GraphContainer from "../GraphContainer";
 import InfoContainer from "../InfoContainer";
 import Title from "../Title";
@@ -15,7 +14,7 @@ import {
 } from "@mui/material";
 import { submitResultState } from "../../../atoms";
 import { useRecoilValue } from "recoil";
-import { functionalityChartState } from "../../../chartStates/functionalitySummaryChartState";
+import { functionalityChartState } from "../../../chartStates/functionalityChartState";
 
 function FunctionalityDashboard() {
   const submitResult = useRecoilValue(submitResultState);

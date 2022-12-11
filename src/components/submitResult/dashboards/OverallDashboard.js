@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { submitResultState } from "../../../atoms";
 import { efficencyChartState } from "../../../chartStates/efficiencyChartState";
-import { functionalityChartState } from "../../../chartStates/functionalitySummaryChartState";
+import { functionalityChartState } from "../../../chartStates/functionalityChartState";
 import { overallScoreChartState } from "../../../chartStates/overallScoreChartState";
 import { readabilityChartState } from "../../../chartStates/readabilityChartState";
 import { Item } from "../Item";

@@ -20,9 +20,6 @@ export const functionalityChartState = (submitResult, height) => {
         radialBar: {
           hollow: {
             size: "70%",
-          },
-          hollow: {
-            size: "70%",
             margin: 0,
 
             background: "#293450",
