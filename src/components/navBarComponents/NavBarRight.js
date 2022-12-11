@@ -1,5 +1,5 @@
 import { AiTwotoneSetting } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { DUMMY_DATA } from "../../constants/DummyData";
 // import { useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ import {
 } from "../../atoms";
 import { useMutation } from "react-query";
 import { putUserUI } from "../../fetch";
-import * as React from "react";
+
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 // import styled from "styled-components";
@@ -148,6 +148,7 @@ function NavBarRight() {
   const [theme, setTheme] = useRecoilState(themeState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
   const userInfo = useRecoilValue(userState);
+  const [DDay, setDDay] = useState("60일");
   // const navigate = useNavigate();
 
   const returnMode = (checked) => {
@@ -175,9 +176,10 @@ function NavBarRight() {
     UIMutate();
   };
 
-  const calculateDDay = (due) => {
+  const calculateDDay = () => {
+    if (!currentProblemInfo.hasOwnProperty("deadline")) return;
     const today = new Date();
-    const dueDay = new Date(due);
+    const dueDay = new Date(currentProblemInfo.deadline);
     const timeDiff = dueDay.getTime() - today.getTime();
     const dayDiff = Math.floor(timeDiff / (24 * 60 * 60 * 1000));
     const hourDiff = Math.floor(
@@ -191,16 +193,16 @@ function NavBarRight() {
         (60 * 1000)
     );
 
-    return `${dayDiff}일 ${hourDiff}시간 ${minDiff}분 남았습니다`;
+    setDDay(`${dayDiff}일 ${hourDiff}시간 ${minDiff}분 남았습니다`);
   };
+  useEffect(() => {
+    calculateDDay();
+    setInterval(calculateDDay, 60000);
+  }, [currentProblemInfo]);
 
   return (
     <NavBarRightContainer>
-      <ShowDue>
-        {currentProblemInfo
-          ? calculateDDay(currentProblemInfo.deadline)
-          : "365일 남았습니다."}
-      </ShowDue>
+      <ShowDue>{currentProblemInfo ? DDay : "365일 남았습니다."}</ShowDue>
       <SettingBtn onClick={() => setIsSettingOpen(true)}>
         <AiTwotoneSetting size="1.8rem" />
       </SettingBtn>
