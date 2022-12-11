@@ -3,7 +3,6 @@ import styled from "styled-components";
 import QuestionInfo from "./leftComponents/QuestionInfo";
 import TestCaseInfo from "./leftComponents/TestCase";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
-import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 
@@ -13,13 +12,10 @@ const LeftContCont = styled.div`
 `;
 const LeftContainer = styled.div`
   position: relative;
-  /* width: 450px; */
-  /* display: flex; */
   flex-direction: column;
   border-right: 1px solid ${({ theme }) => theme.borderColor};
   height: 100%;
   width: 400px;
-  /* width: ${(props) => (props.isOpen ? "400px" : "0px")}; */
   display: ${(props) => (props.isOpen ? "flex" : "none")};
 `;
 
@@ -27,9 +23,7 @@ const ResizeBtn = styled.button`
   position: absolute;
   z-index: 200;
   height: 40px;
-  /* width: 10px; */
   font-size: 20px;
-
   top: 50%;
   right: -21px;
   padding: 0;
@@ -59,8 +53,8 @@ function Left({ event }) {
   return (
     <LeftContCont>
       <LeftContainer isOpen={isLeftOpen}>
-        <QuestionInfo></QuestionInfo>
-        <TestCaseInfo></TestCaseInfo>
+        <QuestionInfo />
+        <TestCaseInfo />
       </LeftContainer>
       <ResizeBtn onClick={handleResizeBtnClick}>
         {isLeftOpen ? <MdNavigateBefore /> : <MdNavigateNext />}

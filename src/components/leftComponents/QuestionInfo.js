@@ -1,7 +1,6 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { currentProblemInfoState } from "../../atoms";
-import { DUMMY_DATA } from "../../constants/DummyData";
 
 const QuestionInfoContainer = styled.div`
   flex: 2;
