@@ -1,4 +1,5 @@
 import {
+  Alert,
   Backdrop,
   Button,
   CircularProgress,
@@ -7,6 +8,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Snackbar,
 } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
@@ -35,6 +37,7 @@ import {
 import { FiUpload } from "react-icons/fi";
 import { MdRefresh, MdContentCopy } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
+import ResetDialog from "./ResetDialog";
 
 const CenterFooterContainer = styled.div`
   height: 50px;
@@ -70,7 +73,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
   const setAction = useSetRecoilState(actionState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
   const [userCode, setUserCode] = useRecoilState(testState);
-  // console.log(userCode);
+
   const userInfo = useRecoilValue(userState);
 
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
@@ -78,6 +81,8 @@ function CenterFooter({ editorCode, resize, setResize }) {
   const [loaderOpen, setLoaderOpen] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [doneSubmit, setDoneSubmit] = useState(false);
+  const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
 
   const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
   const [gradingResult, setGradingResult] = useRecoilState(gradingResultState);
@@ -160,6 +165,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
   };
 
   const handleCopyBtnClick = () => {
+    setSnackBarOpen(true);
     navigator.clipboard.writeText(userCode);
     localStorage.setItem(savePart, userCode);
   };
@@ -206,8 +212,17 @@ function CenterFooter({ editorCode, resize, setResize }) {
   };
 
   const handleRestartBtnClick = () => {
-    setAction("false");
-    setDoneSubmit(false);
+    // setAction("false");
+    // setDoneSubmit(false);
+    setResetDialogOpen(true);
+  };
+
+  const handleSnackBarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackBarOpen(false);
   };
   return (
     <CenterFooterContainer>
@@ -282,6 +297,19 @@ function CenterFooter({ editorCode, resize, setResize }) {
           </>
         )}
       </FooterBtns>
+      <Snackbar
+        open={snackBarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackBarClose}
+      >
+        <Alert
+          onClose={handleSnackBarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          코드를 클립보드에 복사했습니다!
+        </Alert>
+      </Snackbar>
       <Dialog
         open={loaderOpen}
         // onClose={() => setLoaderOpen(false)}
@@ -303,7 +331,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
           {isDataLoading ? (
             <CircularProgress color="inherit" />
           ) : (
-            <div>결과를 보러 가시겠습니까?</div>
+            <div>세부 제출 결과를 보러 가시겠습니까?</div>
           )}
         </DialogContent>
         <DialogActions>
@@ -317,6 +345,7 @@ function CenterFooter({ editorCode, resize, setResize }) {
           )}
         </DialogActions>
       </Dialog>
+      <ResetDialog open={resetDialogOpen} setOpen={setResetDialogOpen} />
     </CenterFooterContainer>
   );
 }
