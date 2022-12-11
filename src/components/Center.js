@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import CenterFooter from "./centerComponents/CenterFooter";
 import CenterHeader from "./centerComponents/CenterHeader";
-
 import ExecuteResult from "./rightComponents/executeComponents/ExecuteResult";
 import GradingResults from "./rightComponents/gradingComponents/GradingResults";
 import cobaltTheme from "monaco-themes/themes/Cobalt2.json";
@@ -213,7 +212,6 @@ function Center() {
         )}
       </CenterEditor>
 
-      {/* <BottomContainer> */}
       <Rnd
         default={{ x: 0, y: editorY }}
         style={{
@@ -255,7 +253,6 @@ function Center() {
           )}
         </Terminal>
       </Rnd>
-      {/* </BottomContainer> */}
     </CenterContainer>
   );
 }

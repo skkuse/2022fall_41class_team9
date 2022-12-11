@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { actionState, gradingResultState } from "../../../atoms";
 
@@ -64,60 +63,28 @@ const MiniInfo = styled.div`
 
 function GradingResults() {
   const action = useRecoilValue(actionState);
-  const [gradingResult, setGradingResult] = useRecoilState(gradingResultState);
-  // console.log(gradingResult);
+  const gradingResult = useRecoilValue(gradingResultState);
 
   const showScore = () => {
     let passCount = 0;
-
     const resultLen = gradingResult.length;
+
     for (let i = 0; i < resultLen; i++) {
       if (gradingResult[i].status === "pass") {
         passCount += 1;
       }
     }
-    let score = (passCount / resultLen) * 100;
+
     return (
       <GradeTitle>{`5개중 ${passCount}개의 테스트를 통과했습니다`}</GradeTitle>
     );
   };
-  const showGradeResult = () => {
-    let array = [];
-    const openTestCase = "테스트케이스";
-    const hiddenTestCase = "히든 테스트케이스";
-    const pass = "통과";
-    const fail = "실패";
 
-    const resultLen = gradingResult.length;
-
-    for (let i = 0; i < resultLen; i++) {
-      let str1 = "";
-      let str2 = "";
-      if (gradingResult[i].userOutput !== "hidden") {
-        str1 = openTestCase;
-      } else if (gradingResult[i].userOutput === "hidden") {
-        str1 = hiddenTestCase;
-      }
-      if (gradingResult[i].status === "pass") {
-        str2 = pass;
-      } else if (gradingResult[i].status === "fail") {
-        str2 = fail;
-      }
-      let str = `${str1}-${gradingResult[i].id}: ${str2}`;
-      array.push(
-        <div key={i} style={{ margin: "8px" }}>
-          {str}
-        </div>
-      );
-    }
-    return array;
-  };
   return (
     <GradingResutlsContainer action={action}>
       <GradingHeader>채점 결과</GradingHeader>
       <CasesContainer>
         {showScore()}
-        {/* {showGradeResult()} */}
         {gradingResult && gradingResult.length > 0
           ? gradingResult.map((result, idx) => (
               <GradeInfoContainer key={result.id}>

@@ -1,18 +1,9 @@
-import { alertTitleClasses } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import styled from "styled-components";
-import {
-  actionState,
-  executeResultState,
-  testState,
-  executefinishState,
-} from "../../../atoms";
-import ReactDOM from "react-dom";
+import { actionState, executeResultState } from "../../../atoms";
 
 const ExecuteResultContainer = styled.div`
   height: 100%;
-  /* background-color: ${({ theme }) => theme.bgColor}; */
   display: ${(props) => (props.action === "execute" ? "block" : "none")};
 `;
 
@@ -22,17 +13,17 @@ const ExecuteNavbar = styled.div`
   background-color: black;
   color: ${({ theme }) => theme.color};
 `;
+
 const ExecuteText = styled.div`
   width: 100%;
   color: white;
   white-space: pre-line;
   margin: 8px;
 `;
+
 function ExecuteResult() {
   const action = useRecoilValue(actionState);
-  const [executeResult, setExecuteResult] = useRecoilState(executeResultState);
-  console.log(executeResult);
-  const a = "    wer    ";
+  const executeResult = useRecoilValue(executeResultState);
 
   const showExecuteSuccess = () => {
     if (executeResult) {
@@ -43,7 +34,6 @@ function ExecuteResult() {
     if (executeResult) {
       const userCode = executeResult.code;
       const codeLst = userCode.split("\n");
-      console.log(codeLst);
       const errorLine = executeResult.linePos;
       const errorMessage = executeResult.result;
       const errorBefore = codeLst.slice(0, errorLine);
