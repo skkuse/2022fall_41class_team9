@@ -53,13 +53,20 @@ function ExecuteSuccess({ executeResult }) {
 
 function ExecuteFail({ executeResult }) {
   if (!executeResult) return;
+
   const codeLst = executeResult.code.split("\n");
-  // console.log(codeLst);
+  console.log(executeResult);
   const errorLine = executeResult.linePos;
   const errorMessage = executeResult.result;
   const errorBefore = codeLst.slice(0, errorLine);
-  const errorAfter = codeLst.slice(errorLine);
+  let errorAfter = "";
+  if (errorLine) {
+    errorAfter = codeLst.slice(errorLine);
+  } else {
+    errorAfter = [];
+  }
 
+  console.log(codeLst, errorLine);
   return (
     // 실행 실패 시 error line을 기준으로 errorBefore와 errorAfter로 나눈다
     <ResultWrapper>
