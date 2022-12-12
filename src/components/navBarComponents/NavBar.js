@@ -15,9 +15,11 @@ const NavBarContainer = styled.header`
 `;
 
 function NavBar() {
+  // 사용자 정보 관한 state
   const setUser = useSetRecoilState(userState);
+  // editor 테마에 관한 state
   const setTheme = useSetRecoilState(themeState);
-
+  //
   const { data } = useQuery("getUserInfo", () => getUserInfo("nickel"), {
     onSuccess: (data) => {
       setUser(data);

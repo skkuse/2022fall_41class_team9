@@ -52,15 +52,17 @@ const SettingOverlay = styled.div`
 `;
 
 function NavBarRight() {
+  // setting 버튼 클릭에 관한 state
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  // 제출 기한에 관한 state
   const [DDay, setDDay] = useState("60일");
-
+  // 사용자가 선택한 문제 정보에 관한 state
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
-
+  // tablet screen일 시 layout
   const isTablet = useMediaQuery({
     query: "(max-width:1080px)",
   });
-
+  // 제출 기한 계산
   const calculateDDay = (currentProblemInfo) => {
     if (!currentProblemInfo.hasOwnProperty("deadline")) return;
     const today = new Date();
