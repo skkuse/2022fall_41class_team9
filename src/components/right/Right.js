@@ -47,6 +47,7 @@ const HeaderContainer = styled.div`
   justify-content: center;
   align-items: flex-end;
 `;
+
 const Label = styled.div`
   color: ${({ theme }) => theme.color};
   font-size: 40px;
@@ -54,7 +55,25 @@ const Label = styled.div`
   font-weight: 700;
 `;
 
-const NavigatorBtn = styled.button`
+const NavigatorBtnLeft = styled.button`
+  font-size: 60px;
+  position: absolute;
+  left: 0;
+  color: ${({ theme }) => theme.color};
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border: none;
+  padding: 0;
+  opacity: ${(props) => (props.noUse ? 0.2 : 1)};
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const NavigatorBtnRight = styled.button`
   font-size: 60px;
   position: absolute;
   right: 0;
@@ -65,10 +84,18 @@ const NavigatorBtn = styled.button`
   align-items: flex-end;
   border: none;
   padding: 0;
+  opacity: ${(props) => (props.noUse ? 0.2 : 1)};
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
+`;
+
+const BtnLabel = styled.div`
+  position: absolute;
+  font-size: 10px;
+  color: ${({ theme }) => theme.color};
+  bottom: -10px;
 `;
 
 const ResizeBtn = styled.button`
@@ -225,10 +252,18 @@ function Right({ event }) {
     <RightContainer action={action}>
       <ResultContainer isOpen={isRightOpen} isExplanationOpen={isExplanation}>
         <HeaderContainer>
+          <NavigatorBtnLeft
+            disabled
+            onClick={() => setIsExplanation(true)}
+            noUse={true}
+          >
+            <MdOutlineKeyboardArrowLeft />
+          </NavigatorBtnLeft>
           <Label>제출 결과</Label>
-          <NavigatorBtn onClick={() => setIsExplanation(true)}>
+          <NavigatorBtnRight onClick={() => setIsExplanation(true)}>
             <MdOutlineKeyboardArrowRight />
-          </NavigatorBtn>
+            <BtnLabel>코드 설명</BtnLabel>
+          </NavigatorBtnRight>
         </HeaderContainer>
         <ReactApexChart
           options={overallScoreChart.options}
@@ -316,10 +351,18 @@ function Right({ event }) {
         isExplanationOpen={isExplanation}
       >
         <HeaderContainer>
-          <Label>코드 설명</Label>
-          <NavigatorBtn onClick={() => setIsExplanation(false)}>
+          <NavigatorBtnLeft onClick={() => setIsExplanation(false)}>
             <MdOutlineKeyboardArrowLeft />
-          </NavigatorBtn>
+            <BtnLabel>제출 결과</BtnLabel>
+          </NavigatorBtnLeft>
+          <Label>코드 설명</Label>
+          <NavigatorBtnRight
+            disabled
+            noUse={true}
+            onClick={() => setIsExplanation(false)}
+          >
+            <MdOutlineKeyboardArrowRight />
+          </NavigatorBtnRight>
         </HeaderContainer>
         <Paper
           elevation={3}
