@@ -47,9 +47,11 @@ function UtilButtons({ editorCode, setSnackBarOpen }) {
     const reader = new FileReader();
     const userFile = e.target.files[0];
     reader.onload = () => {
+      // upload 코드를 test에 저장
       setUserCode(reader.result);
+      // upload된 코드를 editor에 보여주기
       editorCode.current.setValue(reader.result);
-      console.log(reader.result);
+      // console.log(reader.result);
     };
     reader.readAsText(userFile);
   };
@@ -74,14 +76,17 @@ function UtilButtons({ editorCode, setSnackBarOpen }) {
     navigator.clipboard.writeText(userCode);
     localStorage.setItem(savePart, userCode);
   };
-  // code 다운로드 클릭
+  // code 다운로드 클릭(다운로드 파일이 매번 다르기 때문에 tag를 생성 후 DOM에 append하는 방식으로 구현)
   const handleDownloadBtnClick = () => {
     localStorage.setItem(savePart, userCode);
+    // a tag 생성
     const downloadTag = document.createElement("a");
     const fileName = "code.py";
+    // blob 형태로 코드 저장
     const code = new Blob([userCode], {
       type: "text/plain",
     });
+    // a tag의 url, download 설정하고 DOM에 추가 후 클릭
     downloadTag.href = URL.createObjectURL(code);
     downloadTag.download = fileName;
     document.body.appendChild(downloadTag);
