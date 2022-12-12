@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { actionState, executeResultState } from "../../atoms";
-
+import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 const ExecuteResultContainer = styled.div`
   height: 100%;
   display: ${(props) => (props.action === "execute" ? "block" : "none")};
@@ -67,16 +67,21 @@ function ExecuteFail({ executeResult }) {
         <>
           <CodeBefore error={index + 1 === Number(errorLine)} key={index}>
             <LineNumberViewer>{`${index}`}</LineNumberViewer>
-            <LineNumberDivider>|</LineNumberDivider>
+            {index + 1 === Number(errorLine) ? (
+              <EmojiObjectsIcon sx={{ color: "yellow" }}></EmojiObjectsIcon>
+            ) : (
+              <LineNumberDivider>|</LineNumberDivider>
+            )}
+
             {element === "" ? "\n" : element}
           </CodeBefore>
         </>
       ))}
+
       <CodeMessage>{errorMessage}</CodeMessage>
       {errorAfter.map((element, index) => (
         <CodeAfter key={index}>
           <LineNumberViewer>{`${errorLine + index}`}</LineNumberViewer>
-          <LineNumberDivider>|</LineNumberDivider>
           {element === "" ? "\n" : element}
         </CodeAfter>
       ))}
