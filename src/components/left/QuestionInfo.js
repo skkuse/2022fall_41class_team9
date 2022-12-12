@@ -42,6 +42,7 @@ const MainContent = styled.div`
 `;
 
 function QuestionInfo() {
+  // 사용자가 선택한 문제 정보에 관한 state
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
 
   return (

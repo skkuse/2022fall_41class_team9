@@ -33,10 +33,12 @@ const CasesWrapper = styled(motion.div)`
 `;
 
 function TestCaseInfo() {
+  // 예시 테스트 케이스
   const [validateResult, setValidateResult] = useState({
     0: { show: false, status: "fail", input: 0, output: 0, userOutput: "" },
     1: { show: false, status: "fail", input: 0, output: 0, userOutput: "" },
   });
+  // 사용자가 선택한 문제 정보에 관한 state
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
 
   useEffect(() => {
