@@ -68,7 +68,9 @@ function ExecuteFail({ executeResult }) {
           <CodeBefore error={index + 1 === Number(errorLine)} key={index}>
             <LineNumberViewer>{`${index}`}</LineNumberViewer>
             {index + 1 === Number(errorLine) ? (
-              <EmojiObjectsIcon sx={{ color: "yellow" }}></EmojiObjectsIcon>
+              <EmojiObjectsIcon
+                sx={{ color: "yellow", position: "relative", right: "10px" }}
+              ></EmojiObjectsIcon>
             ) : (
               <LineNumberDivider>|</LineNumberDivider>
             )}
@@ -82,6 +84,7 @@ function ExecuteFail({ executeResult }) {
       {errorAfter.map((element, index) => (
         <CodeAfter key={index}>
           <LineNumberViewer>{`${errorLine + index}`}</LineNumberViewer>
+          <LineNumberDivider>|</LineNumberDivider>
           {element === "" ? "\n" : element}
         </CodeAfter>
       ))}
