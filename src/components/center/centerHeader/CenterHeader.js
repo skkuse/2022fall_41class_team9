@@ -3,7 +3,6 @@ import { useRecoilValue } from "recoil";
 import { savePartState, testState } from "../../../atoms";
 import { Button } from "@mui/material";
 import { useState } from "react";
-
 import EditorTab from "./EditorTab";
 import PastResultDialog from "./PastResultDialog";
 
@@ -33,10 +32,13 @@ const SaveBtnContainer = styled.div`
 `;
 
 function CenterHeader(props) {
+  // 과거 제출 결과에 관한 state
   const [open, setOpen] = useState(false);
+  // 현재 작업중인 editor에 관한 state
   const savePart = useRecoilValue(savePartState);
+  // 현재 작업 중인 editor에 저장된 code에 관한 state
   const userCode = useRecoilValue(testState);
-
+  // 과거 제출 결과 버튼 클릭
   const handleClickOpen = () => {
     localStorage.setItem(savePart, userCode);
     setOpen(true);
@@ -58,7 +60,7 @@ function CenterHeader(props) {
           과거 제출 결과 불러오기
         </Button>
       </CenterHeaderBtnContainer>
-
+      {/* {과거 제출 결과 창} */}
       <PastResultDialog open={open} setOpen={setOpen} />
     </CenterHeaderContainer>
   );
