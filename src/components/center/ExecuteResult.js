@@ -26,32 +26,36 @@ const TerminalWrapper = styled.div`
 const ResultWrapper = styled.div`
   margin-top: 20px;
   font-size: 20px;
-  margin: ${(props) => (props.result === "success" ? "16px" : "0px")};
 `;
 const CodeBefore = styled.div`
-  background-color: ${(props) => (props.error ? "yellow" : "black")};
+  background-color: ${(props) => (props.error ? "#eb4034" : "black")};
   white-space: pre-wrap;
 `;
 const CodeMessage = styled.div`
-  background-color: #72cc82;
+  background-color: #49eb71;
 `;
 const CodeAfter = styled.div`
   white-space: pre-wrap;
+  background-color: black;
+`;
+
+const LineNumberViewer = styled.div`
+  width: 50px;
+  display: inline-block;
+`;
+const LineNumberDivider = styled.div`
+  display: inline-block;
+  margin-right: 10px;
 `;
 
 function ExecuteSuccess({ executeResult }) {
-  return (
-    <ResultWrapper result={executeResult.status}>
-      {executeResult.result}
-    </ResultWrapper>
-  );
+  return <ResultWrapper>{executeResult.result}</ResultWrapper>;
 }
 
 function ExecuteFail({ executeResult }) {
-  if (!executeResult) {
-    return;
-  }
+  if (!executeResult) return;
   const codeLst = executeResult.code.split("\n");
+  console.log(codeLst);
   const errorLine = executeResult.linePos;
   const errorMessage = executeResult.result;
   const errorBefore = codeLst.slice(0, errorLine);
@@ -60,13 +64,21 @@ function ExecuteFail({ executeResult }) {
   return (
     <ResultWrapper>
       {errorBefore.map((element, index) => (
-        <CodeBefore error={index + 1 === Number(errorLine)} key={index}>
-          {element}
-        </CodeBefore>
+        <>
+          <CodeBefore error={index + 1 === Number(errorLine)} key={index}>
+            <LineNumberViewer>{`${index}`}</LineNumberViewer>
+            <LineNumberDivider>|</LineNumberDivider>
+            {element === "" ? "\n" : element}
+          </CodeBefore>
+        </>
       ))}
       <CodeMessage>{errorMessage}</CodeMessage>
       {errorAfter.map((element, index) => (
-        <CodeAfter key={index}>{element}</CodeAfter>
+        <CodeAfter key={index}>
+          <LineNumberViewer>{`${errorLine + index}`}</LineNumberViewer>
+          <LineNumberDivider>|</LineNumberDivider>
+          {element === "" ? "\n" : element}
+        </CodeAfter>
       ))}
     </ResultWrapper>
   );
@@ -79,8 +91,9 @@ function ExecuteResult() {
   return (
     <ExecuteResultContainer action={action}>
       <ExecuteNavbar>실행결과</ExecuteNavbar>
-      <TerminalWrapper result={executeResult.status}>
-        <div>Jser@Terminal ~ %{/* <br /> */}</div>
+      <TerminalWrapper>
+        Jser@Terminal ~ %
+        <br />
         {executeResult && executeResult.status === "success" ? (
           <ExecuteSuccess executeResult={executeResult} />
         ) : (

@@ -27,6 +27,9 @@ const ShowDue = styled.div`
   @media screen and (max-width: 1100px) {
     font-size: 15px;
   }
+  @media screen and (max-width: 600px) {
+    font-size: 12px;
+  }
 `;
 const SettingBtn = styled.button`
   width: 50px;

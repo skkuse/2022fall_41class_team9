@@ -25,8 +25,8 @@ export const getQuestionInfo = (problemId) =>
 export const getSkeletonCode = (problemId) =>
   axios.get(`/codes/skeleton?problem_id=${problemId}`).then((res) => res.data);
 
-export const getPastSubmitResult = (userId, probId) =>
-  axios
+export const getPastSubmitResult = async (userId, probId) =>
+  await axios
     .get(
       `/codes/submission?submit_id=${""}&user_id=${userId}&prob_id=${probId}`
     )

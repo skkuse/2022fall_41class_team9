@@ -27,6 +27,7 @@ function MainButtons({
   setSubmitDialogOpen,
   setResetDialogOpen,
   setIsDataLoading,
+  setIsCompileError,
 }) {
   // 현재 작업 중인 editor에 저장된 code에 관한 state
   const userCode = useRecoilValue(testState);
@@ -69,17 +70,13 @@ function MainButtons({
       onError: (error) => console.log(error),
     }
   );
-  // 코드 제출
-  const { mutate: submitMutate } = useMutation(
-    (_) =>
-      submitCode({
-        user_id: userInfo.user_id,
-        prob_id: currentProblemInfo.prob_id,
-        user_code: userCode,
-      }),
-    {
-      onError: (error) => console.log(error),
-    }
+
+  const { mutate: submitMutate } = useMutation((_) =>
+    submitCode({
+      user_id: userInfo.user_id,
+      prob_id: currentProblemInfo.prob_id,
+      user_code: userCode,
+    })
   );
   // 제출 결과 받기
   const getSubmissionResult = async (submitId) => {
@@ -95,6 +92,7 @@ function MainButtons({
       setIsDataLoading(false);
       setSubmitResult(ERROR_CODE_RESULT);
       setDoneSubmit(true);
+      setIsCompileError(true);
       setAction("submit");
     }
   };
@@ -113,12 +111,16 @@ function MainButtons({
 
   // 제출 버튼 클릭
   const handleSubmitBtnClick = async () => {
-    setSubmitDialogOpen(true);
-    setIsDataLoading(true);
     submitMutate("", {
       onSuccess: async (data) => {
         console.log(data);
+        setSubmitDialogOpen(true);
+        setIsDataLoading(true);
         await getSubmissionResult(data.submit_id);
+      },
+
+      onError: (error) => {
+        alert(error.response.data.error);
       },
     });
   };

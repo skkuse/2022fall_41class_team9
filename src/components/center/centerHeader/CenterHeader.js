@@ -20,7 +20,7 @@ const CenterHeaderBtnContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-left: 16px;
-  margin-right: 16px;
+  margin-right: 40px;
   height: 100%;
   /* gap: 20px; */
 `;
