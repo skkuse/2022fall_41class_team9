@@ -7,6 +7,7 @@ import SubmitResult from "./submitResult/SubmitResult";
 const BodyContainer = styled.div`
   width: 100%;
   flex: 1;
+  height: 100%;
   overflow: hidden;
   display: flex;
 `;

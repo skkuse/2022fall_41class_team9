@@ -59,16 +59,16 @@ function MainButtons({
     }
   );
 
-  const { mutate: submitMutate } = useMutation(
-    (_) =>
-      submitCode({
-        user_id: userInfo.user_id,
-        prob_id: currentProblemInfo.prob_id,
-        user_code: userCode,
-      }),
-    {
-      onError: (error) => console.log(error),
-    }
+  const {
+    isError,
+    error,
+    mutate: submitMutate,
+  } = useMutation((_) =>
+    submitCode({
+      user_id: userInfo.user_id,
+      prob_id: currentProblemInfo.prob_id,
+      user_code: userCode,
+    })
   );
 
   const getSubmissionResult = async (submitId) => {
@@ -102,12 +102,16 @@ function MainButtons({
   };
 
   const handleSubmitBtnClick = async () => {
-    setSubmitDialogOpen(true);
-    setIsDataLoading(true);
     submitMutate("", {
       onSuccess: async (data) => {
         console.log(data);
+        setSubmitDialogOpen(true);
+        setIsDataLoading(true);
         await getSubmissionResult(data.submit_id);
+      },
+
+      onError: (error) => {
+        alert(error.response.data.error);
       },
     });
   };

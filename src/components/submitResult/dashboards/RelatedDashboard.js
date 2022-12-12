@@ -14,7 +14,7 @@ import Sunkyun from "../../../assets/images/sunkyun.png";
 
 function RelatedDashboard() {
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
-  // console.log(currentProblemInfo);
+
   const relatedData = [
     {
       title: "Program for Fibonacci numbers - GeeksforGeeks",

@@ -35,6 +35,16 @@ const CenterEditor = styled.div`
   flex: 1;
 `;
 
+const ErrorModal = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: beige;
+  opacity: 0.3;
+`;
+
 const Terminal = styled.div`
   width: 100%;
   height: 0;
@@ -208,7 +218,9 @@ function Center() {
               renderLineHighlight: "3",
               minimap: { enabled: false },
             }}
-          ></Editor>
+          >
+            <ErrorModal></ErrorModal>
+          </Editor>
         )}
       </CenterEditor>
 
