@@ -43,6 +43,15 @@ const MainContent = styled.div`
   border-bottom: 0.7px solid ${({ theme }) => theme.borderColor};
   padding: 20px;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: grey;
+    border-radius: 5px;
+  }
 `;
 
 function QuestionInfo() {
