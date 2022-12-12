@@ -22,19 +22,25 @@ const ExecuteText = styled.div`
 `;
 
 function ExecuteResult() {
+  // 코드 불러오기, 초기화, 복사, 다운로드에 관한 state
   const action = useRecoilValue(actionState);
+  // 실행 결과에 관한 state
   const executeResult = useRecoilValue(executeResultState);
-
+  // 성공한 실행 결과 보여주기
   const showExecuteSuccess = () => {
     if (executeResult) {
       return <div>{executeResult.result}</div>;
     }
   };
+  // 실패한 실행 결과 보여주기
   const showExecuteFail = () => {
     if (executeResult) {
+      // 사룡자가 실행한 코드
       const userCode = executeResult.code;
       const codeLst = userCode.split("\n");
+      // error 발생 line
       const errorLine = executeResult.linePos;
+      // error 메세지
       const errorMessage = executeResult.result;
       const errorBefore = codeLst.slice(0, errorLine);
       const errorAfter = codeLst.slice(errorLine);

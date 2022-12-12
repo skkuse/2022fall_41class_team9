@@ -62,9 +62,11 @@ const MiniInfo = styled.div`
 `;
 
 function GradingResults() {
+  // 코드 불러오기, 초기화, 복사, 다운로드에 관한 state
   const action = useRecoilValue(actionState);
+  // 채점 결과에 관한 state
   const gradingResult = useRecoilValue(gradingResultState);
-
+  // 채점 점수 보여주기
   const showScore = () => {
     let passCount = 0;
     const resultLen = gradingResult.length;

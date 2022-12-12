@@ -20,7 +20,7 @@ export const openedContentState = atom({
   key: "openedContentState",
   default: "main",
 });
-
+// 사용자 정보
 export const userState = atom({
   key: "userState",
   default: {
