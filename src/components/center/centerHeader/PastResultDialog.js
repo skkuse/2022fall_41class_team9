@@ -43,7 +43,7 @@ function PastResultDialog({ open, setOpen }) {
     "getPastSubmitResult",
     () => getPastSubmitResult(userInfo.user_id, problemInfo.prob_id),
     {
-      // enabled: open,
+      enabled: open,
       onSuccess: (data) => {
         console.log(data);
       },
@@ -163,21 +163,19 @@ function PastResultDialog({ open, setOpen }) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            marginTop: "10px",
           }}
         >
           {isDataLoading ? (
             <CircularProgress color="inherit" />
           ) : (
-            <div>결과를 보러 가시겠습니까?</div>
+            <div>불러오기에 성공하였습니다.</div>
           )}
         </DialogContent>
         <DialogActions>
           {isDataLoading ? null : (
             <>
-              <Button onClick={() => setLoaderOpen(false)}>아니요</Button>
-              <Button onClick={handleMoveBtnClick} autoFocus>
-                네
-              </Button>
+              <Button onClick={() => setLoaderOpen(false)}>확인</Button>
             </>
           )}
         </DialogActions>

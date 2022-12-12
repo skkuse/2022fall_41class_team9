@@ -27,6 +27,7 @@ function MainButtons({
   setSubmitDialogOpen,
   setResetDialogOpen,
   setIsDataLoading,
+  setIsCompileError,
 }) {
   const userCode = useRecoilValue(testState);
   const userInfo = useRecoilValue(userState);
@@ -59,11 +60,7 @@ function MainButtons({
     }
   );
 
-  const {
-    isError,
-    error,
-    mutate: submitMutate,
-  } = useMutation((_) =>
+  const { mutate: submitMutate } = useMutation((_) =>
     submitCode({
       user_id: userInfo.user_id,
       prob_id: currentProblemInfo.prob_id,
@@ -84,6 +81,7 @@ function MainButtons({
       setIsDataLoading(false);
       setSubmitResult(ERROR_CODE_RESULT);
       setDoneSubmit(true);
+      setIsCompileError(true);
       setAction("submit");
     }
   };

@@ -10,9 +10,12 @@ const CenterFooterContainer = styled.div`
   height: 50px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-end;
+  padding-left: 16px;
+  padding-right: 40px;
   background-color: ${({ theme }) => theme.bgColor};
   border-top: 1px solid ${({ theme }) => theme.primary};
+  gap: 60px;
 `;
 
 function CenterFooter({ editorCode }) {
@@ -20,6 +23,7 @@ function CenterFooter({ editorCode }) {
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [isCompileError, setIsCompileError] = useState(false);
 
   const handleSnackBarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -36,6 +40,7 @@ function CenterFooter({ editorCode }) {
         setSubmitDialogOpen={setSubmitDialogOpen}
         setResetDialogOpen={setResetDialogOpen}
         setIsDataLoading={setIsDataLoading}
+        setIsCompileError={setIsCompileError}
       />
       <Snackbar
         open={snackBarOpen}
@@ -55,6 +60,7 @@ function CenterFooter({ editorCode }) {
         open={submitDialogOpen}
         setOpen={setSubmitDialogOpen}
         isDataLoading={isDataLoading}
+        isCompileError={isCompileError}
       />
       <ResetDialog open={resetDialogOpen} setOpen={setResetDialogOpen} />
     </CenterFooterContainer>

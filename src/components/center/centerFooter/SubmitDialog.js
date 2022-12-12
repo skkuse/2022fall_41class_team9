@@ -9,7 +9,7 @@ import {
 import { useSetRecoilState } from "recoil";
 import { dialogOpenState } from "../../../atoms";
 
-function SubmitDialog({ open, setOpen, isDataLoading }) {
+function SubmitDialog({ open, setOpen, isDataLoading, isCompileError }) {
   const setDialogOpen = useSetRecoilState(dialogOpenState);
 
   const handleMoveBtnClick = () => {
@@ -26,7 +26,7 @@ function SubmitDialog({ open, setOpen, isDataLoading }) {
       <DialogTitle sx={{ width: "500px" }} id="alert-dialog-title">
         {isDataLoading
           ? "제출 결과를 기다리는 중입니다"
-          : "검사가 완료되었습니다"}
+          : "제출이 완료되었습니다"}
       </DialogTitle>
       <DialogContent
         sx={{
@@ -37,17 +37,16 @@ function SubmitDialog({ open, setOpen, isDataLoading }) {
       >
         {isDataLoading ? (
           <CircularProgress color="inherit" />
+        ) : isCompileError ? (
+          <div>컴파일 에러가 발생했습니다.</div>
         ) : (
-          <div>세부 제출 결과를 보러 가시겠습니까?</div>
+          <div>검사에 성공하였습니다.</div>
         )}
       </DialogContent>
       <DialogActions>
         {isDataLoading ? null : (
           <>
-            <Button onClick={() => setOpen(false)}>아니요</Button>
-            <Button onClick={handleMoveBtnClick} autoFocus>
-              네
-            </Button>
+            <Button onClick={() => setOpen(false)}>확인</Button>
           </>
         )}
       </DialogActions>

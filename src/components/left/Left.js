@@ -29,6 +29,7 @@ const ResizeBtn = styled.button`
   padding: 0;
   background-color: transparent;
   border: 1px solid black;
+  border-radius: 5px;
   &:hover {
     background-color: rgba(0, 0, 0, 0.4);
   }
