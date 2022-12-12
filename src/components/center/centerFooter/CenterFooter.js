@@ -16,6 +16,13 @@ const CenterFooterContainer = styled.div`
   background-color: ${({ theme }) => theme.bgColor};
   border-top: 1px solid ${({ theme }) => theme.primary};
   gap: 60px;
+
+  @media screen and (max-width: 1100px) {
+    gap: 30px;
+  }
+  @media screen and (max-width: 600px) {
+    gap: 10px;
+  }
 `;
 
 function CenterFooter({ editorCode }) {

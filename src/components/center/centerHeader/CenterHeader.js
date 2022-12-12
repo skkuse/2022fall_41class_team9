@@ -23,7 +23,12 @@ const CenterHeaderBtnContainer = styled.div`
   margin-left: 16px;
   margin-right: 40px;
   height: 100%;
-  /* gap: 20px; */
+  @media screen and (max-width: 1100px) {
+    margin-right: 20px;
+  }
+  @media screen and (max-width: 600px) {
+    margin-right: 10px;
+  }
 `;
 
 const SaveBtnContainer = styled.div`
