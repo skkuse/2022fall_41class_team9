@@ -75,10 +75,13 @@ const ValidateLoader = styled.div`
 `;
 
 function TestCaseValidator({ validateResult, setValidateResult, id }) {
+  // 현재 작업 중인 editor에 저장된 code에 관한 state
   const userCode = useRecoilValue(testState);
+  // 현재 작업중인 editor에 관한 state
   const savePart = useRecoilValue(savePartState);
+  // 사용자가 선택한 문제 정보에 관한 state
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
-
+  // 테스트케이스 정답 가져오기
   const { isLoading, mutate } = useMutation(
     (tcNum) => validateTestCase(userCode, currentProblemInfo.prob_id, tcNum),
     {
@@ -93,7 +96,7 @@ function TestCaseValidator({ validateResult, setValidateResult, id }) {
       onError: (error) => console.log(error),
     }
   );
-
+  // 테스트케이스 테스트 버튼 클릭
   const handleValidateBtnClick = (tcNum) => {
     localStorage.setItem(savePart, userCode);
     mutate(tcNum);

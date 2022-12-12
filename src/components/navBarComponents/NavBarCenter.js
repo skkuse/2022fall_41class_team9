@@ -35,13 +35,16 @@ const ProblemSelect = styled.select`
 `;
 
 function NavBarCenter() {
+  // 사용자 정보 관한 state
   const user = useRecoilValue(userState);
+  // 현재 과목과 그 과목에 대한 문제 index에 관한 state
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState({
     courseId: 1,
     probId: 1,
   });
-
+  // 문제 설명에 관한 state
   const [courseQuestions, setCourseQuestions] = useState([]);
+  // 사용자가 선택한 문제 정보에 관한 state
   const setCurrentProblemInfo = useSetRecoilState(currentProblemInfoState);
 
   const { data: userCourses } = useQuery(
@@ -64,7 +67,7 @@ function NavBarCenter() {
       fetchQuestionInfo(user.courses[0]);
     }
   }, [user]);
-
+  // 문제 정보 가져오기
   const fetchQuestionInfo = async (courseId) => {
     try {
       const response = await axios.get(`/codes/problems?course_id=${courseId}`);
@@ -84,11 +87,11 @@ function NavBarCenter() {
       );
     }
   };
-
+  // 과목 선택
   const handleCourseSelect = async (event) => {
     await fetchQuestionInfo(event.target.value);
   };
-
+  // 과목에 대한 문제 선택
   const handleProblemSelect = (event) => {
     setCurrentProblemInfo(courseQuestions[event.targt.value]);
   };

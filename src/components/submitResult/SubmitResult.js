@@ -74,6 +74,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 export default function SubmitResult() {
+  // 세부 제출결과에 관한 state
   const [open, setOpen] = useRecoilState(dialogOpenState);
   const openedContent = useRecoilValue(openedContentState);
 

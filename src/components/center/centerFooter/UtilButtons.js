@@ -35,10 +35,14 @@ const Item = styled.div`
 `;
 
 function UtilButtons({ editorCode, setSnackBarOpen }) {
+  // 사용자가 선택한 문제 정보에 관한 state
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
+  // 현재 작업중인 editor에 관한 state
   const savePart = useRecoilValue(savePartState);
+  // 현재 작업 중인 editor에 저장된 code에 관한 state
   const [userCode, setUserCode] = useRecoilState(testState);
 
+  // 업로드 클릭
   const handleFileUploadBtnClick = (e) => {
     const reader = new FileReader();
     const userFile = e.target.files[0];
@@ -50,6 +54,7 @@ function UtilButtons({ editorCode, setSnackBarOpen }) {
     reader.readAsText(userFile);
   };
 
+  // 현재 작업 중인 editor의 code를 skeleton code로 변환
   const handleRefreshBtnClick = () => {
     editorCode.current.setValue(
       JSON.parse(
@@ -63,13 +68,13 @@ function UtilButtons({ editorCode, setSnackBarOpen }) {
       )
     );
   };
-
+  // code 복사 클릭
   const handleCopyBtnClick = () => {
     setSnackBarOpen(true);
     navigator.clipboard.writeText(userCode);
     localStorage.setItem(savePart, userCode);
   };
-
+  // code 다운로드 클릭
   const handleDownloadBtnClick = () => {
     localStorage.setItem(savePart, userCode);
     const downloadTag = document.createElement("a");

@@ -1,25 +1,26 @@
 import { atom } from "recoil";
 
+// 코드 불러오기, 초기화, 복사, 다운로드에 관한 state
 export const actionState = atom({
   key: "action",
   default: "false",
 });
-
+// editor 테마에 관한 state
 export const themeState = atom({
   key: "themeState",
   default: true,
 });
-
+// 세부 제출결과에 관한 state
 export const dialogOpenState = atom({
   key: "dialogOpenState",
   default: false,
 });
-
+//
 export const openedContentState = atom({
   key: "openedContentState",
   default: "main",
 });
-
+// 사용자 정보 관한 state
 export const userState = atom({
   key: "userState",
   default: {
@@ -31,7 +32,7 @@ export const userState = atom({
     username: "eric",
   },
 });
-
+// 사용자가 선택한 문제 정보에 관한 state
 export const currentProblemInfoState = atom({
   key: "currentProblemState",
   default: {
@@ -53,26 +54,27 @@ export const currentProblemInfoState = atom({
   },
 });
 
-export const saveState = atom({
-  key: "saveState",
-  default: false,
-});
+// export const saveState = atom({
+//   key: "saveState",
+//   default: false,
+// });
 
+// 현재 작업중인 editor에 관한 state
 export const savePartState = atom({
   key: "savePartState",
   default: 1,
 });
-
+// 실행 결과에 관한 state
 export const executeResultState = atom({
   key: "executeResultState",
   default: "",
 });
-
+// 채점 결과에 관한 state
 export const gradingResultState = atom({
   key: "gradingResultState",
   default: "",
 });
-
+// 제출 결과에 관한 state
 export const submitResultState = atom({
   key: "submitResultState",
   default: {
@@ -82,25 +84,25 @@ export const submitResultState = atom({
     codeExplanation: "no explanation for this problem",
   },
 });
-
+// 현재 작업 중인 editor에 저장된 code에 관한 state
 export const testState = atom({
   key: "testState",
   default: "",
 });
-
+//
 export const executefinishState = atom({
   key: "executefinishState",
   default: false,
 });
-
+// 사용자가 설정한 fontsize에 관한 state
 export const fontSizeState = atom({
   key: "fontSizeState",
   default: 16,
 });
-
+//
 export const editorAtomState = atom({
   key: "editorAtomState",
   default: null,
 });
-
+// 제출 실행 결과 유무에 관한 state
 export const doneSubmitState = atom({ key: "doneSubmit", default: false });

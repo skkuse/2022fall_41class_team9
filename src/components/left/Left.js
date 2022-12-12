@@ -36,7 +36,9 @@ const ResizeBtn = styled.button`
 `;
 
 function Left({ event }) {
+  // 문제, 참조/제약사항, 테스트케이스 창 open 유무
   const [isLeftOpen, setIsLeftOpen] = useState(true);
+  // tablet 크기 layout
   const isTablet = useMediaQuery({
     query: "(max-width:1080px)",
   });
