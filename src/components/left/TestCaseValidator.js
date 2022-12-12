@@ -30,6 +30,7 @@ const ValidateContainer = styled.div`
   height: 100%;
   width: 30%;
   justify-content: end;
+  align-items: center;
 `;
 const ValidateResult = styled.div`
   flex: 1;
@@ -114,6 +115,7 @@ function TestCaseValidator({ validateResult, setValidateResult, id }) {
           <Button
             variant="contained"
             onClick={() => handleValidateBtnClick(id - 1)}
+            sx={{ height: "25px" }}
           >
             테스트
           </Button>

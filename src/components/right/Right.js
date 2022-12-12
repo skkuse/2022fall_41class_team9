@@ -270,7 +270,7 @@ function Right({ event }) {
           options={overallScoreChart.options}
           series={overallScoreChart.series}
           type="radialBar"
-          width={600}
+          width={450}
         />
 
         {submitResult.functionality &&

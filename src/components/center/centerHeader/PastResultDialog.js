@@ -92,15 +92,11 @@ function PastResultDialog({ open, setOpen }) {
     setOpen(false);
     if (submitId > 0) {
       getSubmissionResult(submitId);
+      setIsDataLoading(true);
       setLoaderOpen(true);
     } else {
       alert("선택한 과거 기록이 없습니다");
     }
-  };
-
-  const handleMoveBtnClick = () => {
-    setLoaderOpen(false);
-    setDialogOpen(true);
   };
 
   return (
