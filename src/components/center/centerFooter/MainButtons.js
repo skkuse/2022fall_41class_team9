@@ -53,7 +53,7 @@ function MainButtons({
     () => executeCode({ user_code: userCode }),
     {
       onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
         setExecuteResult({ ...data, code: userCode });
       },
       onError: (error) => console.log(error),
@@ -64,13 +64,13 @@ function MainButtons({
     () => gradeCode(userCode, currentProblemInfo.prob_id),
     {
       onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
         setGradingResult(data);
       },
       onError: (error) => console.log(error),
     }
   );
-
+  // 코드 제출
   const { mutate: submitMutate } = useMutation((_) =>
     submitCode({
       user_id: userInfo.user_id,

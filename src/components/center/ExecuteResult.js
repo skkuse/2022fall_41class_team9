@@ -54,13 +54,14 @@ function ExecuteSuccess({ executeResult }) {
 function ExecuteFail({ executeResult }) {
   if (!executeResult) return;
   const codeLst = executeResult.code.split("\n");
-  console.log(codeLst);
+  // console.log(codeLst);
   const errorLine = executeResult.linePos;
   const errorMessage = executeResult.result;
   const errorBefore = codeLst.slice(0, errorLine);
   const errorAfter = codeLst.slice(errorLine);
 
   return (
+    // 실행 실패 시 error line을 기준으로 errorBefore와 errorAfter로 나눈다
     <ResultWrapper>
       {errorBefore.map((element, index) => (
         <>
@@ -84,7 +85,9 @@ function ExecuteFail({ executeResult }) {
 }
 
 function ExecuteResult() {
+  // 코드 불러오기, 초기화, 복사, 다운로드에 관한 state
   const action = useRecoilValue(actionState);
+  // 실행 결과에 관한 state
   const executeResult = useRecoilValue(executeResultState);
 
   return (
