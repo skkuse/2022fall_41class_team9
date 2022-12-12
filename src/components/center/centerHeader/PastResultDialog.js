@@ -28,15 +28,24 @@ import { ERROR_CODE_RESULT } from "../../../constants/DummyData";
 import { getPastSubmitResult } from "../../../fetch";
 
 function PastResultDialog({ open, setOpen }) {
+  // 제출 횟수
   const [submitId, setSubmitId] = useState(0);
+  //
   const [loaderOpen, setLoaderOpen] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
+  // 사용자 정보
   const userInfo = useRecoilValue(userState);
+  // 사용자가 선택한 문제 정보에 관한 state
   const problemInfo = useRecoilValue(currentProblemInfoState);
+  // 제출 결과에 관한 state
   const setSubmitResult = useSetRecoilState(submitResultState);
+  // 코드 불러오기, 초기화, 복사, 다운로드에 관한 state
   const setAction = useSetRecoilState(actionState);
+  // 세부 제출결과에 관한 state
   const setDialogOpen = useSetRecoilState(dialogOpenState);
+  // 현재 작업 중인 editor에 저장된 code에 관한 state
   const setUserCode = useSetRecoilState(testState);
+  // 제출 실행 결과 유무에 관한 state
   const setDoneSubmit = useSetRecoilState(doneSubmitState);
 
   const { isLoading: pastDataLoading, data: pastSubmitData } = useQuery(
@@ -50,7 +59,7 @@ function PastResultDialog({ open, setOpen }) {
       onError: (error) => console.log(error),
     }
   );
-
+  // 과거 제출 결과 불러오기
   const getSubmissionResult = async (submitId) => {
     try {
       const response = await axios.get(`/onlinejudge/analysis2/${submitId}`);
@@ -70,11 +79,11 @@ function PastResultDialog({ open, setOpen }) {
       setAction("submit");
     }
   };
-
+  // 과거 제출 결과 창 닫기
   const handleClose = () => {
     setOpen(false);
   };
-
+  //
   const handelSelectChange = (event) => {
     setSubmitId(event.target.value);
   };

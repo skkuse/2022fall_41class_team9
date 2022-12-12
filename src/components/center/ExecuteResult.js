@@ -19,6 +19,7 @@ const TerminalWrapper = styled.div`
   color: white;
   white-space: pre-line;
   margin: 8px;
+  display: ${(props) => (props.result === "success" ? "flex" : "block")};
 `;
 
 const ResultWrapper = styled.div`

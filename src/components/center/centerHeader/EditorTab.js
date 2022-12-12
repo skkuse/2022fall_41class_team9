@@ -14,8 +14,11 @@ const TabBtn = styled.button`
 `;
 
 function EditorTab({ id, editor }) {
+  // 코드 불러오기, 초기화, 복사, 다운로드에 관한 state
   const action = useRecoilValue(actionState);
+  // 현재 작업중인 editor에 관한 state
   const [savePart, setSavePart] = useRecoilState(savePartState);
+  // 현재 작업 중인 editor에 저장된 code에 관한 state
   const userCode = useRecoilValue(testState);
   return (
     <TabBtn

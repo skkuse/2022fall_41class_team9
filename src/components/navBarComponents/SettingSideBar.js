@@ -76,8 +76,11 @@ const MaterialUISwitch = styled(Switch)({
 });
 
 function SettingSideBar({ isSideBarOpen, setIsSideBarOpen }) {
+  // editor 테마에 관한 state
   const [theme, setTheme] = useRecoilState(themeState);
+  // 사용자가 설정한 fontsize에 관한 state
   const [fontSize, setFontSize] = useRecoilState(fontSizeState);
+  // 현재 작업 중인 editor에 저장된 code에 관한 state
   const userInfo = useRecoilValue(userState);
 
   const { mutate: UIMutate } = useMutation(
@@ -92,7 +95,7 @@ function SettingSideBar({ isSideBarOpen, setIsSideBarOpen }) {
       onError: (error) => console.log(error),
     }
   );
-
+  // editor background 변경
   const handleModeToggle = () => {
     setTheme((prev) => !prev);
     UIMutate();

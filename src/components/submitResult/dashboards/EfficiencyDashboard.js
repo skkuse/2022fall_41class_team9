@@ -17,11 +17,13 @@ import { useState } from "react";
 import { efficencyChartState } from "../../../chartStates/efficiencyChartState";
 
 function EfficiencyDashboard() {
+  // 제출 결과에 관한 state
   const submitResult = useRecoilValue(submitResultState);
+  // 제출 결과에 관란 chart
   const efficencySummaryChart = efficencyChartState(submitResult);
-
+  // efficiency 상세 열림
   const [openedIdx, setOpenedIdx] = useState(0);
-
+  // efficiency 상세 열림 버튼 클릭
   const handleTestcaseClick = (idx) => {
     if (idx === openedIdx) {
       setOpenedIdx(-1);

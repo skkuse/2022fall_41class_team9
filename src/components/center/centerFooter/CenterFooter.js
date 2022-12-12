@@ -19,9 +19,13 @@ const CenterFooterContainer = styled.div`
 `;
 
 function CenterFooter({ editorCode }) {
+  // 세부 제출결과에 관한 state
   const [submitDialogOpen, setSubmitDialogOpen] = useState(false);
+  // 제출한 후 결과값을 받는 동안 생성되는 loading에 관한 state
   const [isDataLoading, setIsDataLoading] = useState(true);
+  //
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  //
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [isCompileError, setIsCompileError] = useState(false);
 

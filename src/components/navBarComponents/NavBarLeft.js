@@ -17,6 +17,7 @@ const HomeBtn = styled.button`
 `;
 
 function NavBarLeft() {
+  // home 모양의 버튼 클릭 시 reload
   const handleHomeBtnClick = () => {
     window.location.reload();
   };
