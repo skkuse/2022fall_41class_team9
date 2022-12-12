@@ -218,9 +218,7 @@ function Center() {
               renderLineHighlight: "3",
               minimap: { enabled: false },
             }}
-          >
-            <ErrorModal></ErrorModal>
-          </Editor>
+          ></Editor>
         )}
       </CenterEditor>
 

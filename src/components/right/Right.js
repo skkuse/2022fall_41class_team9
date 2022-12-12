@@ -11,8 +11,14 @@ import {
   ListItemButton,
   ListItemText,
   ListSubheader,
+  Paper,
 } from "@mui/material";
-import { MdExpandLess, MdExpandMore } from "react-icons/md";
+import {
+  MdExpandLess,
+  MdExpandMore,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
 
 const RightContainer = styled.div`
   position: relative;
@@ -26,18 +32,43 @@ const RightContainer = styled.div`
 const ResultContainer = styled.div`
   height: 100%;
   width: 500px;
-  display: ${(props) => (props.isOpen ? "flex" : "none")};
+  display: ${(props) =>
+    props.isOpen && !props.isExplanationOpen ? "flex" : "none"};
   flex-direction: column;
   background-color: ${({ theme }) => theme.bgColor};
   align-items: center;
   overflow-y: scroll;
 `;
 
+const HeaderContainer = styled.div`
+  display: flex;
+  width: 100%;
+  position: relative;
+  justify-content: center;
+  align-items: flex-end;
+`;
 const Label = styled.div`
   color: ${({ theme }) => theme.color};
   font-size: 40px;
   margin-top: 20px;
   font-weight: 700;
+`;
+
+const NavigatorBtn = styled.button`
+  font-size: 60px;
+  position: absolute;
+  right: 0;
+  color: ${({ theme }) => theme.color};
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border: none;
+  padding: 0;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const ResizeBtn = styled.button`
@@ -69,7 +100,7 @@ const InfoContainer = styled.div`
 
 const InfoLabel = styled.div`
   width: 100%;
-  height: 50px;
+  height: 64px;
   background-color: white;
   border-radius: 10px;
   display: flex;
@@ -77,7 +108,30 @@ const InfoLabel = styled.div`
   box-sizing: border-box; /* 오페라(Opera) */
   -moz-box-sizing: border-box; /* 파이어폭스(Firefox)*/
   -webkit-box-sizing: border-box; /* 웹킷(Webkit) & 크롬(Chrome) */
-  padding-left: 35px;
+  padding-left: 16px;
+`;
+
+const ExplanationContainer = styled.div`
+  height: 100%;
+  width: 500px;
+  display: ${(props) =>
+    props.isOpen && props.isExplanationOpen ? "flex" : "none"};
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.bgColor};
+  align-items: center;
+  overflow-y: scroll;
+`;
+
+const ExplanationWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 16px;
+`;
+const ExplainRow = styled.div`
+  font-size: 15px;
 `;
 
 function Right({ event }) {
@@ -85,7 +139,8 @@ function Right({ event }) {
   const action = useRecoilValue(actionState);
   const submitResult = useRecoilValue(submitResultState);
   const setDialogOpen = useSetRecoilState(dialogOpenState);
-  const [isFunctionalityOpen, setIsFuctoinalityOpen] = useState(false);
+  const [isFunctionalityOpen, setIsFuctionalityOpen] = useState(false);
+  const [isExplanation, setIsExplanation] = useState(false);
 
   const overallScoreChart = {
     series:
@@ -153,10 +208,28 @@ function Right({ event }) {
     setDialogOpen(true);
   };
 
+  const getSubmitResult = () => {
+    if (submitResult.codeExplanation) {
+      const lst = submitResult.codeExplanation.split("\n");
+      return (
+        <ExplanationWrapper>
+          {lst.map((element, index) => (
+            <ExplainRow key={index}>{element}</ExplainRow>
+          ))}
+        </ExplanationWrapper>
+      );
+    }
+  };
+
   return (
     <RightContainer action={action}>
-      <ResultContainer isOpen={isRightOpen}>
-        <Label>제출 결과</Label>
+      <ResultContainer isOpen={isRightOpen} isExplanationOpen={isExplanation}>
+        <HeaderContainer>
+          <Label>제출 결과</Label>
+          <NavigatorBtn onClick={() => setIsExplanation(true)}>
+            <MdOutlineKeyboardArrowRight />
+          </NavigatorBtn>
+        </HeaderContainer>
         <ReactApexChart
           options={overallScoreChart.options}
           series={overallScoreChart.series}
@@ -168,64 +241,50 @@ function Right({ event }) {
         submitResult.efficiency &&
         submitResult.readabilityType ? (
           <InfoContainer>
-            {/* <InfoLabel>
-              {`기능성 : ${
-                submitResult.functionality.reduce((sum, curr) => {
-                  if (curr.status === "pass") {
-                    return sum + 1;
-                  } else {
-                    return sum;
-                  }
-                }, 0) * 20
-              }점`}
-            </InfoLabel> */}
             <List
-              sx={{ width: "100%", bgcolor: "background.paper" }}
+              sx={{
+                width: "100%",
+                bgcolor: "background.paper",
+                borderRadius: "10px",
+              }}
               component="nav"
               aria-labelledby="nested-list-subheader"
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                  기능성 검사 결과
-                </ListSubheader>
-              }
             >
-              {(submitResult.functionality
-                ? submitResult.functionality
-                : [...Array(7).keys()]
-              ).map((item, idx) => (
-                <div key={idx}>
-                  <ListItemButton
-                    onClick={() => setIsFuctoinalityOpen(!isFunctionalityOpen)}
-                  >
-                    <ListItemText primary={`${idx + 1}번 테스트`} />
-                    <Button
-                      variant="contained"
-                      color={item.status === "pass" ? "primary" : "error"}
-                      sx={{ marginRight: "20px" }}
-                    >
-                      {item.status === "pass" ? "Pass" : "Fail"}
-                    </Button>
-                    {isFunctionalityOpen ? <MdExpandLess /> : <MdExpandMore />}
-                  </ListItemButton>
-                  <Collapse
-                    in={isFunctionalityOpen}
-                    timeout="auto"
-                    unmountOnExit
-                  >
-                    <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText primary={`입력값 : ${item.input}`} />
-                      </ListItemButton>
-                      <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText primary={`기댓값 : ${item.output}`} />
-                      </ListItemButton>
-                      <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText primary={`출력값 : ${item.userOutput}`} />
-                      </ListItemButton>
-                    </List>
-                  </Collapse>
-                </div>
-              ))}
+              <ListItemButton
+                onClick={() => setIsFuctionalityOpen(!isFunctionalityOpen)}
+              >
+                <ListItemText
+                  primary={`기능성 : ${
+                    submitResult.functionality.reduce((sum, curr) => {
+                      if (curr.status === "pass") {
+                        return sum + 1;
+                      } else {
+                        return sum;
+                      }
+                    }, 0) * 20
+                  }점`}
+                />
+                {isFunctionalityOpen ? <MdExpandLess /> : <MdExpandMore />}
+              </ListItemButton>
+              <Collapse in={isFunctionalityOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {(submitResult.functionality
+                    ? submitResult.functionality
+                    : [...Array(7).keys()]
+                  ).map((item, idx) => (
+                    <ListItemButton key={idx}>
+                      <ListItemText primary={`${idx + 1}번 테스트`} />
+                      <Button
+                        variant="contained"
+                        color={item.status === "pass" ? "primary" : "error"}
+                        sx={{ marginRight: "20px" }}
+                      >
+                        {item.status === "pass" ? "Pass" : "Fail"}
+                      </Button>
+                    </ListItemButton>
+                  ))}
+                </List>
+              </Collapse>
             </List>
             <InfoLabel>
               {`효율성 : ${
@@ -252,6 +311,28 @@ function Right({ event }) {
           세부 제출결과 보기
         </Button>
       </ResultContainer>
+      <ExplanationContainer
+        isOpen={isRightOpen}
+        isExplanationOpen={isExplanation}
+      >
+        <HeaderContainer>
+          <Label>코드 설명</Label>
+          <NavigatorBtn onClick={() => setIsExplanation(false)}>
+            <MdOutlineKeyboardArrowLeft />
+          </NavigatorBtn>
+        </HeaderContainer>
+        <Paper
+          elevation={3}
+          sx={{
+            width: "90%",
+            paddingTop: "16px",
+            paddingBottom: "16px",
+            marginTop: "40px",
+          }}
+        >
+          {getSubmitResult()}
+        </Paper>
+      </ExplanationContainer>
       <ResizeBtn onClick={handleResizeBtnClick}>
         {isRightOpen ? <MdNavigateNext /> : <MdNavigateBefore />}
       </ResizeBtn>
