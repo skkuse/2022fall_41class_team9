@@ -82,9 +82,6 @@ function Center() {
 
   const handleEditorChange = useCallback(
     (value, event) => {
-      console.log("change editor");
-
-      console.log(savePart, value);
       setSavePart((prev) => {
         localStorage.setItem(prev, value);
         return prev;

@@ -24,15 +24,8 @@ function EditorTab({ id, editor }) {
         backgroundColor: savePart === id ? "#1a2736" : "#b5b3b4",
       }}
       onClick={() => {
-        // console.log(savePart);
-        // console.log(userCode);
-        console.log("tab clicked");
         localStorage.setItem(savePart, userCode);
-        console.log(savePart);
-        console.log(userCode);
-
-        setSavePart((prev) => id);
-        console.log(savePart);
+        setSavePart(id);
         editor.current.setValue(localStorage.getItem(id));
       }}
     >
