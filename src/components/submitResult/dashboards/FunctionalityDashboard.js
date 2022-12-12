@@ -17,10 +17,13 @@ import { useRecoilValue } from "recoil";
 import { functionalityChartState } from "../../../chartStates/functionalityChartState";
 
 function FunctionalityDashboard() {
+  // 제출 결과에 관한 state
   const submitResult = useRecoilValue(submitResultState);
+  // functionality 상세 열림
   const [openedIdx, setOpenedIdx] = useState(0);
+  // 제출 결과에 대한 functionality chart
   const functionalityChart = functionalityChartState(submitResult, 350);
-
+  // functionality 상세 열림 버튼 클릭
   const handleTestcaseClick = (idx) => {
     if (idx === openedIdx) {
       setOpenedIdx(-1);

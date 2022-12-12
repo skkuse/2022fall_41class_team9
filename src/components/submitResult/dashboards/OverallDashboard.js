@@ -25,14 +25,15 @@ const Label = styled.div`
 `;
 
 function OverallDashboard() {
+  // 제출 결과에 관한 state
   const submitResult = useRecoilValue(submitResultState);
-
+  // 제출 결과에 대한 점수 chart
   const overallScoreChart = overallScoreChartState(submitResult, 350);
-
+  // 제출 결과에 대한 functionality 요약 chart
   const functionalitySummaryChart = functionalityChartState(submitResult, 350);
-
+  // 제출 결과에 대한 efficiency 요약 chart
   const efficencySummaryChart = efficencyChartState(submitResult);
-
+  // 제출 결과에 대한 readability 요약 chart
   const readabilitySummaryChart = readabilityChartState(submitResult);
 
   return (

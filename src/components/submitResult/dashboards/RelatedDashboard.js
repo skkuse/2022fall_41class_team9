@@ -13,8 +13,10 @@ import Typography from "@mui/material/Typography";
 import Sunkyun from "../../../assets/images/sunkyun.png";
 
 function RelatedDashboard() {
+  // 사용자가 선택한 문제 정보에 관한 state
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
   // console.log(currentProblemInfo);
+  // 추천 자료 data
   const relatedData = [
     {
       title: "Program for Fibonacci numbers - GeeksforGeeks",
@@ -80,7 +82,7 @@ function RelatedDashboard() {
   //     onError: (error) => console.log(error),
   //   }
   // );
-
+  // 더보기 버튼 클릭
   const onMoreBtnClick = (url) => {
     window.open(url);
   };
