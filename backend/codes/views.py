@@ -246,7 +246,7 @@ class SubmissionAPIView(APIView):
         #print("sid: ",sid,type(sid)," uid: ",uid," pid: ",pid)
         serializer = None
         if sid == "":
-            submission= Submission.objects.filter(user_id=uid)
+            submission= Submission.objects.filter(user_id=uid,prob_id=pid)
             serializer = SubmissionSerializer(submission,many=True)
         else:
             submission=get_object_or_404(Submission,prob_id=pid,user_id=uid)
