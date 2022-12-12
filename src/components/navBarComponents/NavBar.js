@@ -29,6 +29,7 @@ function NavBar() {
       );
     },
     refetchOnWindowFocus: false,
+    retry: false,
   });
 
   return (

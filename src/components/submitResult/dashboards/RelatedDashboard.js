@@ -89,7 +89,15 @@ function RelatedDashboard() {
       {relatedData && relatedData.length > 0
         ? relatedData.map((relatedItem) => (
             <Grid key={relatedItem.title} item xs={12} md={12}>
-              <Card sx={{ height: "200px", display: "flex" }}>
+              <Card
+                sx={{
+                  height: "200px",
+                  display: "flex",
+                  "&:hover": {
+                    backgroundColor: "rgba(0,0,0,0.1)",
+                  },
+                }}
+              >
                 <CardMedia
                   component="img"
                   alt="green iguana"

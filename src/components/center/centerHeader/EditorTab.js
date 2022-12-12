@@ -9,6 +9,7 @@ const TabBtn = styled.button`
   color: white;
   border: none;
   border-radius: 8px 8px 0px 0px;
+  border-right: 1px solid black;
   cursor: pointer;
 `;
 

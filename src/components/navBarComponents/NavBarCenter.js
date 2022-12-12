@@ -55,6 +55,7 @@ function NavBarCenter() {
       },
       enabled: user.courses.length > 0,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 

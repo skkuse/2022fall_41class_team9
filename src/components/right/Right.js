@@ -23,6 +23,13 @@ const ResultContainer = styled.div`
   align-items: center;
 `;
 
+const Label = styled.div`
+  color: ${({ theme }) => theme.color};
+  font-size: 40px;
+  margin-top: 20px;
+  font-weight: 700;
+`;
+
 const ResizeBtn = styled.button`
   position: absolute;
   z-index: 10;
@@ -60,6 +67,11 @@ const InfoLabel = styled.div`
   -moz-box-sizing: border-box; /* 파이어폭스(Firefox)*/
   -webkit-box-sizing: border-box; /* 웹킷(Webkit) & 크롬(Chrome) */
   padding-left: 35px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: white;
+  }
 `;
 
 function Right({ event }) {
@@ -102,7 +114,7 @@ function Right({ event }) {
             },
             value: {
               fontSize: "16px",
-              color: "#fff",
+              color: "grey",
               formatter: function (val) {
                 return val.slice(0, 5) + "점";
               },
@@ -137,6 +149,7 @@ function Right({ event }) {
   return (
     <RightContainer action={action}>
       <ResultContainer isOpen={isRightOpen}>
+        <Label>제출 결과</Label>
         <ReactApexChart
           options={overallScoreChart.options}
           series={overallScoreChart.series}
@@ -148,25 +161,31 @@ function Right({ event }) {
         submitResult.efficiency &&
         submitResult.readabilityType ? (
           <InfoContainer>
-            <InfoLabel>{`기능성 : ${
-              submitResult.functionality.reduce((sum, curr) => {
-                if (curr.status === "pass") {
-                  return sum + 1;
-                } else {
-                  return sum;
-                }
-              }, 0) * 20
-            }점`}</InfoLabel>
-            <InfoLabel>{`효율성 : ${
-              submitResult.efficiency.reduce((sum, curr) => {
-                return sum + curr.score;
-              }, 0) / 4
-            }점`}</InfoLabel>
-            <InfoLabel>{`가독성 : ${
-              submitResult.readabilityType.reduce((sum, curr) => {
-                return sum + curr.score;
-              }, 0) / 8
-            }점`}</InfoLabel>
+            <InfoLabel>
+              {`기능성 : ${
+                submitResult.functionality.reduce((sum, curr) => {
+                  if (curr.status === "pass") {
+                    return sum + 1;
+                  } else {
+                    return sum;
+                  }
+                }, 0) * 20
+              }점`}
+            </InfoLabel>
+            <InfoLabel>
+              {`효율성 : ${
+                submitResult.efficiency.reduce((sum, curr) => {
+                  return sum + curr.score;
+                }, 0) / 4
+              }점`}
+            </InfoLabel>
+            <InfoLabel>
+              {`가독성 : ${
+                submitResult.readabilityType.reduce((sum, curr) => {
+                  return sum + curr.score;
+                }, 0) / 8
+              }점`}
+            </InfoLabel>
           </InfoContainer>
         ) : null}
         <Button
