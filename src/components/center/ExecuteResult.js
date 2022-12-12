@@ -1,3 +1,4 @@
+import { style } from "@mui/system";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { actionState, executeResultState } from "../../atoms";
@@ -14,70 +15,78 @@ const ExecuteNavbar = styled.div`
   color: ${({ theme }) => theme.color};
 `;
 
-const ExecuteText = styled.div`
+const TerminalWrapper = styled.div`
   width: 100%;
   color: white;
   white-space: pre-line;
   margin: 8px;
+  display: ${(props) => (props.result === "success" ? "flex" : "block")};
 `;
 
+const ResultWrapper = styled.div`
+  margin-top: 20px;
+  font-size: 20px;
+  margin: ${(props) => (props.result === "success" ? "16px" : "0px")};
+`;
+const CodeBefore = styled.div`
+  background-color: ${(props) => (props.error ? "yellow" : "black")};
+  white-space: pre-wrap;
+`;
+const CodeMessage = styled.div`
+  background-color: #72cc82;
+`;
+const CodeAfter = styled.div`
+  white-space: pre-wrap;
+`;
+
+function ExecuteSuccess({ executeResult }) {
+  return (
+    <ResultWrapper result={executeResult.status}>
+      {executeResult.result}
+    </ResultWrapper>
+  );
+}
+
+function ExecuteFail({ executeResult }) {
+  if (!executeResult) {
+    return;
+  }
+  const codeLst = executeResult.code.split("\n");
+  const errorLine = executeResult.linePos;
+  const errorMessage = executeResult.result;
+  const errorBefore = codeLst.slice(0, errorLine);
+  const errorAfter = codeLst.slice(errorLine);
+
+  return (
+    <ResultWrapper>
+      {errorBefore.map((element, index) => (
+        <CodeBefore error={index + 1 === Number(errorLine)} key={index}>
+          {element}
+        </CodeBefore>
+      ))}
+      <CodeMessage>{errorMessage}</CodeMessage>
+      {errorAfter.map((element, index) => (
+        <CodeAfter key={index}>{element}</CodeAfter>
+      ))}
+    </ResultWrapper>
+  );
+}
+
 function ExecuteResult() {
-  // 코드 불러오기, 초기화, 복사, 다운로드에 관한 state
   const action = useRecoilValue(actionState);
-  // 실행 결과에 관한 state
   const executeResult = useRecoilValue(executeResultState);
-  // 성공한 실행 결과 보여주기
-  const showExecuteSuccess = () => {
-    if (executeResult) {
-      return <div>{executeResult.result}</div>;
-    }
-  };
-  // 실패한 실행 결과 보여주기
-  const showExecuteFail = () => {
-    if (executeResult) {
-      // 사룡자가 실행한 코드
-      const userCode = executeResult.code;
-      const codeLst = userCode.split("\n");
-      // error 발생 line
-      const errorLine = executeResult.linePos;
-      // error 메세지
-      const errorMessage = executeResult.result;
-      const errorBefore = codeLst.slice(0, errorLine);
-      const errorAfter = codeLst.slice(errorLine);
-      return (
-        <>
-          {errorBefore.map((element, index) => (
-            <div
-              key={index}
-              style={{
-                backgroundColor:
-                  index + 1 === Number(errorLine) ? "#E67BA4" : "black",
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {element}
-            </div>
-          ))}
-          <div style={{ backgroundColor: "#72CC82" }}>{errorMessage}</div>
-          {errorAfter.map((element, index) => (
-            <div style={{ whiteSpace: "pre-wrap" }} key={index}>
-              {element}
-            </div>
-          ))}
-        </>
-      );
-    }
-  };
+
   return (
     <ExecuteResultContainer action={action}>
       <ExecuteNavbar>실행결과</ExecuteNavbar>
-      <ExecuteText>
-        Jser@Terminal ~ %
-        <br />
-        {executeResult && executeResult.status === "success"
-          ? showExecuteSuccess()
-          : showExecuteFail()}
-      </ExecuteText>
+      <TerminalWrapper result={executeResult.status}>
+        <div>Jser@Terminal ~ %{/* <br /> */}</div>
+        {executeResult && executeResult.status === "success" ? (
+          <ExecuteSuccess executeResult={executeResult} />
+        ) : (
+          <ExecuteFail executeResult={executeResult} />
+        )}
+      </TerminalWrapper>
     </ExecuteResultContainer>
   );
 }
