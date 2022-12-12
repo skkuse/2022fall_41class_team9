@@ -39,6 +39,7 @@ const ExitBtn = styled(motion.button)`
 `;
 
 function SideBar() {
+  // 세부 제출결과에 관한 state
   const setOpen = useSetRecoilState(dialogOpenState);
   const [collapseOpen, setCollapseOpen] = useState(false);
   const [openedContent, setOpenedContent] = useRecoilState(openedContentState);
