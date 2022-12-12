@@ -262,6 +262,11 @@ class SubmissionAPIView(APIView):
         pid=data['prob_id']
         count=Submission.objects.filter(user_id=request.data['user_id'],prob_id=request.data['prob_id']).count()
         #sub=Submission.objects.create(user_id=uid,prob_id=pid,user_code=,user_output="",counter=)
+        limit=Problem.objects.filter(prob_id=pid)[0].max_submission
+        if count>=limit:
+            return Response({
+                "error":"error: user spent all submission chances"
+            },status=404)
         request.data.update(
             {
                 
