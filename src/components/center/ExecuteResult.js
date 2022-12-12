@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { actionState, executeResultState } from "../../atoms";
-
+import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 const ExecuteResultContainer = styled.div`
   height: 100%;
   display: ${(props) => (props.action === "execute" ? "block" : "none")};
@@ -53,13 +53,20 @@ function ExecuteSuccess({ executeResult }) {
 
 function ExecuteFail({ executeResult }) {
   if (!executeResult) return;
+
   const codeLst = executeResult.code.split("\n");
-  // console.log(codeLst);
+  console.log(executeResult);
   const errorLine = executeResult.linePos;
   const errorMessage = executeResult.result;
   const errorBefore = codeLst.slice(0, errorLine);
-  const errorAfter = codeLst.slice(errorLine);
+  let errorAfter = "";
+  if (errorLine) {
+    errorAfter = codeLst.slice(errorLine);
+  } else {
+    errorAfter = [];
+  }
 
+  console.log(codeLst, errorLine);
   return (
     // 실행 실패 시 error line을 기준으로 errorBefore와 errorAfter로 나눈다
     <ResultWrapper>
@@ -67,11 +74,19 @@ function ExecuteFail({ executeResult }) {
         <>
           <CodeBefore error={index + 1 === Number(errorLine)} key={index}>
             <LineNumberViewer>{`${index}`}</LineNumberViewer>
-            <LineNumberDivider>|</LineNumberDivider>
+            {index + 1 === Number(errorLine) ? (
+              <EmojiObjectsIcon
+                sx={{ color: "yellow", position: "relative", right: "10px" }}
+              ></EmojiObjectsIcon>
+            ) : (
+              <LineNumberDivider>|</LineNumberDivider>
+            )}
+
             {element === "" ? "\n" : element}
           </CodeBefore>
         </>
       ))}
+
       <CodeMessage>{errorMessage}</CodeMessage>
       {errorAfter.map((element, index) => (
         <CodeAfter key={index}>
