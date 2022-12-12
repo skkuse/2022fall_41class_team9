@@ -1,5 +1,5 @@
 import Editor from "@monaco-editor/react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import CenterFooter from "./centerFooter/CenterFooter";
 import CenterHeader from "./centerHeader/CenterHeader";
@@ -82,6 +82,7 @@ function Center() {
 
   const handleEditorChange = (value, event) => {
     setTest(value);
+    // localStorage.setItem(savePart, test);
     if (!monacoObjects.current) return;
     // console.log("called");
     const { monaco, editor } = monacoObjects.current;
@@ -94,10 +95,11 @@ function Center() {
   };
 
   const autoSave = () => {
+    console.log(savePart);
+    console.log(test);
     localStorage.setItem(savePart, test);
   };
-
-  setInterval(autoSave, 10000);
+  const autoSaveCallback = useCallback(autoSave, [test]);
 
   const handleEditor = (editor, monaco) => {
     monacoObjects.current = {
@@ -124,6 +126,7 @@ function Center() {
   };
 
   useEffect(() => {
+    // const interval = setInterval(autoSaveCallback, 10000);
     if (!monacoObjects.current) return;
     const { monaco, editor } = monacoObjects.current;
 
@@ -172,6 +175,7 @@ function Center() {
     return () => {
       window.removeEventListener("resize", handleWindowResize);
       window.removeEventListener("dragResize", handleWindowDragResize);
+      // clearInterval(interval);
     };
   }, [monacoObjects.current, theme, action]);
 

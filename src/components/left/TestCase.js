@@ -11,6 +11,7 @@ const TestCaseContainer = styled(motion.div)`
   flex-direction: column;
   color: ${({ theme }) => theme.color};
   height: auto;
+  max-height: 35%;
   /* display: none; */
 `;
 

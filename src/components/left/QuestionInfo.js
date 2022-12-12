@@ -6,6 +6,7 @@ const QuestionInfoContainer = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column;
+  max-height: 65%;
 `;
 
 const Question = styled.div`
@@ -13,6 +14,7 @@ const Question = styled.div`
   flex: 6;
   display: flex;
   flex-direction: column;
+  max-height: 65%;
 `;
 
 const Condition = styled.div`
@@ -20,6 +22,7 @@ const Condition = styled.div`
   flex: 4;
   display: flex;
   flex-direction: column;
+  max-height: 35%;
 `;
 
 const MiniNavBar = styled.div`
@@ -39,6 +42,7 @@ const MainContent = styled.div`
   color: ${({ theme }) => theme.color};
   border-bottom: 0.7px solid ${({ theme }) => theme.borderColor};
   padding: 20px;
+  overflow-y: scroll;
 `;
 
 function QuestionInfo() {
