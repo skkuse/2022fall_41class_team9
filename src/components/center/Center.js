@@ -1,5 +1,5 @@
 import Editor from "@monaco-editor/react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import CenterFooter from "./centerFooter/CenterFooter";
 import CenterHeader from "./centerHeader/CenterHeader";
@@ -67,7 +67,7 @@ function Center() {
   const [editorY, setEditorY] = useState(window.innerHeight - 302);
   const fontSize = useRecoilValue(fontSizeState);
   const currentProblemInfo = useRecoilValue(currentProblemInfoState);
-  const savePart = useRecoilValue(savePartState);
+  const [savePart, setSavePart] = useRecoilState(savePartState);
   const action = useRecoilValue(actionState);
   const theme = useRecoilValue(themeState);
   const [test, setTest] = useRecoilState(testState);
@@ -80,24 +80,17 @@ function Center() {
     diffEditorRef.current = editor;
   }
 
-  const handleEditorChange = (value, event) => {
-    setTest(value);
-    if (!monacoObjects.current) return;
-    // console.log("called");
-    const { monaco, editor } = monacoObjects.current;
-    // const r = new monaco.Range(1, 0, 2, 0);
-
-    // editor.deltaDecorations(
-    //   editor.getModel().getAllDecorations(),
-    //   editor.setModel().getAllDecorations()
-    // );
-  };
-
-  const autoSave = () => {
-    localStorage.setItem(savePart, test);
-  };
-
-  setInterval(autoSave, 10000);
+  const handleEditorChange = useCallback(
+    (value, event) => {
+      setSavePart((prev) => {
+        localStorage.setItem(prev, value);
+        return prev;
+      });
+      setTest(value);
+      if (!monacoObjects.current) return;
+    },
+    [savePart]
+  );
 
   const handleEditor = (editor, monaco) => {
     monacoObjects.current = {
@@ -145,43 +138,18 @@ function Center() {
     }
     window.addEventListener("resize", handleWindowResize);
     window.addEventListener("dragResize", handleWindowDragResize);
-    // const r = new monaco.Range(1, 0, 2, 0);
-    // editor.deltaDecorations(
-    //   [],
-    //   [
-    //     {
-    //       range: r,
-    //       options: {
-    //         inlineClassName: "a",
-    //       },
-    //     },
-    //   ]
-    // );
 
-    // if (!monaco) {
-    //   return;
-    // } else {
-    //   monaco.editor.defineTheme("cobalt", cobaltTheme);
-    //   monaco.editor.defineTheme("idle", idleTheme);
-    //   if (theme) {
-    //     monaco.editor.setTheme("cobalt");
-    //   } else {
-    //     monaco.editor.setTheme("idle");
-    //   }
-    // }
     return () => {
       window.removeEventListener("resize", handleWindowResize);
       window.removeEventListener("dragResize", handleWindowDragResize);
+      // clearInterval(interval);
     };
   }, [monacoObjects.current, theme, action]);
 
   return (
     <CenterContainer>
       <CenterHeader editor={editorCode} />
-      <CenterEditor
-        ref={editorWrapper}
-        // onResizeStop={() => console.log("hello")}
-      >
+      <CenterEditor ref={editorWrapper}>
         {action === "submit" ? (
           <div>
             <DiffEditor

@@ -1,4 +1,3 @@
-import { style } from "@mui/system";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { actionState, executeResultState } from "../../atoms";
