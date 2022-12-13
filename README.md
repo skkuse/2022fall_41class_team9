@@ -15,6 +15,13 @@ PLZ Watch the BOOK!
 - django: 3.1.6
 - django_rest_framework: 3.12.2
 
+## Install Python Library
+In root directory
+- pip3 install -r requirements.txt
+
+When error occurs..
+- pip3 install --upgrade pip
+
 ## How to run locally
 1. (optional: if migration does not work properly) rm (app_name)/migrations/*.py (except \_\_init\_\_.py!!)
 2. rm db.sqlite3

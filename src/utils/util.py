@@ -26,14 +26,16 @@ def execute_shell_command(command):
 def execute_shell_command(command, encoding):
     out = None
     try:
-        exe = sp.run(command, stdout=sp.PIPE, stderr=sp.PIPE)
+        exe = sp.run(command, stdout=sp.PIPE, stderr=sp.STDOUT)
         #exe.check_returncode()
         if exe.stdout.decode(encoding=encoding) != '':
             out = exe.stdout.decode(encoding=encoding)
         else:
             out = exe.stderr.decode(encoding=encoding)
-    except sp.CalledProcessError as e:
-        out = e.stderr.decode(encoding=encoding)
+    except:
+        new_exe = sp.run(command, stdout=sp.PIPE, stderr=sp.PIPE)
+        out = new_exe.stdout.decode(encoding=encoding)
+        #out = e.stderr.decode(encoding=encoding)
 
     return out
 

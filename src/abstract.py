@@ -38,17 +38,26 @@ def get_execution_result(user_code, encoding='utf-8', **kwargs):
     output = runner.run_script()
     error_line = -1
 
-    if output.startswith("Traceback"):
-        if "raise ret\nTimeoutError" in output:
-            output = "TimeoutError: script exceeds timeout 10 seconds\n"
-            error_line = -1
-        else:
-            expression = r'File .+, line (?P<line>\d+)'
-            regex = re.compile(expression)
-            parsed_result = regex.findall(output)
-            error_line = int(parsed_result[0])
-            output = output.replace(str(error_line), str(error_line-6), 1)
-            error_line -= 6
+    error_expression = r"[a-zA-Z]+Error: .+"
+    error_regex = re.compile(error_expression)
+    is_error = len(error_regex.findall(output)) > 0
+
+    if "raise ret\nTimeoutError" in output:
+        output = "TimeoutError: script exceeds timeout 10 seconds\n"
+        error_line = -1
+    elif is_error:
+        correction = 0
+        expression = r'File .+, line (?P<line>\d+)'
+        regex = re.compile(expression)
+        for m in regex.finditer(output):
+            match_line = int(m.groupdict()['line'])
+            error_line = match_line - 6
+            
+            line_start = m.start(1) - correction
+            line_end = m.end(1) - correction
+            output = output[:line_start] + str(error_line) + output[line_end:]
+
+            correction = len(str(match_line)) - len(str(error_line))
 
     return output, error_line
     
@@ -176,16 +185,3 @@ def get_plagiarism_score(user_code, past_codes, **kwargs):
         os.remove(name)
 
     return plagiarism_score
-
-"""
-    buffer = io.StringIO()
-    original_buffer = sys.stdout
-    sys.stdout = buffer
-
-    exec(AuditCode.input_audit() + user_code)
-
-    output = buffer.getvalue()
-    sys.stdout = sys.__stdout__
-    print(output)
-    return output
-"""

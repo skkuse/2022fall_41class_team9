@@ -75,3 +75,16 @@ class Analysis(models.Model):
     def __str__(self):
         return "{}".format(self.submit_id)
 
+
+
+
+class Recommand(models.Model):
+    tag = models.CharField(max_length=50, unique=True)
+    content1 = models.TextField(blank=True)
+    content2 = models.TextField(blank=True)
+    content3 = models.TextField(blank=True)
+    content4 = models.TextField(blank=True)
+    content5 = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.tag
