@@ -18,6 +18,7 @@ PLZ Watch the BOOK!
 ## Install Python Library
 In root directory
 - pip3 install -r requirements.txt
+
 When error occurs..
 - pip3 install --upgrade pip
 
