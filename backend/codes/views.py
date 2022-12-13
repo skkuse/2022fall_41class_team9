@@ -10,14 +10,7 @@ sys.path.append("..")
 from db.models import Submission
 from db.serializers import *
 import requests
-# Create your views here.
-# class Submission(models.Model):
-#     submit_id = models.IntegerField(primary_key=True)
-#     user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-#     prob_id = models.ForeignKey('Problem', on_delete=models.CASCADE)
-#     user_code = models.TextField()
-#     user_output = models.TextField()
-#     counter = models.IntegerField()
+
 
 def getCount(model):
     queryset=model.objects.all()
@@ -25,7 +18,6 @@ def getCount(model):
 
 
 class SubmissionsAPIView(APIView):
-
 
     def post(self, request):
 
@@ -91,7 +83,7 @@ class UserCourseAPIView(APIView):
             user=get_object_or_404(User,username=username)
             serializer=UserSerializer(user)
             courseid=serializer.data['courses'] # FK라서 한번 더 들어가야함.
-            #print("ppp",courseid)
+
 
             #리스트가 아니면 리스트형태로 싸준다.
             if type(courseid) != list:
@@ -108,9 +100,7 @@ class UserCourseAPIView(APIView):
         return Response(status=404)
 
 
-# class CodeAPIView(APIView):
-#     def get(self, request):
-#         code = Code
+
 
 class ProblemsAPIView(APIView):
     def get(self,request):
@@ -120,10 +110,10 @@ class ProblemsAPIView(APIView):
             serializer = ProblemSerializer(probs,many=True)
             return Response(serializer.data,status=status.HTTP_200_OK)
         
-        
         probs=Problem.objects.filter(course_id=cid)
         serializer=ProblemSerializer(probs,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
     def post (self,request):
         serializer=ProblemSerializer(data=request.data)
         if serializer.is_valid():
@@ -170,54 +160,9 @@ class UIDesignAPIView(APIView):
             return Response(data=ret,status=status.HTTP_200_OK)
         else:
             return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
-    # def post(self,request):
-    #     uid=request.data['user_id']
-    #     print("change UI of %d"%uid)
-    #     user=get_object_or_404(User,user_id=uid)
-    #     print(user)
-    #     sfont=request.data['setting_font']
-    #     stheme=request.data['setting_theme']
-    #     print(user,sfont,stheme)
-    #     if user:
 
-    #         udata=UserSerializer(user).data
-    #         udata['setting_font']=sfont
-    #         udata['setting_theme']=stheme
-
-    #         print(serializer.data)
-    #         return Response({})
-    #         # #user['setting_font']=sfont
-    #         # #user['setting_theme']=stheme
-    #         # userdata=UserSerializer(user).data
-    #         # userdata['setting_font']=sfont
-    #         # userdata['setting_theme']=stheme
-    #         # print(type(userdata))
-    #         # print("Data::\n",userdata)
-    #         # serializer=UserSerializer(data=userdata)
-            
-    #         # if serializer.is_valid():
-    #         #     print("hello")
-                
-                
-    #         # #print(serializer.is_valid())
-    #         # #print(serializer.data)
-            
-    #         # #serializer.data['setting_font']=sfont
-    #         # #serializer.data['setting_theme']=stheme
-    #         # print(serializer.data)
-    #         # #serializer.save()
-    #         # serializer.save()
-    #         # return Response(serializer.data,status=status.HTTP_200_OK)
-    #         # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
-
-    #     else:
-    #         serializer=UserSerializer(user)
-    #         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
     def put(self,request):
-        # serializer=UserSerializer(data=request.data)
-        # if(serializer.is_valid()):
-        #     return Response(serializer.data,status=status.HTTP_200_OK)
-        # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+
         uid=request.data['user_id']
         sfont=request.data['setting_font']
         stheme=request.data['setting_theme']
@@ -243,7 +188,7 @@ class SubmissionAPIView(APIView):
         uid=request.GET['user_id']
         pid=request.GET['prob_id']
         
-        #print("sid: ",sid,type(sid)," uid: ",uid," pid: ",pid)
+
         serializer = None
         if sid == "":
             submission= Submission.objects.filter(user_id=uid,prob_id=pid)
@@ -261,7 +206,7 @@ class SubmissionAPIView(APIView):
         uid=data['user_id']
         pid=data['prob_id']
         count=Submission.objects.filter(user_id=request.data['user_id'],prob_id=request.data['prob_id']).count()
-        #sub=Submission.objects.create(user_id=uid,prob_id=pid,user_code=,user_output="",counter=)
+
         limit=Problem.objects.filter(prob_id=pid)[0].max_submission
         if count>=limit:
             return Response({
@@ -283,38 +228,7 @@ class SubmissionAPIView(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
-        # #req=request.json()
-        # body =  json.loads(request.body.decode('utf-8'))
-        # print(body)
-        # uid=request.data['user_id']
-        # pid=request.data['prob_id']
-        # submissions  = Submission.objects.filter(user_id=uid,prob_id=pid)
-        # count=submissions.count()
-        # # request.data['counter']=count+1   
-        # # request.data['user_output']=""
-        # print("subdata::\n",request.data)
-        # # putdata={
-        # #     'user_id':uid,
-        # #     'prob_id':pid,
-        # #     'counter':count+1,
-        # #     'user_code':request.data['user_code'],
-        # #     'user_output':""
 
-        # # }
-        # body['counter']=count+1
-        # body['user_output']=""
-        # body['submit_id']=1
-        # print(body)
-        # serializer = SubmissionSerializer(Submission,data=body)
-        # #print(request.data['user_id']) 
-
-        # if serializer.is_valid():
-        #     print("submitted")
-
-        #     serializer.save()
-            
-        #     return Response(serializer.data,status=status.HTTP_201_CREATED)
-        # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
             
 
 #TEST    
@@ -353,12 +267,31 @@ class SkeletonCodeAPIView(APIView):
         return Response(data=skeletonCode,status=status.HTTP_200_OK)
 
 class SearchAPIView(APIView):
-    
+    API_KEY="AIzaSyAUe0XqYJwEo2PQPgBPka3ZrlzflIoajrw"
+    CX="718753750860d4b39"
     def get(self,request):
-        API_KEY="AIzaSyAUe0XqYJwEo2PQPgBPka3ZrlzflIoajrw"
-        CX="718753750860d4b39"
-        baseUrl="https://www.googleapis.com/customsearch/v1?key="+API_KEY+"&cx="+CX+"&filter=1&num=5&q="
         tag=request.GET['tag']
+        recs=Recommand.objects.filter(tag=tag)
+
+        #이미 데이터가 있다면 DB에서 꺼내서 가져온다.
+        if recs.count() !=0:
+            content=RecommandSerializer(recs[0])
+            #ret=json(content)
+            #print(json.loads(content['content1'].value))
+            ret=[
+                json.loads(content['content1'].value),
+                json.loads(content['content2'].value),
+                json.loads(content['content3'].value),
+                json.loads(content['content4'].value),
+                json.loads(content['content5'].value)
+
+            ]
+
+            return Response(data=ret,status=status.HTTP_200_OK)
+
+
+
+        baseUrl="https://www.googleapis.com/customsearch/v1?key="+self.API_KEY+"&cx="+self.CX+"&filter=1&num=5&q="  
         print("search %s"%tag)
         url=baseUrl+tag
         """
@@ -384,12 +317,6 @@ class SearchAPIView(APIView):
         items=[]
 
         for item in response.get('items'):
-            #print(item.keys())
-            #item=response.items['key']
-            #print(item.get('title'))
-            #print(item.get('link'))
-            #print(item.get('snippet'))
-            #print(item.get('pagemap').get('cse_thumbnail'))
             items.append(
                 {
                     "title":item.get('title'),
@@ -401,5 +328,23 @@ class SearchAPIView(APIView):
 
 
 
+        request.data.update(
+            {
+                "tag":tag,
+                "content1":json.dumps(items[0]),
+                "content2":json.dumps(items[1]),
+                "content3":json.dumps(items[2]),
+                "content4":json.dumps(items[3]),
+                "content5":json.dumps(items[4])
+            }
+        )
+
+
+        #print(request.data)
+        serializer=RecommandSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print("new data saved")
+        else:
+            print("!!!!!!!")
         return Response(items,status=status.HTTP_200_OK)
-        #return Response({"items":json(response.get('items'))},status=status.HTTP_200_OK)
