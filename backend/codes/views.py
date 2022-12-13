@@ -108,9 +108,6 @@ class UserCourseAPIView(APIView):
         return Response(status=404)
 
 
-# class CodeAPIView(APIView):
-#     def get(self, request):
-#         code = Code
 
 class ProblemsAPIView(APIView):
     def get(self,request):
@@ -170,54 +167,9 @@ class UIDesignAPIView(APIView):
             return Response(data=ret,status=status.HTTP_200_OK)
         else:
             return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
-    # def post(self,request):
-    #     uid=request.data['user_id']
-    #     print("change UI of %d"%uid)
-    #     user=get_object_or_404(User,user_id=uid)
-    #     print(user)
-    #     sfont=request.data['setting_font']
-    #     stheme=request.data['setting_theme']
-    #     print(user,sfont,stheme)
-    #     if user:
 
-    #         udata=UserSerializer(user).data
-    #         udata['setting_font']=sfont
-    #         udata['setting_theme']=stheme
-
-    #         print(serializer.data)
-    #         return Response({})
-    #         # #user['setting_font']=sfont
-    #         # #user['setting_theme']=stheme
-    #         # userdata=UserSerializer(user).data
-    #         # userdata['setting_font']=sfont
-    #         # userdata['setting_theme']=stheme
-    #         # print(type(userdata))
-    #         # print("Data::\n",userdata)
-    #         # serializer=UserSerializer(data=userdata)
-            
-    #         # if serializer.is_valid():
-    #         #     print("hello")
-                
-                
-    #         # #print(serializer.is_valid())
-    #         # #print(serializer.data)
-            
-    #         # #serializer.data['setting_font']=sfont
-    #         # #serializer.data['setting_theme']=stheme
-    #         # print(serializer.data)
-    #         # #serializer.save()
-    #         # serializer.save()
-    #         # return Response(serializer.data,status=status.HTTP_200_OK)
-    #         # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
-
-    #     else:
-    #         serializer=UserSerializer(user)
-    #         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
     def put(self,request):
-        # serializer=UserSerializer(data=request.data)
-        # if(serializer.is_valid()):
-        #     return Response(serializer.data,status=status.HTTP_200_OK)
-        # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+
         uid=request.data['user_id']
         sfont=request.data['setting_font']
         stheme=request.data['setting_theme']
@@ -283,41 +235,7 @@ class SubmissionAPIView(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
-        # #req=request.json()
-        # body =  json.loads(request.body.decode('utf-8'))
-        # print(body)
-        # uid=request.data['user_id']
-        # pid=request.data['prob_id']
-        # submissions  = Submission.objects.filter(user_id=uid,prob_id=pid)
-        # count=submissions.count()
-        # # request.data['counter']=count+1   
-        # # request.data['user_output']=""
-        # print("subdata::\n",request.data)
-        # # putdata={
-        # #     'user_id':uid,
-        # #     'prob_id':pid,
-        # #     'counter':count+1,
-        # #     'user_code':request.data['user_code'],
-        # #     'user_output':""
 
-        # # }
-        # body['counter']=count+1
-        # body['user_output']=""
-        # body['submit_id']=1
-        # print(body)
-        # serializer = SubmissionSerializer(Submission,data=body)
-        # #print(request.data['user_id']) 
-
-        # if serializer.is_valid():
-        #     print("submitted")
-
-        #     serializer.save()
-            
-        #     return Response(serializer.data,status=status.HTTP_201_CREATED)
-        # return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
-            
-
-#TEST    
 class TestAPIView(APIView):
     def get(self,request):
         testCase=request.GET['testcase']

@@ -40,9 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'db',
     'codes',
-    'analysis',
     'onlinejudge',
-    'problems',
 ]
 
 MIDDLEWARE = [
