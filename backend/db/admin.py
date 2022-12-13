@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Course, User, Problem, Submission, Analysis
+from .models import Course, User, Problem, Submission, Analysis, Recommand
 
 # Register your models here.
 admin.site.register(Course)

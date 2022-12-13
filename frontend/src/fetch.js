@@ -61,4 +61,4 @@ export const getAnalysis = (submitId) =>
   axios.get(`/onlinejudge/analysis2/${submitId}`).then((res) => res.data);
 
 export const searchRelated = (tag) =>
-  axios.get(`codes/search?tag=${tag}`).then((res) => res.data);
+  axios.get(`/codes/search?tag=${tag}`).then((res) => res.data);
