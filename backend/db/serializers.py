@@ -5,7 +5,7 @@ from db.models import User
 from db.models import Problem
 from db.models import Submission
 from db.models import Analysis
-
+from db.models import Recommand
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,4 +34,9 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class AnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analysis
+        fields = "__all__"
+
+class RecommandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recommand
         fields = "__all__"
