@@ -1,6 +1,13 @@
 # 2022fall_41class_team9
 ![image](https://user-images.githubusercontent.com/82107503/207755558-5599e9de-51a0-45c1-8f17-931e43d557f3.png)
 
+## Contact
+- 강민구 netisen4@gmail.com
+- 구자현 rnwkgus0212@gmail.com 
+- 김수겸 metishonora@icloud.com
+- 연민석 eric9907@naver.com
+- 위성은 sachoi1201@naver.com
+- 이원규 stbaker517@g.skku.edu
 
 ## Project Topology
 Project: codingplatform
