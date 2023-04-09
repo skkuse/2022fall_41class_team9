@@ -1,5 +1,6 @@
 # 2022fall_41class_team9
 ![image](https://user-images.githubusercontent.com/82107503/207755558-5599e9de-51a0-45c1-8f17-931e43d557f3.png)
+![KakaoTalk_20230409_192556727](https://user-images.githubusercontent.com/82107503/230767840-b43382bd-e075-4c66-af43-65925d824000.jpg)
 
 ## Contact
 - 강민구 netisen4@gmail.com
